@@ -1,0 +1,195 @@
+/**
+ * sobre.css
+ * Estilos específicos para a seção "Sobre Nós" com design moderno
+ */
+
+/* Container principal */
+.sobre-section {
+    position: relative;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    overflow: hidden;
+}
+
+/* Cabeçalho com linhas e logo */
+.sobre-header {
+    position: relative;
+    width: 100%;
+    height: 120px;
+    margin-bottom: 4rem;
+}
+
+/* Linha horizontal */
+.horizontal-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #333;
+    transform: translateY(-50%);
+    opacity: 0; /* Começa invisível para animação */
+}
+
+/* Linha vertical */
+.vertical-line {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 100%;
+    background-color: #333;
+    transform: translateX(-50%);
+    opacity: 0; /* Começa invisível para animação */
+}
+
+/* Container da logo */
+.logo-container {
+    position: absolute;
+    top: 50%;
+    left: 15%;
+    transform: translateY(-50%);
+    opacity: 0; /* Começa invisível para animação */
+}
+
+/* Logo */
+.sobre-logo {
+    height: 60px;
+    width: auto;
+}
+
+/* Título */
+.sobre-title {
+    position: absolute;
+    top: 50%;
+    left: 55%;
+    transform: translate(0, -50%);
+    font-family: neue-haas-grotesk-display, sans-serif;
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #99b381;
+    line-height: 1.2;
+    margin: 0;
+    text-transform: uppercase;
+    opacity: 0; /* Começa invisível para animação */
+}
+
+/* Conteúdo de texto */
+.sobre-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+/* Texto primário */
+.sobre-primary-text {
+    font-family: neue-haas-grotesk-display, sans-serif;
+    font-size: 1.5rem;
+    line-height: 1.6;
+    color: #859283;
+    margin-bottom: 2rem;
+    opacity: 0; /* Começa invisível para animação */
+}
+
+/* Texto secundário */
+.sobre-secondary-text {
+    font-family: "Aeonik Pro", sans-serif;
+    font-size: 1.2rem;
+    line-height: 1.7;
+    color: #8bbf3a;
+    opacity: 0; /* Começa invisível para animação */
+}
+
+/* Responsividade */
+@media (max-width: 992px) {
+    .sobre-header {
+        height: 160px;
+    }
+    
+    .logo-container {
+        left: 10%;
+    }
+    
+    .sobre-title {
+        font-size: 2rem;
+        left: 60%;
+    }
+}
+
+@media (max-width: 768px) {
+    .sobre-section {
+        padding: 3rem 1.5rem;
+    }
+    
+    .sobre-header {
+        height: 200px;
+    }
+    
+    .logo-container {
+        left: 5%;
+        top: 30%;
+    }
+    
+    .sobre-logo {
+        height: 50px;
+    }
+    
+    .vertical-line {
+        left: 50%;
+    }
+    
+    .sobre-title {
+        font-size: 1.8rem;
+        left: 55%;
+        top: 65%;
+    }
+    
+    .sobre-primary-text {
+        font-size: 1.3rem;
+    }
+    
+    .sobre-secondary-text {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .sobre-header {
+        height: 240px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .horizontal-line {
+        top: 120px;
+    }
+    
+    .vertical-line {
+        display: none;
+    }
+    
+    .logo-container {
+        position: relative;
+        top: 20px;
+        left: 0;
+        transform: none;
+        margin-bottom: 30px;
+    }
+    
+    .sobre-title {
+        position: relative;
+        top: 30px;
+        left: 0;
+        transform: none;
+        text-align: center;
+        font-size: 1.5rem;
+    }
+    
+    .sobre-primary-text,
+    .sobre-secondary-text {
+        text-align: center;
+    }
+}
