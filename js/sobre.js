@@ -1,9 +1,9 @@
 /**
  * sobre.js
- * Script específico para a seção "Sobre Nós" com animações GSAP modernas
+ * Script específico para a seção "Sobre Nós" com animações GSAP
  */
 
-// Função de inicialização que pode ser chamada tanto no DOMContentLoaded quanto após o carregamento via fetch
+// Função de inicialização que será chamada pelo loader.js
 function initSobre() {
     console.log('Inicializando animações da seção "Sobre Nós"');
     
@@ -26,15 +26,13 @@ function initSobre() {
         return;
     }
     
-    // Timeline principal para a seção
-    const sobreTimeline = gsap.timeline({
-        scrollTrigger: {
-            trigger: '.sobre-section',
-            start: 'top 70%',
-            // markers: true, // Remover em produção
-            toggleActions: 'play none none none'
-        }
-    });
+    // Definir manualmente a opacidade inicial de todos os elementos
+    //gsap.set('.horizontal-line, .vertical-line, .logo-container, .sobre-title, .sobre-primary-text, .sobre-secondary-text', {
+    //    opacity: 0
+    //});
+    
+    // Criar a timeline SEM paused: true
+    const sobreTimeline = gsap.timeline();
     
     // Animação da linha horizontal
     sobreTimeline.to('.horizontal-line', {
@@ -86,83 +84,80 @@ function initSobre() {
         ease: 'power2.out'
     }, 1.2);
     
-    // Animações adicionais com ScrollTrigger para elementos que aparecem durante a rolagem
+    // IMPORTANTE: Pausar a timeline imediatamente após criá-la
+    // Isso evita que ela seja reproduzida automaticamente
+    sobreTimeline.pause();
+    
+    // Criar um observador de interseção para detectar quando a seção está visível
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            // Se a seção está visível
+            if (entry.isIntersecting) {
+                console.log('Seção sobre está visível, iniciando animação');
+                sobreTimeline.play();
+            } else {
+                console.log('Seção sobre não está mais visível, resetando animação');
+                sobreTimeline.progress(0).pause();
+            }
+        });
+    }, {
+        // Configurar para disparar quando pelo menos 20% da seção estiver visível
+        threshold: 0.2
+    });
+    
+    // Iniciar a observação da seção
+    observer.observe(sobreSection);
     
     // Efeito de parallax sutil no título durante a rolagem
-    gsap.to('.sobre-title', {
+    const titleParallax = gsap.to('.sobre-title', {
         y: -30,
         scrollTrigger: {
             trigger: '.sobre-section',
-            start: 'top top',
+            start: 'top bottom',
             end: 'bottom top',
-            scrub: true
+            scrub: 1,
+            invalidateOnRefresh: true
         }
     });
     
     // Efeito de parallax sutil nos textos durante a rolagem
-    gsap.to('.sobre-content', {
+    const contentParallax = gsap.to('.sobre-content', {
         y: -20,
         scrollTrigger: {
             trigger: '.sobre-section',
-            start: 'top top',
+            start: 'top bottom',
             end: 'bottom top',
-            scrub: true
+            scrub: 1,
+            invalidateOnRefresh: true
         }
     });
     
-    // Animação para dispositivos móveis
-    // Ajustar animações para telas menores
-    const mediaQuery = window.matchMedia('(max-width: 576px)');
-    if (mediaQuery.matches) {
-        // Reconfigurar animações para mobile se necessário
-        sobreTimeline.clear();
-        
-        // Animação simplificada para mobile
-        sobreTimeline
-            .to('.horizontal-line', { opacity: 1, duration: 0.5 }, 0)
-            .to('.logo-container', { opacity: 1, duration: 0.5 }, 0.3)
-            .to('.sobre-title', { opacity: 1, duration: 0.5 }, 0.6)
-            .to('.sobre-primary-text', { opacity: 1, duration: 0.5 }, 0.9)
-            .to('.sobre-secondary-text', { opacity: 1, duration: 0.5 }, 1.1);
-    }
-    
     // Armazenar os ScrollTriggers para poder limpá-los depois
     if (!window.sobreScrollTriggers) window.sobreScrollTriggers = [];
-    window.sobreScrollTriggers.push(sobreTimeline.scrollTrigger);
+    window.sobreScrollTriggers.push(
+        titleParallax.scrollTrigger,
+        contentParallax.scrollTrigger
+    );
+    
+    // Também armazenar o observador para poder limpá-lo depois
+    window.sobreObserver = observer;
+    
+    console.log('Animações da seção "Sobre Nós" inicializadas com sucesso');
 }
 
-// Chamar a função de inicialização quando o DOM for carregado
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('sobre.js: DOMContentLoaded disparado');
-    // Verificar se a seção já está no DOM
-    if (document.querySelector('.sobre-section')) {
-        console.log('sobre.js: Seção sobre já está no DOM, inicializando...');
-        initSobre();
-    } else {
-        console.log('sobre.js: Seção sobre ainda não está no DOM, aguardando evento secaoCarregada...');
+// Função para limpar recursos quando a seção for descarregada
+function cleanupSobre() {
+    if (window.sobreScrollTriggers) {
+        window.sobreScrollTriggers.forEach(trigger => trigger.kill());
+        window.sobreScrollTriggers = [];
     }
-});
-
-// Escutar o evento personalizado disparado pelo loader.js
-document.addEventListener('secaoCarregada', function(event) {
-    console.log('sobre.js: Evento secaoCarregada recebido para a seção:', event.detail.id);
     
-    // Verificar se a seção carregada é 'sobre'
-    if (event.detail.id === 'sobre') {
-        console.log('sobre.js: Seção sobre foi carregada via fetch, inicializando...');
-        
-        // Pequeno timeout para garantir que o DOM está completamente renderizado
-        setTimeout(function() {
-            initSobre();
-            
-            // Forçar o refresh do ScrollTrigger
-            if (typeof ScrollTrigger !== 'undefined') {
-                console.log('sobre.js: Atualizando ScrollTrigger...');
-                ScrollTrigger.refresh();
-            }
-        }, 100);
+    if (window.sobreObserver) {
+        window.sobreObserver.disconnect();
+        window.sobreObserver = null;
     }
-});
+}
 
 // Expor a função de inicialização globalmente para que possa ser chamada pelo loader.js
 window.initSobre = initSobre;
+window.cleanupSobre = cleanupSobre;
