@@ -24,11 +24,11 @@
 /* Linha horizontal */
 .horizontal-line {
     position: absolute;
-    top: 50%;
+    top: 0;
     left: 0;
     width: 100%;
-    height: 2px;
-    background-color: #333;
+    height: 1px;
+    background-color: #99b381;
     transform: translateY(-50%);
     opacity: 0; /* Começa invisível para animação */
 }
@@ -38,9 +38,9 @@
     position: absolute;
     top: 0;
     left: 50%;
-    width: 2px;
-    height: 100%;
-    background-color: #333;
+    width: 1px;
+    height: 210%;
+    background-color: #99b381;
     transform: translateX(-50%);
     opacity: 0; /* Começa invisível para animação */
 }
@@ -48,29 +48,35 @@
 /* Container da logo */
 .logo-container {
     position: absolute;
-    top: 50%;
-    left: 15%;
+    top: 135%;
+    left: 0%;
     transform: translateY(-50%);
     opacity: 0; /* Começa invisível para animação */
 }
 
 /* Logo */
 .sobre-logo {
-    height: 60px;
+    height: 180px;
     width: auto;
 }
 
 /* Título */
 .sobre-title {
     position: absolute;
-    top: 50%;
-    left: 55%;
+    top: 135%;
+    left: 51%;
     transform: translate(0, -50%);
-    font-family: neue-haas-grotesk-display, sans-serif;
+    /*font-family: neue-haas-grotesk-display, sans-serif;
     font-size: 2.5rem;
+    font-weight: 600;*/
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
     font-weight: 600;
+    font-style: normal;
+    font-size: 5rem;
+    letter-spacing: -.35rem;
     color: #99b381;
-    line-height: 1.2;
+    line-height: 1;
     margin: 0;
     text-transform: uppercase;
     opacity: 0; /* Começa invisível para animação */
@@ -78,16 +84,15 @@
 
 /* Conteúdo de texto */
 .sobre-content {
-    max-width: 800px;
-    margin: 0 auto;
+    max-width: 80%;
+    margin-top: 15rem;
     padding: 2rem 0;
 }
 
 /* Texto primário */
 .sobre-primary-text {
-    font-family: neue-haas-grotesk-display, sans-serif;
-    font-size: 1.5rem;
-    line-height: 1.6;
+    font-size: 3rem;
+    line-height: 1;
     color: #859283;
     margin-bottom: 2rem;
     opacity: 0; /* Começa invisível para animação */
@@ -95,9 +100,8 @@
 
 /* Texto secundário */
 .sobre-secondary-text {
-    font-family: "Aeonik Pro", sans-serif;
-    font-size: 1.2rem;
-    line-height: 1.7;
+    font-size: 2rem;
+    line-height: 1.25;
     color: #8bbf3a;
     opacity: 0; /* Começa invisível para animação */
 }
@@ -148,10 +152,12 @@
     
     .sobre-primary-text {
         font-size: 1.3rem;
+        text-align: left;
     }
     
     .sobre-secondary-text {
         font-size: 1.1rem;
+        text-align: left;
     }
 }
 
@@ -186,10 +192,5 @@
         transform: none;
         text-align: center;
         font-size: 1.5rem;
-    }
-    
-    .sobre-primary-text,
-    .sobre-secondary-text {
-        text-align: center;
     }
 }

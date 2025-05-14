@@ -1,5 +1,17 @@
 document.addEventListener("DOMContentLoaded", function() {
+    // gsap.registerPlugin(ScrollTrigger);
+    // gsap.registerPlugin(ScrollTrigger,ScrollSmoother,SplitText);
+    // Sempre registrar ScrollTrigger
     gsap.registerPlugin(ScrollTrigger);
+    
+    // Registrar outros plugins apenas se estiverem disponíveis
+    if (typeof ScrollSmoother !== 'undefined') {
+        gsap.registerPlugin(ScrollSmoother);
+    }
+    
+    if (typeof SplitText !== 'undefined') {
+        gsap.registerPlugin(SplitText);
+    }
 
     const mainContentWrapper = document.getElementById("mainContentWrapper");
     const horizontalScrollSection = document.getElementById("horizontalScrollSection");

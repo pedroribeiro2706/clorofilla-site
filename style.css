@@ -281,8 +281,8 @@ body {
     max-width: 700px;
 }
 
-.vertical-section-sobre { background-color: #e9f5e9; }
-.vertical-section-fazemos { background-color: #e0f7fa; }
+.vertical-section-sobre { background-color: #ffffff; }
+.vertical-section-fazemos { background-color: #198754; color: #fff; }
 .vertical-section-servicos { background-color: #fff9c4; }
 .vertical-section-diferenciais { background-color: #f3e5f5; }
 .vertical-section-depoimentos { background-color: #e8eaf6; }

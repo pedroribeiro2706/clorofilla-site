@@ -30,9 +30,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 duration: 0.8,
                 stagger: 0.1,
                 ease: "power2.out",
+                paused: true, // Inicia a animação pausada
                 scrollTrigger: {
                     trigger: '.areas-atuacao-grid',
-                    start: 'top 80%'
+                    start: 'top 80%',
+                    end: 'bottom 20%',
+                    toggleActions: 'play pause resume reset',
+                    // markers: true, // Descomentar para debug
+                    once: false
                 }
             });
         }
