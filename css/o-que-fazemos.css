@@ -1,0 +1,332 @@
+/* Estilos para a seção "O Que Fazemos" */
+#o-que-fazemos {
+    background-color: #ffffff; /* Fundo da seção: BRANCO */
+    padding: 60px 0; /* Removido o padding lateral para a linha horizontal encostar nas laterais */
+    /* display: flex; */
+    /* flex-direction: column; */
+    align-items: center; 
+    /* justify-content: center;  */
+    min-height: 100vh; 
+}
+
+.o-que-fazemos-container {
+    padding: 60px 20px; 
+    text-align: center;
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.o-que-fazemos-container .section-title { /* Esta regra pode ser redundante se #o-que-fazemos h2 já cobre o título */
+    font-family: 'Whyte-Bold', sans-serif;
+    font-weight: 600;
+    font-size: 2.5rem; 
+    color: #198754; /* Cor do título consistente com #o-que-fazemos h2: VERDE */
+    margin-bottom: 40px; 
+    text-transform: uppercase;
+}
+
+.o-que-fazemos-intro {
+    position: relative;
+    width: 100%;
+    height: auto;
+    margin-bottom: 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Container para os elementos de cabeçalho (linhas, logo, título) */
+.oqf-header-elements {
+    position: relative;
+    width: 100%;
+    height: auto;
+    margin-bottom: 60px; /* Espaço entre o cabeçalho e o conteúdo */
+    display: flex;
+    border-top: 1px solid #99b381; /* Linha horizontal superior */
+}
+
+/* Coluna esquerda - contém o logo */
+.oqf-left-column {
+    width: 50%; /* Alterado para 50% para centralizar a linha vertical */
+    position: relative;
+    padding: 60px 0 0 0; /* Removido o padding inferior */
+}
+
+/* Coluna direita - contém o título */
+.oqf-right-column {
+    width: 50%; /* Alterado para 50% para centralizar a linha vertical */
+    position: relative;
+    padding: 60px 0 0 0; /* Removido o padding inferior */
+    border-left: 1px solid #99b381; /* Linha vertical */
+    overflow: hidden;
+}
+
+/* Container da logo */
+.oqf-logo-container {
+    position: relative;
+    margin-left: 10%;
+}
+
+/* Título */
+.oqf-title {
+    position: relative;
+    font-family: "helvetica-neue-lt-pro-cond", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+    font-size: 5rem;
+    letter-spacing: -.05rem;
+    color: #99b381;
+    line-height: 1;
+    margin: 0;
+    text-transform: uppercase;
+    padding-left: 20px; /* Espaçamento da borda vertical */
+    padding-right: 120px; /* Força a quebra de linha neste ponto */
+}
+
+/* Conteúdo de texto */
+.oqf-content {
+    max-width: 80%;
+    padding: 2rem 5rem;
+    align-self: flex-start; /* Alinha à esquerda */
+}
+
+/* Texto primário */
+.oqf-primary-text {
+    font-family: "helvetica-neue-lt-pro", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 3rem;
+    line-height: 1.15;
+    color: #859283;
+    margin-bottom: 2rem;
+}
+
+/* Texto secundário */
+.oqf-secondary-text {
+    font-family: "helvetica-neue-lt-pro", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 1.8rem;
+    line-height: 1.35;
+    color: #8bbf3a;
+    padding-right: 5rem;
+}
+
+
+.oqf-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 colunas */
+    grid-gap: 2rem;
+    padding: 2rem 0;
+    overflow: hidden;
+    max-width: 1200px;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+.oqf-card-container {
+    width: 300px;
+    height: 300px;
+    perspective: 1000px; 
+    opacity: 0; /* Inicialmente invisível para fade-in */
+}
+
+.oqf-card {
+    width: 100%;
+    height: 100%;
+    position: relative; 
+    transform-style: preserve-3d;
+    border-radius: 0px; 
+    background-color: #000000; /* Fundo do card: PRETO */
+}
+
+.oqf-card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden; 
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.oqf-card-front {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 24px 24px 24px 24px; /* ajuste o padding se quiser menos espaço */
+    justify-content: flex-start;
+    align-items: center;
+    background: #000;
+    box-sizing: border-box;
+}
+
+.oqf-card-back {
+    transform: rotateY(180deg); 
+    position: relative; 
+    padding-top: 20px; /* Espaço no topo para o oqf-answer */
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: calc(20px + 3.6rem + 10px); /* (bottom do title + altura title 2 linhas + margem) ~= 88px */
+    display: flex; 
+    flex-direction: column;
+}
+
+.oqf-card-back .oqf-icon-container i, /* Esta regra pode ser removida se os ícones foram totalmente removidos do HTML do verso*/
+.oqf-card-back .oqf-answer {
+    font-family: 'helvetica-neue-lt-pro', sans-serif; /* Estilo de texto restaurado */
+    font-size: 1.1rem;             /* Estilo de texto restaurado */
+    text-align: center;            /* Estilo de texto restaurado */
+    line-height: 1.45;              /* Estilo de texto restaurado */
+    color: #ffffff; 
+    flex-grow: 1; 
+    overflow-y: auto; 
+    margin-bottom: 0; 
+}
+
+.oqf-icon-row {
+    flex: 0 0 80px; /* altura fixa para o ícone — ajuste conforme o tamanho do ícone */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+}
+
+.oqf-question-row {
+    flex: 1 1 auto;
+    width: 100%;
+    display: flex;
+    align-items: flex-start; /* top-align o texto */
+    justify-content: center;
+}
+
+.oqf-icon-container {
+    flex-grow: 1; /* Faz o container do ícone ocupar o espaço disponível */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Garante que o container do ícone use a largura total */
+}
+
+.oqf-icon-container i {
+    font-size: 50px; /* Ícone ainda maior */
+    color: rgba(255, 255, 255, 0.7);   /* Cor do ícone: BRANCO com 70% de transparência */
+}
+
+.oqf-question {
+    font-family: 'Zahrah', sans-serif; /* Fonte Zahrah */
+    font-weight: 400; /* Peso da fonte */
+    color: rgba(255, 255, 255, 0.7); /* Cor do texto: BRANCO com 70% de transparência */
+    font-size: 1.6rem;
+    line-height: 1.25;
+    text-align: center;
+    white-space: normal;
+    visibility: visible; /* agora fica sempre visível */
+    margin: 0;
+    padding: 0 4px;
+    width: 100%;
+}
+
+.oqf-resposta {
+    font-family: 'Questrial', sans-serif;
+    font-size: 1.8rem;
+    color: #333;
+    line-height: 1.6;
+    text-align: left; /* Para garantir que o texto dentro da resposta comece à esquerda */
+    padding: 10px; /* Adiciona um respiro interno */
+}
+
+/* Estilo para o título no verso do card */
+.oqf-back-title {
+    font-family: 'Zahrah', serif; 
+    font-size: 2rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.35); 
+    text-align: center; 
+    line-height: 0.9; 
+    position: absolute; 
+    bottom: 20px;       
+    left: 0;
+    right: 0;
+    padding-left: 10px; 
+    padding-right: 10px;
+    height: auto; /* Para garantir que a altura seja baseada no conteúdo */
+}
+
+/* Cores de fundo específicas para o verso dos cards */
+.oqf-card-back-color1 {
+    background-color: #8bbf3a;
+}
+
+.oqf-card-back-color2 {
+    background-color: #99b381;
+}
+
+.oqf-card-back-color3 {
+    background-color: #b9d47f;
+}
+
+/* Ajustes para telas menores */
+@media (max-width: 768px) {
+    .oqf-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 0.8rem;
+    }
+
+    .oqf-card-container,
+    .oqf-card {
+        width: 280px; 
+        height: 280px; 
+    }
+
+    #o-que-fazemos h2, 
+    .o-que-fazemos-container .section-title { /* Aplicando a ambos os títulos */
+        font-size: 2rem;
+    }
+
+    .oqf-icon-container i {
+        font-size: 60px; /* Ajuste responsivo para ícones */ 
+        margin-bottom: 15px;
+    }
+
+    .oqf-question,
+    .oqf-answer {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .oqf-grid {
+        grid-template-columns: 1fr; 
+        max-width: 300px; 
+    }
+    
+    .oqf-card-container,
+    .oqf-card {
+        width: 100%; 
+        max-width: 300px; 
+        height: auto; 
+        min-height: 250px; 
+    }
+
+    .oqf-card-face {
+        padding: 15px;
+    }
+
+    #o-que-fazemos h2, 
+    .o-que-fazemos-container .section-title { /* Aplicando a ambos os títulos */
+        font-size: 1.8rem;
+    }
+
+    .oqf-icon-container i {
+        font-size: 50px;
+    }
+
+    .oqf-question,
+    .oqf-answer {
+        font-size: 0.8rem;
+    }
+}

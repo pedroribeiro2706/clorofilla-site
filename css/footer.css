@@ -1,0 +1,176 @@
+/**
+ * footer.css
+ * Estilos específicos para o footer do site Clorofilla
+ */
+
+ .footer-main {
+    background: #2d2d2d;
+    color: #fff;
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    padding-bottom: 2.5rem;
+    position: relative;
+  }
+  
+  .footer-top {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 2.5rem;
+    padding-left: 2vw;
+    padding-right: 2vw;
+    gap: 0;
+  }
+  
+  .footer-social {
+    gap: 1.3rem;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+  }
+  
+  .footer-social-icon {
+    font-size: 2.1rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s, transform 0.2s;
+    text-decoration: none;
+  }
+  .footer-social-icon:hover,
+  .footer-social-icon:focus {
+    color: #99b381;
+    transform: scale(1.15);
+  }
+  
+  .footer-divider {
+    height: 0;
+    border: none;
+    border-top: 1.5px solid #f1eee8;
+    background: none;
+  }
+  
+  .footer-divider-top {
+    margin: 0 0 0 1.2rem;
+    flex-grow: 1;
+    align-self: flex-end;
+    width: 100%;
+  }
+  
+  .footer-divider-bottom {
+    margin: 2.2rem auto 1.1rem auto;
+    width: 93vw; /* Amplo o suficiente para alinhar com os textos laterais */
+    max-width: 100%;
+    min-width: 320px;
+    border-top: 1.5px solid #f1eee8;
+  }
+  
+  .footer-top-btn {
+    border: 1px solid #f1eee8;
+    background: transparent;
+    color: #f1eee8;
+    border-radius: 0;
+    padding: 0.65rem 2.1rem;
+    font-size: 1.18rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    height: 46px;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+    margin-left: 0;
+  }
+  .footer-top-btn:hover,
+  .footer-top-btn:focus {
+    background: #99b381;
+    color: #232323;
+    border-color: #99b381;
+  }
+  
+  .footer-logo {
+    width: 210px;
+    max-width: 60vw;
+    display: block;
+  }
+  .footer-desc {
+    font-size: 1.1rem;
+    color: #f1eee8;
+    font-weight: 400;
+    margin-top: 0.5rem;
+    max-width: 25vw;
+  }
+  
+  .footer-bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 3vw;
+    margin-top: 0.5rem;
+    gap: 1rem;
+  }
+  .footer-copy {
+    color: #f1eee8;
+    font-size: 1rem;
+    font-weight: 400;
+  }
+  .footer-privacy-link {
+    color: #f1eee8;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-left: auto;
+    text-decoration: none; /* Sem sublinhado */
+    transition: color 0.2s;
+  }
+  .footer-privacy-link:hover,
+  .footer-privacy-link:focus {
+    color: #99b381;
+    text-decoration: none;
+  }
+  
+  @media (max-width: 991px) {
+    .footer-logo {
+      width: 150px;
+    }
+    .footer-desc {
+      font-size: 1rem;
+      max-width: 340px;
+    }
+    .footer-bottom-row {
+      flex-direction: column;
+      align-items: stretch;
+      text-align: center;
+      gap: 0.5rem;
+    }
+    .footer-divider-bottom {
+      width: 96vw;
+      max-width: 98vw;
+    }
+  }
+  @media (max-width: 767px) {
+    .footer-main {
+      text-align: center;
+      padding-bottom: 1.2rem;
+    }
+    .footer-top {
+      flex-direction: column;
+      align-items: stretch !important;
+      padding-left: 0;
+      padding-right: 0;
+    }
+    .footer-divider-top {
+      margin: 0.6rem 0;
+    }
+    .footer-logo {
+      width: 110px;
+      margin: 0 auto 1rem auto;
+    }
+    .footer-social {
+      justify-content: center !important;
+      gap: 1.1rem;
+      margin-bottom: 0.7rem;
+    }
+    .footer-divider-bottom {
+      width: 98vw;
+      max-width: 99vw;
+    }
+  }
+  

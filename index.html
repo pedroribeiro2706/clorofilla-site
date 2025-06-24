@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clorofilla - Soluções Ambientais</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Neue+Haas+Grotesk+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/hero.css">
+    <link rel="stylesheet" href="css/sobre.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/o-que-fazemos.css">
+    <link rel="stylesheet" href="css/diferenciais.css">
+    <link rel="stylesheet" href="css/contato.css">
+    <!-- Seções CSS -->
+</head>
+
+<body>
+    <!-- Logo (agora fora do mainContentWrapper para ser verdadeiramente fixo) -->
+    <img src="./assets/Logo-Clorofilla-Branco-SVG-Resized-01.svg" alt="Clorofilla Logo" class="panel-hero-logo">
+
+
+
+    <!--############################ MENU ############################-->
+
+    <!-- Menu Trigger (será posicionado via CSS) -->
+    <button id="menuTrigger" class="menu-trigger">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+    </button>
+
+
+    <!-- Menu Overlay (inicialmente oculto) -->
+    <div id="menuOverlay" class="menu-overlay">
+        <button id="menuCloseTrigger" class="menu-close-trigger">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+        <nav class="menu-nav">
+            <ul>
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#sobre">Sobre Nós</a></li>
+                <li><a href="#o-que-fazemos">O Que Fazemos</a></li>
+                <li><a href="#diferenciais">Diferenciais</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+        </nav>
+    </div>
+
+
+    <!--############################ HERO ############################-->
+
+    <!-- Seção de Scroll Horizontal -->
+    <div id="horizontalScrollSection" class="horizontal-scroll-section">
+        <!-- Painel 1: Hero -->
+        <section id="hero" class="panel panel-hero">
+            <!-- A logo foi movida para fora deste painel -->
+            <div class="panel-hero-background-image-wrap">
+                <img src="./assets/hero-01d.png" alt="Paisagem natural com arquitetura sustentável"
+                    class="panel-hero-background-image">
+            </div>
+
+            <div class="panel-hero-content-wrapper">
+                <div class="hero-subtext-wrapper">
+                    <div class="panel-hero-secondary-text split-animate">
+                        Vamos criar soluções ambientais que aliam excelência técnica e conformidade legal para viabilizar projetos mais seguros e sustentáveis.
+                    </div>
+                </div>
+                <div class="hero-heading-wrapper"> <!-- Parallax/scroll horizontal atua aqui -->
+                    <h1 class="panel-hero-title split-animate">Um Futuro Sustentável</h1> <!-- SplitText atua aqui -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Painel 2: Conteúdo Branco -->
+        <section class="panel panel-content-white">
+            <div class="panel-content-white-text-container">
+                <h2>. . . COMEÇA NO PRESENTE<span class="cursor">_</span></h2>
+                <div class="panel-content-white-paragraph panel-content-white-text">
+                    Com atuação estratégica e multidisciplinar, garantimos o cumprimento das exigências ambientais,
+                    minimizando riscos e impulsionando seus projetos desde o planejamento até a operação.
+                </div>
+                <div id="lottieLogoVertical" class="panel-02-logo"></div>
+                <!-- <object type="image/svg+xml" data="./assets/Logo-Clorofilla-Branco-SVG-Resized-01-Animated.svg"> -->
+                    <!-- <img src="./assets/Clorofilla-Vertical-Cor-Resized.svg" alt="Clorofilla Logo" class="panel-02-logo"> -->
+                <!-- </object> -->
+            </div>
+        </section>
+
+        <!-- Painel 3: Imagem Central com Parallax -->
+        <section class="panel panel-image-parallax-container">
+            <img src="./assets/placeholder-central-img.jpg" alt="Imagem central com efeito parallax"
+                class="panel-image-parallax-image">
+        </section>
+
+        <!-- Painel 4: Conteúdo Laranja -->
+        <section class="panel panel-content-orange">
+            <div class="panel-content-orange-text-container">
+                <p class="panel-content-orange-text">Somos especializados em desenvolver soluções sob medida. Atuamos com rigor técnico, foco na
+                    conformidade legal e compromisso com a sustentabilidade, oferecendo suporte completo para
+                    empresas que precisam operar de forma segura, eficiente e ambientalmente responsável.</p>
+                <h2 class="panel-content-orange-title">Soluções Ambientais</h2>
+            </div>
+        </section>
+    </div>
+
+
+    <!--############################ SOBRE ############################-->
+
+    <section id="sobre" class="vertical-section-sobre">
+        <div class="sobre-section">
+            <div class="sobre-intro">
+                <div class="sobre-header-elements">
+                    <div class="sobre-left-column">
+                        <div class="sobre-logo-container">
+                            <img src="./assets/Clorofilla-Vertical-Cor-Resized.svg" alt="Clorofilla Logo"
+                                class="sobre-logo">
+                        </div>
+                    </div>
+                    <div class="sobre-right-column">
+                        <h2 class="sobre-title">SOLUÇÕES AMBIENTAIS COM PROPÓSITO</h2>
+                    </div>
+                </div>
+                <div class="sobre-content">
+                    <p class="sobre-primary-text">A Clorofilla é uma consultoria ambiental especializada em
+                        desenvolver soluções técnicas personalizadas para empreendimentos que buscam operar de forma
+                        responsável e em conformidade com a legislação.</p>
+
+                    <p class="sobre-secondary-text">Nosso propósito é construir pontes entre desenvolvimento e
+                        sustentabilidade, garantindo que cada projeto avance com segurança, viabilidade técnica e respeito ao meio ambiente.</p>
+                </div>
+            </div>
+
+            <!-- Novo container com título "Minimizando Riscos" -->
+            <div class="minimizando-riscos-container">
+                <div class="minimizando-riscos-content">
+                    <div class="minimizando-wrapper">
+                      <h2 class="minimizando-title">Minimizando</h2>
+                    </div>
+                    <div class="riscos-wrapper d-flex align-items-center">
+                      <!-- SUBTÍTULO AGORA À ESQUERDA DE RISCOS -->
+                      <div class="minimizando-subtitle-wrapper">
+                        <div class="arrow-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 12H19" stroke="#8BBF3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M12 5L19 12L12 19" stroke="#8BBF3A" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        </div>
+                        <p class="minimizando-subtitle">foco na qualidade<br>técnica e conformidade legal</p>
+                      </div>
+                      <h2 class="riscos-title ms-3">Riscos</h2>
+                    </div>
+                  </div>
+
+                <!-- NOVA SEÇÃO: Image Text Slider -->
+                <section class="image-text-slider-section">
+                    <div class="its-container">
+                        <div class="its-image-frame">
+                            <!-- Novas imagens para o slider -->
+                            <img src="./assets/photo-1646903232892-4a5d5451231a.avif" alt="Imagem do slide 1" class="its-slide-bg-image active">
+                            <img src="./assets/photo-1709072142659-7f3c3284a504.avif" alt="Imagem do slide 2" class="its-slide-bg-image">
+                            <img src="./assets/geomapeamento.png" alt="Imagem do slide 3" class="its-slide-bg-image">
+                            <img src="./assets/Parceria-Estrategica-05b.png" alt="Imagem do slide 4" class="its-slide-bg-image">
+                        </div>
+                        <div class="its-content-slider">
+                            <div class="its-slide active"> <!-- Slide 1 -->
+                                <h3 class="its-slide-title">Expertise Técnica</h3>
+                                <div class="its-slide-text-wrapper">
+                                    <p class="its-slide-text">Nossa equipe combina conhecimento aprofundado e
+                                        experiência prática para oferecer diagnósticos precisos e soluções ambientais
+                                        eficazes, garantindo a conformidade e a sustentabilidade do seu projeto.</p>
+                                </div>
+                            </div>
+                            <div class="its-slide"> <!-- Slide 2 -->
+                                <h3 class="its-slide-title">Visão Integrada</h3>
+                                <div class="its-slide-text-wrapper">
+                                    <p class="its-slide-text">Analisamos cada projeto com uma abordagem
+                                        multidisciplinar, integrando fatores ambientais, sociais e regulatórios para
+                                        entregar soluções completas que minimizam riscos e fortalecem seu
+                                        empreendimento.</p>
+                                </div>
+                            </div>
+                            <div class="its-slide"> <!-- Slide 3 -->
+                                <h3 class="its-slide-title">Compromisso com Resultados</h3>
+                                <div class="its-slide-text-wrapper">
+                                    <p class="its-slide-text">Nosso compromisso é entregar resultados concretos e
+                                        mensuráveis, transformando desafios ambientais em oportunidades para seu
+                                        empreendimento se destacar no mercado.</p>
+                                </div>
+                            </div>
+                            <div class="its-slide"> <!-- Slide 4 -->
+                                <h3 class="its-slide-title">Parceria Estratégica</h3>
+                                <div class="its-slide-text-wrapper">
+                                    <p class="its-slide-text">Atuamos como parceiros estratégicos, entendendo as
+                                        necessidades de cada cliente para construir um futuro mais verde e resiliente
+                                        juntos.</p>
+                                </div>
+                            </div>
+
+                            <div class="its-slider-navigation">
+                                <button class="its-arrow next" aria-label="Próximo slide">
+                                    <div class="its-arrow-icon-wrapper">
+                                        <svg width="75" height="8" viewBox="0 0 75 8" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M73.3536 4.35355C73.5488 4.15829 73.5488 3.84171 73.3536 3.64645L70.1716 0.464466C69.9763 0.269204 69.6597 0.269204 69.4645 0.464466C69.2692 0.659728 69.2692 0.976311 69.4645 1.17157L72.2929 4L69.4645 6.82843C69.2692 7.02369 69.2692 7.34027 69.4645 7.53553C69.6597 7.7308 69.9763 7.7308 70.1716 7.53553L73.3536 4.35355ZM0 4.5H73V3.5H0V4.5Z"
+                                                fill="currentColor"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="its-next-title-container">
+                                        <span class="its-next-slide-label">Próximo</span>
+                                        <!-- <span class="its-next-slide-title-text"></span> -->
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!--############################ O QUE FAZEMOS ############################-->
+
+    <section id="o-que-fazemos" class="vertical-section-fazemos">
+        <div class="oqf-section">
+            <div class="o-que-fazemos-intro">
+                <div class="oqf-header-elements">
+                    <div class="oqf-left-column">
+                        <div class="oqf-logo-container">
+                            <img src="./assets/Clorofilla-Vertical-Cor-Resized.svg" alt="Clorofilla Logo" class="sobre-logo">
+                        </div>
+                    </div>
+                    <div class="oqf-right-column">
+                        <h2 class="oqf-title">O que fazemos por você</h2>
+                    </div>
+                </div>
+                <div class="oqf-content">
+                    <p class="oqf-primary-text">Somos uma empresa especializada em desenvolver soluções ambientais, garantindo viabilidade técnica, conformidade legal e segurança operacional.</p>
+                    <p class="oqf-secondary-text">Com uma equipe multidisciplinar, oferecemos suporte personalizado para que seu projeto atenda às exigências ambientais, minimizando riscos e em conformidade com a legislação.</p>
+                </div>
+            </div>
+
+            <div class="o-que-fazemos-container">
+                <div class="oqf-grid">
+                    <div class="oqf-card-container">
+                        <div class="oqf-card">
+                            <div class="oqf-card-face oqf-card-front">
+                                <div class="oqf-icon-row">
+                                    <div class="oqf-icon-container">
+                                        <i class="fas fa-leaf"></i>
+                                    </div>
+                                </div>
+                                <div class="oqf-question-row">
+                                    <p class="oqf-question">Seu empreendimento está cumprindo as normas ambientais?</p>
+                                </div>
+                            </div>
+                            <div class="oqf-card-face oqf-card-back oqf-card-back-color1">
+                                <p class="oqf-answer">Garantimos que seu projeto opere dentro das normas realizando supervisão ambiental, verificando o cumprimento de condicionantes, identificando não conformidades e orientando na aplicação de medidas corretivas.</p>
+                                <h3 class="oqf-back-title">Supervisão Ambiental</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="oqf-card-container">
+                        <div class="oqf-card">
+                            <div class="oqf-card-face oqf-card-front">
+                                <div class="oqf-icon-row">
+                                    <div class="oqf-icon-container">
+                                        <i class="fas fa-tree"></i>
+                                    </div>
+                                </div>
+                                <div class="oqf-question-row">
+                                    <p class="oqf-question">Precisa de projetos de compensação ambiental ou levantamentos florestais?</p>
+                                </div>
+                            </div>
+                            <div class="oqf-card-face oqf-card-back oqf-card-back-color2">
+                                <p class="oqf-answer">Desenvolvemos Planos de Recuperação de Áreas Degradadas com métodos de restauração e medidas compensatórias, inventários florestais com identificação de espécies arbóreas.</p>
+                                <h3 class="oqf-back-title">PRAD e Inventário Florestal</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="oqf-card-container">
+                        <div class="oqf-card">
+                            <div class="oqf-card-face oqf-card-front">
+                                <div class="oqf-icon-row">
+                                    <div class="oqf-icon-container">
+                                        <i class="fas fa-recycle"></i>
+                                    </div>
+                                </div>
+                                <div class="oqf-question-row">
+                                    <p class="oqf-question">Precisa estruturar a gestão de resíduos?</p>
+                                </div>
+                            </div>
+                            <div class="oqf-card-face oqf-card-back oqf-card-back-color3">
+                                <p class="oqf-answer">Elaboramos Plano de Gerenciamento de Resíduos Sólidos, definindo estratégias para coleta, armazenamento, transporte, destinação final e suporte para o Manifesto de Transporte de Resíduos.</p>
+                                <h3 class="oqf-back-title">PGRS</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="oqf-card-container">
+                        <div class="oqf-card">
+                            <div class="oqf-card-face oqf-card-front">
+                                <div class="oqf-icon-row">
+                                    <div class="oqf-icon-container">
+                                        <i class="fas fa-microscope"></i>
+                                    </div>
+                                </div>
+                                <div class="oqf-question-row">
+                                    <p class="oqf-question">Seu projeto exige estudos ambientais específicos?</p>
+                                </div>
+                            </div>
+                            <div class="oqf-card-face oqf-card-back oqf-card-back-color3">
+                                <p class="oqf-answer">Desenvolvemos EVTEA, PBA, PAE, Programas de Fauna, Diagnósticos (físico, biótico e social) e estudos hidrológicos e hidráulicos.</p>
+                                <h3 class="oqf-back-title">Estudos Ambientais</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="oqf-card-container">
+                        <div class="oqf-card">
+                            <div class="oqf-card-face oqf-card-front">
+                                <div class="oqf-icon-row">
+                                    <div class="oqf-icon-container">
+                                        <i class="fas fa-file-alt"></i>
+                                    </div>
+                                </div>
+                                <div class="oqf-question-row">
+                                    <p class="oqf-question">Precisando licenciar uma área, empreendimento ou canteiro de obras?</p>
+                                </div>
+                            </div>
+                            <div class="oqf-card-face oqf-card-back oqf-card-back-color2">
+                                <p class="oqf-answer">Atuamos em todas as etapas e processos de licenciamento, desde o planejamento até a obtenção da licença. Realizamos licenciamento ambiental de Autorização de Supressão de Vegetação (Sinaflor).</p>
+                                <h3 class="oqf-back-title">Licenciamento Ambiental</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="oqf-card-container">
+                        <div class="oqf-card">
+                            <div class="oqf-card-face oqf-card-front">
+                                <div class="oqf-icon-row">
+                                    <div class="oqf-icon-container">
+                                        <i class="fas fa-map-marked-alt"></i>
+                                    </div>
+                                </div>
+                                <div class="oqf-question-row">
+                                    <p class="oqf-question">Precisa de mapeamento para embasar seus estudos ambientais?</p>
+                                </div>
+                            </div>
+                            <div class="oqf-card-face oqf-card-back oqf-card-back-color1">
+                                <p class="oqf-answer">Desenvolvemos mapas temáticos e análises espaciais, fornecendo dados georreferenciados para planejamento.</p>
+                                <h3 class="oqf-back-title">Geo<br>processamento</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+    
+    <!--############################ DIFERENCIAS ############################-->
+
+    <section id="diferenciais" class="vertical-section-diferenciais">
+        <div class="diferenciais-container">
+            <!-- Slide 1 -->
+            <div class="diferenciais-section diferenciais-first">
+                <div class="diferenciais-outer">
+                    <div class="diferenciais-inner">
+                        <div class="diferenciais-bg">
+                            <div class="diferenciais-overlay"></div>
+                            <h2 class="diferenciais-heading">Compromisso Ambiental</h2>
+                            <p class="diferenciais-text">Nossa prioridade é desenvolver soluções que respeitem o meio ambiente e promovam a sustentabilidade em todos os projetos.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="diferenciais-section diferenciais-second">
+                <div class="diferenciais-outer">
+                    <div class="diferenciais-inner">
+                        <div class="diferenciais-bg">
+                            <div class="diferenciais-overlay"></div>
+                            <h2 class="diferenciais-heading">Equipe Multidisciplinar</h2>
+                            <p class="diferenciais-text">Contamos com profissionais especializados em diversas áreas, garantindo uma abordagem completa para cada desafio ambiental.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="diferenciais-section diferenciais-third">
+                <div class="diferenciais-outer">
+                    <div class="diferenciais-inner">
+                        <div class="diferenciais-bg">
+                            <div class="diferenciais-overlay"></div>
+                            <h2 class="diferenciais-heading">Soluções Personalizadas</h2>
+                            <p class="diferenciais-text">Desenvolvemos estratégias adaptadas às necessidades específicas de cada cliente, respeitando particularidades e objetivos únicos.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 4 -->
+            <div class="diferenciais-section diferenciais-fourth">
+                <div class="diferenciais-outer">
+                    <div class="diferenciais-inner">
+                        <div class="diferenciais-bg">
+                            <div class="diferenciais-overlay"></div>
+                            <h2 class="diferenciais-heading">Inovação Sustentável</h2>
+                            <p class="diferenciais-text">Buscamos constantemente as mais recentes tecnologias e metodologias para oferecer soluções inovadoras e sustentáveis.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 5 -->
+            <div class="diferenciais-section diferenciais-fifth">
+                <div class="diferenciais-outer">
+                    <div class="diferenciais-inner">
+                        <div class="diferenciais-bg">
+                            <div class="diferenciais-overlay"></div>
+                            <h2 class="diferenciais-heading">Excelência em Resultados</h2>
+                            <p class="diferenciais-text">Comprometidos com a qualidade, buscamos sempre os melhores resultados para nossos clientes, superando expectativas.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+    <!--############################ CONTATO ############################-->
+
+    <section id="contato" class="contato-section">
+        <div class="container">
+            <h2 class="contato-title mb-5">
+                <span class="mask-title"><span class="word word-esq">Vamos</span></span>
+                <span class="mask-title"><span class="word word-dir">conversar</span></span>
+            </h2>
+          <form>
+            <div class="row mb-3">
+              <div class="col-md-6 mb-3 mb-md-0">
+                <label for="firstName" class="form-label contato-label">Nome *</label>
+                <input type="text" class="form-control contato-input" id="firstName" required autocomplete="off">
+              </div>
+              <div class="col-md-6">
+                <label for="lastName" class="form-label contato-label">Sobrenome *</label>
+                <input type="text" class="form-control contato-input" id="lastName" required autocomplete="off">
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6 mb-3 mb-md-0">
+                <label for="email" class="form-label contato-label">Email *</label>
+                <input type="email" class="form-control contato-input" id="email" required autocomplete="off">
+              </div>
+              <div class="col-md-6">
+                <label for="phone" class="form-label contato-label">Telefone</label>
+                <input type="text" class="form-control contato-input" id="phone" autocomplete="off">
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="message" class="form-label contato-label">Mensagem *</label>
+              <textarea class="form-control contato-input" id="message" rows="3" required></textarea>
+            </div>
+            <div class="d-flex justify-content-end">
+              <button type="submit" class="btn-enviar">ENVIAR</button>
+            </div>
+          </form>
+      
+          <div class="row mt-5 g-3">
+            <div class="col-md-4">
+              <div class="contato-card d-flex align-items-center border">
+                <div class="contato-icone">
+                  <i class="fas fa-phone fa-2x"></i>
+                </div>
+                <div class="ps-3 fw-bold contato-card-text">+55 (21) 99999-9999</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="contato-card d-flex align-items-center border">
+                <div class="contato-icone">
+                  <i class="fas fa-at fa-2x"></i>
+                </div>
+                <div class="ps-3 fw-bold contato-card-text">clorofilla@clorofilla.com.br</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="contato-card d-flex align-items-center border">
+                <div class="contato-icone">
+                  <i class="fas fa-location-dot fa-2x"></i>
+                </div>
+                <div class="ps-3 fw-bold contato-card-text">Rua Dona Delfina, 123 - Tijuca</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      
+
+    <!--############################ FOOTER ############################-->
+    <footer class="footer-main mt-5 pt-4">
+        <!-- Linha superior + botão + ícones -->
+        <div class="footer-top">
+        <div class="footer-social">
+            <a href="#" class="footer-social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="footer-social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="footer-social-icon"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="footer-social-icon"><i class="fab fa-youtube"></i></a>
+        </div>
+        <div class="footer-divider footer-divider-top"></div>
+        <button class="footer-top-btn" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+            Voltar ao topo <i class="fa-solid fa-arrow-up ms-2"></i>
+        </button>
+        </div>
+    
+        <div class="container-fluid px-0">
+        <div class="row gx-4 gy-4 align-items-center justify-content-center">
+            <div class="col-md-5 d-flex flex-column align-items-center">
+            <img src="./assets/Logo-Clorofilla-Branco-SVG-Resized-01.svg" alt="Clorofilla Logo" class="footer-logo mb-2">
+            <span class="footer-desc text-center">
+                Soluções ambientais que aliam excelência técnica e conformidade legal para viabilizar projetos mais seguros e sustentáveis.
+            </span>
+            </div>
+        </div>
+        </div>
+    
+        <div class="footer-divider footer-divider-bottom"></div>
+        <div class="footer-bottom-row d-flex justify-content-between align-items-center">
+        <div class="footer-copy">
+            © 2025 Clorofilla Soluções Ambientais. Todos os direitos reservados.
+        </div>
+        <a href="/politica-de-privacidade" class="footer-privacy-link">Política de Privacidade</a>
+        </div>
+    </footer>
+  
+
+
+    <!--############################ SCRIPTS ############################-->
+
+    <!-- Bootstrap JS Bundle (includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+    <!-- GSAP Library (versão unificada) -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+    <!-- ScrollSmoother requires ScrollTrigger -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollSmoother.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Observer.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="js/scripts.js"></script>
+    
+    <!-- Lottie Animation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+
+</body>
+
+</html>

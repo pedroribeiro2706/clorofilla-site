@@ -1,0 +1,152 @@
+/* Estilos para a seção Diferenciais */
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond&display=swap");
+
+.vertical-section-diferenciais {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: visible !important;
+}
+
+.diferenciais-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: visible !important;
+}
+
+.diferenciais-section {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  will-change: transform, opacity;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 0;
+  overflow: visible !important;
+}
+
+/* Sombra no topo de todos os slides, exceto o primeiro */
+.diferenciais-section:not(:first-child)::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 28px;
+  pointer-events: none;
+  box-shadow: 0 -16px 32px -16px rgba(0, 0, 0, 0.5), 0 -7px 7px 0 rgba(0,0,0,0.5);
+  z-index: 2;
+}
+
+/* Slide backgrounds */
+.diferenciais-section .diferenciais-bg {
+  width: 100vw; height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background-size: cover;
+  background-position: center;
+  padding: 2rem;
+  position: relative;
+}
+
+.diferenciais-heading {
+  font-family: 'Zahrah', serif;
+  font-size: 2.2rem;
+  font-weight: 500;
+  color: #FFFFFF;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.diferenciais-text {
+  font-family: "helvetica-neue-lt-pro", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  font-size: 1.5rem;
+  color: #E0E0E0;
+  line-height: 1.5em;
+  margin-bottom: 1.5rem;
+  max-width: 38vw;
+  width: 100%;
+  text-align: center;
+}
+
+.split-line {
+  overflow: hidden;
+  display: block;
+}
+
+.diferenciais-section .diferenciais-bg > * {
+  position: absolute;
+  z-index: 2;
+}
+
+.diferenciais-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.75); /* Opacidade máxima será animada via JS */
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0; /* Começa invisível */
+  border-radius: inherit;
+  transition: none;
+}
+
+.diferenciais-bg > *:not(.diferenciais-overlay) {
+  position: relative;
+  z-index: 2;
+}
+
+.diferenciais-text {
+  opacity: 0;
+}
+
+
+/* Backgrounds para cada slide */
+.diferenciais-first .diferenciais-bg {
+  /* background-image: url('https://images.unsplash.com/photo-1617478755490-e21232a5eeaf?crop=entropy&cs=srgb&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTYxNzU1NjM5NA&ixlib=rb-1.2.1&q=75&w=1920'); */
+  background-image: url('../assets/Compromisso-Ambiental-03.png');
+}
+.diferenciais-second .diferenciais-bg {
+  /* background-image: url('https://images.unsplash.com/photo-1617128734662-66da6c1d3505?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTYxNzc3NTM3MA&ixlib=rb-1.2.1&q=75&w=1920'); */
+  background-image: url('../assets/Equipe-Multidisciplinar-01.png');
+}
+.diferenciais-third .diferenciais-bg {
+  /* background-image: url('https://images.unsplash.com/photo-1617438817509-70e91ad264a5?crop=entropy&cs=srgb&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTYxNzU2MDk4Mg&ixlib=rb-1.2.1&q=75&w=1920'); */
+  background-image: url('../assets/Solucoes-Customizadas-01.png');
+}
+.diferenciais-fourth .diferenciais-bg {
+  /* background-image: url('https://images.unsplash.com/photo-1617412327653-c29093585207?crop=entropy&cs=srgb&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTYxNzU2MDgzMQ&ixlib=rb-1.2.1&q=75&w=1920'); */
+  background-image: url('../assets/Inovacao-Sustentavel-01.png');
+}
+.diferenciais-fifth .diferenciais-bg {
+  /* background-image: url('https://images.unsplash.com/photo-1617141636403-f511e2d5dc17?crop=entropy&cs=srgb&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTYxODAzMjc4Mw&ixlib=rb-1.2.1&q=75w=1920'); */
+  background-image: url('../assets/Resultados-Sustentaveis-01.png');
+  background-position: 50% 45%;
+}
+
+@media (max-width: 768px) {
+  .vertical-section-diferenciais,
+  .diferenciais-container {
+    height: auto !important;
+    min-height: unset !important;
+    max-height: unset !important;
+  }
+  .diferenciais-section {
+    position: static !important;
+    width: 100vw !important;
+    height: auto !important;
+    transform: none !important;
+    opacity: 1 !important;
+    margin-bottom: 3rem;
+    overflow: visible !important;
+  }
+  .diferenciais-heading {
+    font-size: 2rem !important;
+  }
+  .diferenciais-text {
+    font-size: 1.1rem !important;
+    max-width: 90vw !important;
+  }
+}

@@ -1,0 +1,382 @@
+/**
+ * sobre.css
+ * Estilos específicos para a seção "Sobre Nós" com design moderno
+ */
+
+/* Container principal */
+.sobre-section {
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    padding: 8rem 0rem;
+    overflow: hidden;
+    background-color: #FFFFFF;
+}
+
+/* Container Minimizando Riscos */
+.minimizando-riscos-container {
+    width: 100vw;
+    background-color: #fbf4ea;
+    padding: 8rem 2rem;
+    margin-top: 4rem;
+    margin-left: calc(-50vw + 50%);
+    position: relative;
+    overflow: hidden;
+}
+
+.minimizando-riscos-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.minimizando-wrapper {
+    width: 120%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 15%;
+}
+
+.minimizando-title {
+    font-family: "zahrah", serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 12rem;
+    color: #000;
+    margin: 0;
+    line-height: 1;
+    letter-spacing: -7px;
+    will-change: transform;
+}
+
+.minimizando-subtitle-wrapper {
+    display: flex;
+    align-items: flex-start;
+    margin-left: 2rem;
+    margin-bottom: 20px;
+    width: 350px; /* Aumentado para 350px para aproveitar o espaço adicional */
+    /* opacity: 0; /* Iniciar com opacidade 0 para o efeito de fade in */
+}
+
+.arrow-icon {
+    margin-left: 2.5rem;
+    margin-top: -0.10rem;
+}
+
+.minimizando-subtitle {
+    font-family: "helvetica-neue-lt-pro", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 1rem;
+    line-height: 1.4;
+    color: #333;
+    margin: 0;
+    will-change: transform;
+    text-transform: uppercase;
+}
+
+.riscos-wrapper {
+    width: 60%;
+    margin-left: 15%;
+    text-align: right;
+}
+
+.riscos-title {
+    font-family: "zahrah", serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 12rem;
+    color: #000;
+    width: 100%;
+    height: auto;
+    margin-bottom: 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Container para os elementos de cabeçalho (logo, título) */
+.sobre-header-elements {
+    position: relative;
+    width: 100%;
+    height: auto;
+    margin-bottom: 60px; /* Espaço entre o cabeçalho e o conteúdo */
+    display: flex;
+    border-top: 1px solid #8BBF3A; /* Linha horizontal superior */
+}
+
+/* Coluna esquerda - contém o logo */
+.sobre-left-column {
+    width: 50%; /* 50% para centralizar a linha vertical */
+    position: relative;
+    padding: 60px 0 0 0; /* Removido o padding inferior */
+}
+
+/* Coluna direita - contém o título */
+.sobre-right-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden; /* Adicionado para criar o efeito de reveal */
+    position: relative; /* Garante que o overflow funcione corretamente */
+    padding: 60px 0 0 0; /* Removido o padding inferior */
+    border-left: 1px solid #99b381; /* Linha vertical */
+}
+
+/* Container da logo */
+.sobre-logo-container {
+    position: relative;
+    margin-left: 10%;
+}
+
+.sobre-logo {
+    height: 120px;
+    object-fit: contain;
+}
+
+/* Título principal */
+.sobre-title {
+    position: relative;
+    font-family: "helvetica-neue-lt-pro-cond", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+    font-size: 5rem;
+    letter-spacing: -.05rem;
+    color: #99b381;
+    line-height: 1;
+    margin: 0;
+    text-transform: uppercase;
+    padding-left: 20px;
+    padding-right: 180px;
+    opacity: 0;
+}
+
+/* Conteúdo de texto */
+.sobre-content {
+    max-width: 80%;
+    padding: 2rem 5rem;
+    align-self: flex-start; /* Alinha à esquerda */
+}
+
+/* Texto primário */
+.sobre-primary-text {
+    font-family: "helvetica-neue-lt-pro", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 3rem;
+    line-height: 1.15;
+    color: #859283;
+    margin-bottom: 2rem;
+    /* opacity: 0; /* Começa invisível para animação */
+}
+
+/* Texto secundário */
+.sobre-secondary-text {
+    font-family: "helvetica-neue-lt-pro", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 1.8rem;
+    line-height: 1.35;
+    color: #8bbf3a;
+    /* opacity: 0; /* Começa invisível para animação */
+    padding-right: 5rem;
+}
+
+/* NOVA SEÇÃO: Image Text Slider */
+.image-text-slider-section {
+    background-color: #fbf4ea; /* Cor de fundo alterada */
+    padding: 100px 0; /* Ajuste o padding conforme necessário */
+    position: relative;
+    /*overflow: hidden;*/ /* Evitar que elementos absolutamente posicionados causem scroll */
+}
+
+.its-container {
+    max-width: 1200px; /* Ou a largura desejada para o container central */
+    margin: 0 auto;
+    display: flex;
+    align-items: center; /* Alinha a imagem e o texto verticalmente no centro */
+    position: relative; /* Para posicionar o texto absolutamente em relação a este container */
+    /* Removido width: 80vw; para usar max-width e margin auto */
+    /* Removido aspect-ratio e min-height daqui, serão tratados nos filhos */
+}
+
+.its-image-frame {
+    flex: 0 0 60%; /* Imagem ocupa 60% da largura do container */
+    max-width: 60%;
+    aspect-ratio: 1/1; /* Alterado para tornar a imagem quadrada */
+    border-radius: 20px 0px 20px 0px; /* Bordas arredondadas como na referência */
+    overflow: hidden;
+    position: relative; /* Para z-index e referência de posicionamento */
+    z-index: 1;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.its-slide-bg-image {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s, visibility 0.5s;
+}
+
+.its-slide-bg-image.active {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.its-image-frame .its-slide-bg-image {
+    position: absolute;
+    top: 0;
+    left: 15px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* opacity: 0; /* Controlado por GSAP e classe .active */
+}
+
+.its-image-frame .its-slide-bg-image.active {
+    opacity: 1; /* GSAP anima para este estado */
+    z-index: 1; /* Garante que a imagem ativa esteja na frente */
+    scale: 1.5;
+}
+
+.its-content-slider {
+    height: auto;
+    transition: height 0.5s cubic-bezier(0.7,0,0.3,1); /* Suave! */
+    background-color: #1C2518; /* Cor de fundo escura para o texto */
+    color: #FFFFFF; /* Cor do texto clara */
+    position: absolute;
+    bottom: 35%; /* Sobrepõe um pouco a imagem */
+    left: 80%;
+    transform: translateX(-50%);
+    width: 90%; /* Largura do container de texto */
+    max-width: 700px; /* Largura máxima */
+    border-radius: 0px 15px 15px 15px;
+    padding: 50px; /* Padding aumentado */
+    z-index: 2; /* Garante que o texto fique sobre a imagem */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    overflow: hidden; /* Previne vazamento do conteúdo interno, mas permite expansão vertical se height for auto */
+    min-height: 300px; /* Altura mínima para acomodar o conteúdo */
+    height: auto; /* MUITO IMPORTANTE: Permite que a altura se ajuste ao conteúdo do slide ativo */
+    display: flex; 
+    flex-direction: column; 
+}
+
+.its-slides-wrapper {
+    width: 100%;
+    /* height: 100%; REMOVIDO - A altura será definida pelo slide ativo */
+    overflow: hidden; /* Garante que apenas o slide ativo seja visível (para transições) */
+    position: relative;
+    flex-grow: 1; /* Para ocupar o espaço vertical no .its-content-slider se este for flex */
+}
+
+.its-slide {
+    width: 100%;
+    /* height: 100%; REMOVIDO - A altura será auto ou definida pelo conteúdo flex */
+    position: absolute; /* Todos os slides sobrepostos, exceto o ativo */
+    top: 0;
+    left: 0;
+    opacity: 0; 
+    visibility: hidden; 
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-between;  Será controlado por flex-grow no text-wrapper e margin-top:auto na nav */
+    padding: 30px; 
+}
+
+.its-slide.active {
+    opacity: 1; 
+    visibility: visible; 
+    z-index: 1; 
+    position: relative; /* IMPORTANTE: Para ocupar espaço e definir a altura do wrapper/content-slider */
+    height: auto; /* IMPORTANTE: Para que sua altura seja baseada no seu conteúdo */
+}
+
+.its-slide-title {
+    font-family: 'Zahrah', serif; 
+    font-size: 2.2rem; /* Ajuste de tamanho */
+    font-weight: 500;
+    color: #FFFFFF; 
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    flex-shrink: 0; /* Título não encolhe */
+}
+
+.its-slide-text-wrapper { 
+    flex-grow: 1; /* Ocupa o espaço restante entre título e navegação */
+    overflow-y: visible; /* IMPORTANTE: Garante que não haja scroll interno e o conteúdo expanda */
+    /* min-height: 50px;  Opcional, se quiser altura mínima para o texto */
+}
+
+.its-slide-text {
+    font-size: 1.5rem; 
+    color: #E0E0E0; 
+    line-height: 1.5em;
+    margin-bottom: 1.5rem; /* Espaçamento se a navegação não usar margin-top: auto */
+    /* max-height: none;  Garantir que não há max-height */
+}
+
+.its-navigation {
+    flex-shrink: 0; 
+    margin-top: auto; /* Empurra para baixo, após o .its-slide-text-wrapper ter se expandido */
+    padding-top: 15px; /* Espaçamento acima da navegação */
+    display: flex;
+    justify-content: flex-start; 
+    align-items: center;
+}
+
+.its-arrow {
+    background-color: transparent;
+    border: none;
+    color: #FFFFFF; /* Cor da seta e texto padrão dentro do botão */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 10px 0; /* Padding para aumentar a área clicável, ajuste se necessário */
+    font-family: 'Helvetica Neue LT Pro', sans-serif; /* Ou a fonte que você estiver usando */
+    font-size: 0.9rem;
+    text-align: left; /* Garante que o texto interno alinhe à esquerda */
+}
+
+.its-arrow-icon-wrapper {
+    margin-right: 10px; /* Espaço entre o ícone e o texto */
+}
+
+.its-arrow svg {
+    width: 50px; /* Tamanho do ícone da seta, ajuste se necessário */
+    height: auto;
+    display: block; /* Para evitar espaço extra abaixo do SVG */
+}
+
+.its-next-title-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.its-next-slide-label {
+    font-size: 0.8rem;
+    color: #A0A0A0; /* Cor mais suave para 'Próximo:' */
+    text-transform: uppercase;
+    line-height: 1.2;
+}
+
+.its-next-slide-title-text {
+    font-size: 0.9rem;
+    color: #FFFFFF;
+    font-weight: bold;
+    line-height: 1.2;
+}
+
+.its-slider-navigation {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start; /* Ou center, se quiser centralizado */
+    position: relative; /* relativo ao .its-content-slider */
+    z-index: 2;
+    margin-top: 30px; /* Espaço do conteúdo acima */
+    padding-top: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    /* Remova qualquer position: absolute/fixed/z-index alto antigo */
+}

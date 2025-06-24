@@ -1,0 +1,181 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond&display=swap");
+
+/* Seção de contato */
+.contato-section {
+  background: #f8f6ef;
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
+.contato-title {
+  display: flex;
+  gap: 0.15rem;
+  justify-content: flex-start;
+  align-items: flex-end;
+  overflow: visible;
+  font-family: 'zahrah', serif;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 7rem;
+  color: #000;
+  letter-spacing: .01em;
+  margin-bottom: 2.5rem;
+}
+
+.mask-title {
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
+    min-width: 1px;
+    /* Faz cada palavra ter seu próprio “mask” */
+  }
+  
+  .word {
+    display: inline-block;
+    white-space: nowrap;
+    will-change: transform, opacity;
+  }
+
+  .word-dir {
+    color: #99b381;
+  }
+
+.contato-label {
+  font-family: "helvetica-neue-lt-pro", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  font-size: 1.5rem;
+  color: #222;
+}
+
+.contato-input {
+  border: none;
+  border-bottom: 1.7px solid #222 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  font-size: 1.23rem;
+  color: #222;
+  font-family: "helvetica-neue-lt-pro", sans-serif;
+  box-shadow: none !important;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.contato-input:focus {
+  outline: none !important;
+  border-color: #5d5d5d !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.contato-btn {
+  border-radius: 0 !important;
+  padding: 0.75rem 2.2rem;
+  height: 56px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  background: #232323;
+  border: none;
+}
+
+.contato-card {
+  background: transparent !important;
+  border: 1.3px solid #222 !important;
+  box-shadow: none;
+  min-height: 100px;
+  padding: 0;
+  transition: box-shadow .18s;
+  display: flex;
+  align-items: center;
+}
+
+.contato-card-text {
+  font-family: "helvetica-neue-lt-pro", sans-serif;
+  font-size: 1.13rem;
+  color: #222;
+  margin-left: 0.5rem;
+}
+
+.contato-icone {
+  width: 90px;
+  height: 90px;
+  min-width: 90px;
+  min-height: 90px;
+  background: #232323;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.5rem;
+}
+
+/* Efeito hover no botão "Enviar" */
+.btn-enviar {
+    background: #232323;
+    color: #fff;
+    border: none;
+    height: 56px;
+    min-width: 130px;
+    font-size: 1.4rem;
+    transition: 
+      background 0.3s,
+      color 0.3s,
+      box-shadow 0.3s,
+      transform 0.2s;
+  }
+  
+  .btn-enviar:hover, .btn-enviar:focus {
+    background: #99b381 !important;
+    color: #232323 !important;
+  }
+  
+  /* Efeito hover nos ícones de contato */
+  .contato-icone {
+    width: 90px;
+    height: 90px;
+    min-width: 90px;
+    min-height: 90px;
+    background: #232323;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0.5rem;
+    font-size: 2.2rem;
+    transition: 
+      background 0.3s,
+      color 0.3s,
+      box-shadow 0.3s,
+      transform 0.2s;
+    cursor: pointer;
+  }
+  
+  .contato-icone:hover, .contato-icone:focus {
+    background: #99b381;
+    color: #232323;
+  }
+
+@media (max-width: 1200px) {
+  .contato-title {
+    font-size: 4rem;
+  }
+}
+@media (max-width: 768px) {
+  .contato-title {
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+  }
+  .contato-btn {
+    width: 100%;
+    margin-top: 1rem;
+    height: 50px;
+  }
+  .contato-icone {
+    width: 62px;
+    height: 62px;
+    min-width: 62px;
+    min-height: 62px;
+  }
+}
