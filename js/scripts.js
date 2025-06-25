@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         titleSelector,
         primaryTextSelector,
         secondaryTextSelector = null,
+        logoSelector = null,
         titleFromX = -700,
         trigger = null,
         triggerStart = 'top 45%',
@@ -40,6 +41,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         const primaryText = section && section.querySelector(primaryTextSelector);
         // Veja: não depende mais do primary/título existir!
         const secondaryText = secondaryTextSelector ? section.querySelector(secondaryTextSelector) : null;
+        const logo = logoSelector ? section.querySelector(logoSelector) : null;
     
         // Animação do título e texto primário (como antes)
         if (title && primaryText) {
@@ -51,7 +53,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             gsap.set(title, { opacity: 1, x: titleFromX });
             gsap.set(splitPrimaryText.words, { yPercent: 100, opacity: 1 });
     
-            gsap.timeline({
+            const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: trigger || section,
                     start: triggerStart,
@@ -59,8 +61,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
                     scrub: 2,
                     id: idPrefix + 'SectionTrigger'
                 }
-            })
-            .to(title, {
+            });
+            // Se houver logo, anima primeiro
+            if (logo) {
+                gsap.set(logo, { opacity: 0, yPercent: -50 });
+                tl.fromTo(logo, { opacity: 0, yPercent: -50 }, { opacity: 1, yPercent: 0, duration: 0.6, ease: 'power3.out' }, '+=0.5');
+            }
+            tl.to(title, {
                 x: 0,
                 duration: 1,
                 ease: 'back.out(0.7)'
@@ -99,6 +106,22 @@ document.addEventListener("DOMContentLoaded", (event) => {
         }
     }
     
+
+    // gsap.to(".section-transition:not(:last-child)", {
+    //   yPercent: -100, 
+    //   ease: "none",
+    //   stagger: 0.5,
+    //   scrollTrigger: {
+    //     trigger: "#container",
+    //     start: "top top",
+    //     end: "+=300%",
+    //     scrub: true,
+    //     pin: true
+    //   }
+    // });
+
+    // gsap.set(".section-transition", {zIndex: (i, target, targets) => targets.length - i});
+
 
     // ##################################################################################
                         // ANIMAÇÕES DA NAVEGAÇÃO DO MENU //
@@ -479,6 +502,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             sectionSelector: '.sobre-section',
             titleSelector: '.sobre-title',
             primaryTextSelector: '.sobre-primary-text',
+            logoSelector: '.sobre-logo',
             secondaryTextSelector: '.sobre-secondary-text',
             linesClass: 'sobre-line',
             idPrefix: 'sobre',
@@ -704,6 +728,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             sectionSelector: '.o-que-fazemos-intro',
             titleSelector: '.oqf-title',
             primaryTextSelector: '.oqf-primary-text',
+            logoSelector: '.sobre-logo',
             secondaryTextSelector: '.oqf-secondary-text',
             linesClass: 'oqf-line',
             idPrefix: 'oqf',
@@ -715,6 +740,52 @@ document.addEventListener("DOMContentLoaded", (event) => {
             secondaryTriggerEnd: 'bottom top'
         });
         
+    }
+
+    // ##################################################################################
+                        // HEADER DIFERENCIAIS TOPO //
+    // ##################################################################################
+    const diffTop = document.querySelector('#diferenciais-topo');
+    if (diffTop) {
+        // Fade BG em toda a seção "O Que Fazemos"
+        const oqfSection = document.querySelector('#o-que-fazemos');
+        if (oqfSection) {
+            gsap.set(oqfSection, { backgroundColor: 'rgba(153,179,129,0)' });
+            gsap.timeline({
+                scrollTrigger: {
+                    trigger: diffTop, // mantém o header como gatilho
+                    start: 'top 75%',
+                    end: 'bottom 50%',
+                    scrub: true,
+                    // markers: true
+                }
+            })
+            .to(oqfSection, {
+                backgroundColor: 'rgba(153,179,129,0.75)',
+                duration: 0.25,
+                ease: 'power2.out'
+            })
+            .to(oqfSection, {
+                backgroundColor: 'rgba(153,179,129,1)',
+                duration: 0.25,
+                ease: 'power2.out'
+            });
+        }
+
+        // Header text animation
+        animateSectionHeader({
+            sectionSelector: '#diferenciais-topo',
+            titleSelector: '.diferenciais-title',
+            primaryTextSelector: '.diferenciais-primary-text',
+            logoSelector: '.sobre-logo',
+            secondaryTextSelector: '.diferenciais-secondary-text',
+            titleFromX: 700,
+            trigger: diffTop,
+            triggerStart: 'top 45%',
+            triggerEnd: '10% 15%',
+            linesClass: 'diff-line',
+            idPrefix: 'difTop'
+        });
     }
 
 
@@ -1058,6 +1129,40 @@ ScrollTrigger.create({
     // Certifique-se de que gsap esteja carregado
     gsap.set('.word-esq', { x: '120%', opacity: 0 });
     gsap.set('.word-dir', { x: '-120%', opacity: 0 });
+    gsap.set('#contato-form', { opacity: 0 });
+    gsap.set('.contato-card', { opacity: 0 });
+
+    // Fade in do formulário (sem scrub)
+    gsap.to('#contato-form', {
+      opacity: 1,
+      duration: 2.5,
+      //delay: 0.9,
+      ease: 'power3.out',
+      scrollTrigger: {
+        id: 'contatoForm',
+        trigger: '#contato-form',
+        start: 'top 60%',
+        end: 'bottom top',
+        toggleActions: 'play none none reverse',
+        //markers: true // remover depois de testar
+      }
+    });
+
+    // Fade in dos cards com stagger (sem scrub)
+    gsap.to('.contato-card', {
+      opacity: 1,
+      duration: 2,
+      ease: 'power3.out',
+      stagger: { each: 0.3, from: 'start' },
+      scrollTrigger: {
+        id: 'contatoCards',
+        trigger: '#contato-card',
+        start: 'top 80%',
+        end: 'bottom top',
+        toggleActions: 'play none none reverse',
+        //markers: true // remover depois de testar
+      }
+    });
   
     gsap.timeline({
       scrollTrigger: {
@@ -1075,6 +1180,46 @@ ScrollTrigger.create({
         ease: 'power3.out',
         stagger: 0 // zero = juntos
       }, 0);
+
+
+
+      // ##################################################################################
+      //                  ANIMAÇÃO FUNDO MINIMIZANDO RISCOS
+      // ##################################################################################
+      
+      // Fade in/out background color for the “Sobre” section
+      const riscosContainer = document.querySelector('.minimizando-riscos-container');
+      const sobreSection = document.querySelector('.vertical-section-sobre');
+      if (riscosContainer && sobreSection) {
+        // Start with transparent background
+        // Ensure inner container is transparent so section color is visible
+        gsap.set(riscosContainer, { backgroundColor: 'transparent' });
+        // Start section with transparent color
+        gsap.set(sobreSection, { backgroundColor: 'rgba(251, 244, 234, 0)' });
+
+        gsap.timeline({
+          scrollTrigger: {
+            trigger: riscosContainer,
+            start: 'top 75%',   // container top reaches 25% from viewport top
+            end: 'bottom 10%', // 10% before container bottom reaches viewport bottom
+            scrub: true,
+            // toggleActions: 'play pause resume reset', // follows project conventions
+            // markers: true // uncomment for debugging
+          }
+        })
+        // Fade in
+        .to(sobreSection, {
+          backgroundColor: 'rgba(245, 235, 220, 1)',
+          duration: 0.25,
+          ease: 'power2.out'
+        })
+        // Fade out
+        .to(sobreSection, {
+          backgroundColor: 'rgba(245, 235, 220, 0)',
+          duration: 0.25,
+          ease: 'power2.out'
+        });
+      }
 
       
       

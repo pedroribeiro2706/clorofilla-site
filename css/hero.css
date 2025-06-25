@@ -9,7 +9,7 @@ body {
     font-style: normal;
     /*font-family: "Aeonik Pro", "Arial", sans-serif;*/
     overflow-x: hidden; 
-    background-color: #f0f0f0; 
+    background-color: #ffffff; 
 }
 
 p {
@@ -153,7 +153,12 @@ p {
 }
 
 
+/* --- Transition --- */
 
+/* .section-transition {
+    position: absolute;
+    will-change: transform;
+} */
 
 /* --- Seção de Scroll Horizontal --- */
 

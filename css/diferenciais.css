@@ -1,4 +1,84 @@
 /* Estilos para a seção Diferenciais */
+
+/* ====== Header Topo Diferenciais ====== */
+#diferenciais-topo {
+  background-color: transparent;
+  padding: 6rem 0;
+  overflow: hidden;
+}
+
+.diferenciais-header-elements {
+  display: flex;
+  flex-direction: row-reverse; /* inverte: título à esquerda, logo à direita visualmente */
+  align-items: flex-start;
+  border-top: 1px solid #ffffff;
+  width: 100%;
+  margin-bottom: 60px;
+}
+
+.diferenciais-left-column, .diferenciais-right-column {
+  width: 50%;
+  position: relative;
+  padding: 60px 0 0 0;
+  overflow: hidden;
+  border-right: 1px solid #ffffff;
+}
+
+.diferenciais-right-column {
+  border-left: 1px solid #ffffff;
+  display: flex;
+  justify-content: center;
+}
+
+.diferenciais-logo-container {
+  max-width: 260px;
+  margin-left: 55%;
+}
+
+.diferenciais-logo-container img {
+  width: 100%;
+  height: auto;
+}
+
+.diferenciais-title {
+  font-family: "helvetica-neue-lt-pro-cond", sans-serif;
+  font-weight: 900;
+  font-size: 5rem;
+  letter-spacing: -.05rem;
+  color: #ffffff;
+  line-height: 1;
+  margin: 0;
+  text-transform: uppercase;
+  padding-left: 20px;
+  padding-right: 120px;
+  text-align: right;
+}
+
+.diferenciais-content {
+  max-width: 80%;
+  margin-left: auto; /* alinha à direita */
+  padding: 2rem 5rem 0 5rem;
+  text-align: right;
+}
+
+.diferenciais-primary-text,
+.diferenciais-secondary-text {
+  font-family: "helvetica-neue-lt-pro", sans-serif;
+  font-weight: 300;
+  color: #ffffff;
+  line-height: 1.4;
+}
+
+.diferenciais-primary-text { font-size: 3rem; margin-bottom: 2rem; }
+.diferenciais-secondary-text { font-size: 1.8rem; }
+
+@media (max-width: 768px) {
+  .diferenciais-header-elements {
+    flex-direction: column;
+  }
+  .diferenciais-title { font-size: 2.2rem; text-align: right; }
+  .diferenciais-content { padding: 1.5rem 2rem 0 2rem; }
+}
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond&display=swap");
 
@@ -7,6 +87,7 @@
   width: 100vw;
   height: 100vh;
   overflow: visible !important;
+  background-color: rgba(153,179,129,1);
 }
 
 .diferenciais-container {
@@ -106,7 +187,7 @@
 /* Backgrounds para cada slide */
 .diferenciais-first .diferenciais-bg {
   /* background-image: url('https://images.unsplash.com/photo-1617478755490-e21232a5eeaf?crop=entropy&cs=srgb&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTYxNzU1NjM5NA&ixlib=rb-1.2.1&q=75&w=1920'); */
-  background-image: url('../assets/Compromisso-Ambiental-03.png');
+  background-image: url('../assets/Compromisso-Ambiental-03b.png');
 }
 .diferenciais-second .diferenciais-bg {
   /* background-image: url('https://images.unsplash.com/photo-1617128734662-66da6c1d3505?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTYxNzc3NTM3MA&ixlib=rb-1.2.1&q=75&w=1920'); */

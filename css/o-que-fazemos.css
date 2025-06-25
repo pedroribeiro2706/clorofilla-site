@@ -1,30 +1,9 @@
 /* Estilos para a seção "O Que Fazemos" */
 #o-que-fazemos {
-    background-color: #ffffff; /* Fundo da seção: BRANCO */
+    background-color: rgba(0 0 0 / 0%); /* Fundo da seção: TRANSPARENTE */
     padding: 60px 0; /* Removido o padding lateral para a linha horizontal encostar nas laterais */
-    /* display: flex; */
-    /* flex-direction: column; */
     align-items: center; 
-    /* justify-content: center;  */
     min-height: 100vh; 
-}
-
-.o-que-fazemos-container {
-    padding: 60px 20px; 
-    text-align: center;
-    overflow: hidden;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
-.o-que-fazemos-container .section-title { /* Esta regra pode ser redundante se #o-que-fazemos h2 já cobre o título */
-    font-family: 'Whyte-Bold', sans-serif;
-    font-weight: 600;
-    font-size: 2.5rem; 
-    color: #198754; /* Cor do título consistente com #o-que-fazemos h2: VERDE */
-    margin-bottom: 40px; 
-    text-transform: uppercase;
 }
 
 .o-que-fazemos-intro {
@@ -85,6 +64,7 @@
     padding-right: 120px; /* Força a quebra de linha neste ponto */
 }
 
+
 /* Conteúdo de texto */
 .oqf-content {
     max-width: 80%;
@@ -114,6 +94,24 @@
     padding-right: 5rem;
 }
 
+
+.o-que-fazemos-container {
+    padding: 60px 20px; 
+    text-align: center;
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.o-que-fazemos-container .section-title { /* Esta regra pode ser redundante se #o-que-fazemos h2 já cobre o título */
+    font-family: 'Whyte-Bold', sans-serif;
+    font-weight: 600;
+    font-size: 2.5rem; 
+    color: #198754; /* Cor do título consistente com #o-que-fazemos h2: VERDE */
+    margin-bottom: 40px; 
+    text-transform: uppercase;
+}
 
 .oqf-grid {
     display: grid;

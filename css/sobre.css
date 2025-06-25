@@ -10,7 +10,7 @@
     margin: 0 auto;
     padding: 8rem 0rem;
     overflow: hidden;
-    background-color: #FFFFFF;
+    /* background-color: #FFFFFF; */
 }
 
 /* Container Minimizando Riscos */
@@ -187,7 +187,7 @@
 
 /* NOVA SEÇÃO: Image Text Slider */
 .image-text-slider-section {
-    background-color: #fbf4ea; /* Cor de fundo alterada */
+    /* background-color: #fbf4ea; */ /* Cor de fundo alterada */
     padding: 100px 0; /* Ajuste o padding conforme necessário */
     position: relative;
     /*overflow: hidden;*/ /* Evitar que elementos absolutamente posicionados causem scroll */

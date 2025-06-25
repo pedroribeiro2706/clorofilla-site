@@ -14,7 +14,7 @@
   .footer-top {
     display: flex;
     align-items: flex-end;
-    margin-bottom: 2.5rem;
+    margin-bottom: 5.5rem;
     padding-left: 2vw;
     padding-right: 2vw;
     gap: 0;
@@ -56,7 +56,7 @@
   }
   
   .footer-divider-bottom {
-    margin: 2.2rem auto 1.1rem auto;
+    margin: 5.5rem auto 1.1rem auto;
     width: 93vw; /* Amplo o suficiente para alinhar com os textos laterais */
     max-width: 100%;
     min-width: 320px;
