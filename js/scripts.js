@@ -996,9 +996,6 @@ const diferenciaisSlides = gsap.utils.toArray('.diferenciais-section');
 const container = document.querySelector('.vertical-section-diferenciais');
 const totalSlides = diferenciaisSlides.length;
 
-const parallaxAmount = 20;
-const scrollDuration = (totalSlides - 1) * window.innerHeight;
-
 // SplitText: aplica para cada heading DENTRO do slide
 const headingSplitData = diferenciaisSlides.map(slide => {
   const heading = slide.querySelector('.diferenciais-heading');
@@ -1008,6 +1005,9 @@ const headingSplitData = diferenciaisSlides.map(slide => {
   return { split, heading, slide, revealed: false, timeline: null };
 }).filter(Boolean);
 
+const parallaxAmount = 20;
+const scrollDuration = (totalSlides - 1) * window.innerHeight;
+
 // Inicializa todos os slides: só o primeiro visível no início
 diferenciaisSlides.forEach((slide, i) => {
   slide.style.zIndex = i;
@@ -1015,12 +1015,52 @@ diferenciaisSlides.forEach((slide, i) => {
   gsap.set(slide, { y: 0 });
 });
 
+// ============== OVERLAY DO PRIMEIRO SLIDE (fade independente, sem scrub) ==============
+const firstSlide = diferenciaisSlides[0];
+if (firstSlide) {
+  const firstOverlay = firstSlide.querySelector('.diferenciais-overlay');
+  if (firstOverlay) {
+    gsap.set(firstOverlay, { opacity: 0 });
+
+    let userScrolled = false;
+
+    // Escuta qualquer rolagem de usuário
+    window.addEventListener('scroll', () => {
+      userScrolled = true;
+    }, { once: true });
+
+    ScrollTrigger.create({
+      trigger: firstSlide,
+      start: 'top 15%',
+      end: 'bottom top',
+      onEnter: () => {
+        // Só faz fade-in se foi scroll do usuário
+        if (userScrolled) {
+          gsap.to(firstOverlay, { opacity: 0.75, duration: 1.2, ease: 'power2.out' });
+        } else {
+          gsap.set(firstOverlay, { opacity: 0.75 });
+        }
+      },
+      onLeave: () => {
+        gsap.to(firstOverlay, { opacity: 0, duration: 0.4, ease: 'power2.out' });
+      },
+      onEnterBack: () => {
+        gsap.to(firstOverlay, { opacity: 0.75, duration: 0.4, ease: 'power2.out' });
+      },
+      onLeaveBack: () => {
+        gsap.to(firstOverlay, { opacity: 0, duration: 0.4, ease: 'power2.out' });
+      }
+    });
+  }
+}
+
+// ============== SCROLLTRIGGER PRINCIPAL DOS SLIDES ==============
 ScrollTrigger.create({
   trigger: container,
   start: "top top",
   end: `+=${scrollDuration}`,
   pin: true,
-  anticipatePin: 1,
+  anticipatePin: 0.15,
   scrub: 3,
   onUpdate: (self) => {
     const progress = self.progress * (totalSlides - 1);
@@ -1028,8 +1068,6 @@ ScrollTrigger.create({
     diferenciaisSlides.forEach((slide, i) => {
       const overlay = slide.querySelector('.diferenciais-overlay');
       const prevSlide = diferenciaisSlides[i - 1];
-
-      // SplitText: encontra split deste slide
       const splitData = headingSplitData[i];
       let localProgress = progress - (i - 1);
 
@@ -1045,7 +1083,7 @@ ScrollTrigger.create({
         if (localProgress >= 0.75) {
           overlayOpacity = gsap.utils.mapRange(0.75, 1, 0, 0.75, localProgress);
         }
-        if (overlay) gsap.set(overlay, { opacity: overlayOpacity });
+        if (overlay && i > 0) gsap.set(overlay, { opacity: overlayOpacity });
 
         // Parallax do anterior
         if (i > 0 && prevSlide) {
@@ -1060,7 +1098,7 @@ ScrollTrigger.create({
         slide.style.visibility = "visible";
         slide.style.zIndex = totalSlides + 2;
         gsap.set(slide, { y: 0 });
-        if (overlay) gsap.set(overlay, { opacity: 0.75 });
+        if (overlay && i > 0) gsap.set(overlay, { opacity: 0.75 });
       } else {
         // Fora de cena
         slide.style.visibility = "hidden";
@@ -1092,21 +1130,45 @@ ScrollTrigger.create({
               textElem,
               { x: -40, opacity: 0 },
               { x: 0, opacity: 1, duration: 0.5, ease: "power2.out" },
-              "-=0.35" // Inicia enquanto as letras ainda estão entrando
+              "-=0.35"
             );
           }
-
         }
-        // Quando slide volta a ser escondido: reseta
-        if (splitData.revealed && (progress <= i - 1 || progress > i + 1)) {
-          splitData.revealed = false;
-          if (splitData.timeline) splitData.timeline.kill();
-          gsap.set(splitData.split.chars, { yPercent: 100, opacity: 0 });
-        
-          // Reseta também o <p>
-          const textElem = slide.querySelector('.diferenciais-text');
-          if (textElem) {
-            gsap.set(textElem, { x: -40, opacity: 0 });
+
+        // Quando slide volta a ser escondido: reseta (com hack para o primeiro)
+        let shouldReset = false;
+
+        if (splitData.revealed) {
+          if (i === 0) {
+            const slideRect = slide.getBoundingClientRect();
+            if (slideRect.top > 1 || progress <= i - 1) shouldReset = true;
+          } else {
+            const slideRect = slide.getBoundingClientRect();
+            const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+            if (progress <= i - 1 || slideRect.top >= viewportHeight) shouldReset = true;
+          }
+
+          if (shouldReset) {
+            splitData.revealed = false;
+            if (splitData.timeline) splitData.timeline.kill();
+            // Anima o fade out das letras (SplitText)
+            gsap.to(splitData.split.chars, {
+              yPercent: 100,
+              opacity: 0,
+              duration: 0.4,
+              stagger: { each: 0.01, amount: 0.2, from: "random" },
+              ease: "power2.in"
+            });
+            // Fade out do <p>
+            const textElem = slide.querySelector('.diferenciais-text');
+            if (textElem) {
+              gsap.to(textElem, {
+                x: -40,
+                opacity: 0,
+                duration: 0.4,
+                ease: "power2.in"
+              });
+            }
           }
         }
       }
@@ -1114,9 +1176,37 @@ ScrollTrigger.create({
   }
 });
 
+// ============== HACK: Força animação do texto do primeiro slide ao entrar no topo ==============
+ScrollTrigger.create({
+  trigger: container,
+  start: "top top",
+  end: "+=1", // só para executar uma vez
+  onEnter: () => {
+    const splitData = headingSplitData[0];
+    if (splitData && !splitData.revealed) {
+      splitData.revealed = true;
+      splitData.timeline = gsap.timeline();
 
-      
+      splitData.timeline.to(splitData.split.chars, {
+        yPercent: 0,
+        opacity: 1,
+        stagger: { each: 0.02, amount: 0.6, from: "random" },
+        duration: 0.5,
+        ease: "power2.out"
+      });
 
+      const textElem = diferenciaisSlides[0].querySelector('.diferenciais-text');
+      if (textElem) {
+        splitData.timeline.fromTo(
+          textElem,
+          { x: -40, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.5, ease: "power2.out" },
+          "-=0.35"
+        );
+      }
+    }
+  }
+});
 
 
 
