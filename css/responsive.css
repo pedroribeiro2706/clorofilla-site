@@ -91,6 +91,12 @@ body {
     height: auto !important;
     display: block;
   }
+  /* Minimizando Riscos: separar os grupos em fluxo vertical (mobile) */
+  .image-text-slider-section .its-container { flex-direction: column; align-items: stretch; gap: 1rem; }
+  .its-image-frame { flex: none; max-width: 100%; width: 92vw; margin: 0 auto; aspect-ratio: 4/3; }
+  .its-content-slider { position: static; left: auto; bottom: auto; transform: none; width: 92vw; max-width: 92vw; margin: 0 auto; padding: 24px 20px; border-radius: 12px; z-index: auto; }
+  .its-slider-navigation { position: static; padding-left: 20px; padding-right: 20px; }
+  .its-slide { position: relative; }
   /* Sobre: empilhar logo e título (antes lado a lado no desktop) */
   .sobre-header-elements { flex-direction: column; }
   .sobre-left-column, .sobre-right-column { width: 100%; padding: 32px 0 0 0; }
