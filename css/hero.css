@@ -207,6 +207,7 @@ p {
     height: 100%;      /* Restaurar esta propriedade */
     overflow: hidden;  /* Manter para o efeito parallax */
     z-index: 1;        /* Restaurar esta propriedade */
+    background-color: #1b4118;
 }
 
 .panel-hero-background-image {
@@ -215,7 +216,7 @@ p {
     object-fit: cover;
     position: absolute;
     top: -20%;
-    left: -20%;
+    left: -10%;
 }
 
 .panel-hero-content-wrapper {

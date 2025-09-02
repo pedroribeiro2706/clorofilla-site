@@ -1,0 +1,147 @@
+/* Responsive overrides (mínimo para testar) */
+@media (max-width: 991px) {
+  html, body { overflow-x: hidden !important; }
+  .horizontal-scroll-section { display:block !important; width:100% !important; height:auto !important; transform:none !important; }
+  .panel { height:auto !important; min-height:0vh !important; position:relative !important; overflow:visible !important; }
+  .panel-hero-logo { width:160px; left:16px; bottom:24px; }
+  .panel-hero-title { font-size:2.4rem; }
+}
+
+@media (max-width: 768px) {
+  .oqf-grid { grid-template-columns: 1fr; }
+}
+
+/* === Pacote 2 (ver acima) === */
+@media (min-width: 1200px){ 
+  .oqf-grid { grid-template-columns: repeat(3, 1fr); } 
+}
+
+@media (max-width: 991px){ 
+  .oqf-grid { grid-template-columns: repeat(2, 1fr); } 
+}
+
+@media (max-width: 768px){ 
+  .oqf-grid { grid-template-columns: 1fr; } 
+}
+
+.oqf-card-container { 
+  width: min(240px, 45vw); 
+  height: auto; 
+  aspect-ratio: 1 / 1; 
+}
+
+:root{
+  --step-3: clamp(1.8rem, 1.1rem + 2.2vw, 3rem); 
+  --step-4: clamp(2.2rem, 1.2rem + 3vw, 3.6rem); 
+}
+
+.oqf-title, .diferenciais-title, .contato-title { 
+  font-size: var(--step-4); 
+}
+
+img, video { 
+  max-width: 100%; height: auto; 
+}
+
+.menu-trigger, .menu-close { 
+  width: 56px; height: 56px; 
+}
+
+body { 
+  overflow-x: hidden; 
+}
+
+/* === Fix Pack A === */
+@media (max-width: 991px){
+  .panel-content-white, .panel-image-parallax-container, .panel-content-orange { width: 100%; box-sizing: border-box; height: auto; padding: 2rem 1rem; }
+  .vertical-section-diferenciais, .diferenciais-container { height: auto !important; }
+  .diferenciais-section { position: static !important; height: auto !important; transform: none !important; }
+  .diferenciais-text { max-width: 90vw !important; font-size: 1.2rem; }
+  .minimizando-title, .riscos-title { font-size: clamp(2.4rem, 6vw, 4.5rem); letter-spacing: -2px; }
+  .minimizando-wrapper { width: 100%; padding-right: 5%; }
+  .sobre-primary-text { font-size: 2rem; } 
+  .sobre-secondary-text { font-size: 1.2rem; padding-right: 0; }
+  /* Hero: garantir enquadramento do background no mobile/tablet */
+  .panel-hero { overflow: hidden !important; }
+  .panel.panel-hero { min-height: 100vh !important; }
+  /* Hero image: ampliar ~80% e alinhar ao topo, deixando fundo visível abaixo */
+  .panel-hero-background-image { top: 0 !important; left: -40% !important; width: 180% !important; height: auto !important; object-fit: unset !important; }
+  /* Panel 4: garantir que o conteúdo permaneça contido visualmente */
+  .panel.panel-content-orange { overflow: hidden; }
+  /* Panel 3: dar área para o parallax no mobile */
+  .panel.panel-image-parallax-container { min-height: 50vh !important; }
+  .panel-image-parallax-image { will-change: transform; }
+  /* Panel 2 (Lottie): centralização e responsividade no mobile */
+  .panel-02-logo {
+    width: min(320px, 80vw);
+    height: auto !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem auto 0;
+    padding-bottom: 0;
+  }
+  .panel-02-logo svg,
+  .panel-02-logo canvas {
+    width: 100% !important;
+    height: auto !important;
+    display: block;
+  }
+}
+
+.menu-close-trigger { 
+  width: 56px; height: 56px; 
+}
+
+@media (max-width: 767px){ 
+  .footer-desc { max-width: 90vw; } 
+}
+
+/* Hero: título somente no mobile (≤767px) */
+@media (max-width: 767px) {
+  .panel-hero-title { font-size: clamp(3.2rem, 1.2rem + 3vw, 3.6rem); }
+  /* Hero: alinhar título à esquerda no mobile */
+  .panel-hero-content-wrapper { align-items: flex-start; padding: 240px 16px 72px; }
+  .hero-heading-wrapper { justify-content: flex-start; right: auto; left: 0; }
+  .panel-hero-title { text-align: left; max-width: 100%; }
+  /* Hero: subtexto mais largo e alinhado ao título (mobile) */
+  .hero-subtext-wrapper { justify-content: flex-start; right: auto; margin-bottom: 0.72rem; }
+  .panel-hero-secondary-text { max-width: 92vw; text-align: left; font-size: 1.35rem; line-height: 1.15; }
+  /* Reposiciona a imagem para favorecer leitura (mostrar mais a parte inferior) */
+  .panel-hero-background-image {
+    object-position: 35% 75% !important;
+    left: 50% !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    transform-origin: top center;
+    transform: translateX(-23%) scale(3.2);
+  }
+}
+/* Panel 4: título responsivo e espaçamento do texto (mobile) */
+@media (max-width: 767px) {
+  .panel-content-orange-text-container h2.panel-content-orange-title {
+    font-size: clamp(3.5rem, 7vw, 4.5rem);
+    line-height: 1.05;
+    margin-top: 2rem;
+    padding-right: 0.5rem;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+    text-align: left;
+  }
+}
+@media (max-width: 991px) and (orientation: portrait) {
+  .panel-hero-logo { top: 35px; bottom: auto; left: 16px; }
+}
+
+/* Hero: leve overlay de gradiente no mobile para melhorar legibilidade */
+@media (max-width: 767px) {
+  .panel-hero-background-image-wrap::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 35%, rgba(28, 37, 24, 0.80) 60%);
+    pointer-events: none;
+  }
+}

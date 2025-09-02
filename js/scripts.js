@@ -198,11 +198,176 @@ document.addEventListener("DOMContentLoaded", (event) => {
                         // ANIMAÇÕES DO SCROLL HORIZONTAL //
     // ##################################################################################
 
-    const panels = gsap.utils.toArray(".panel");
-    const horizontalSection = document.querySelector(".horizontal-scroll-section");
+    const panels = gsap.utils.toArray('.panel');
+    const horizontalSection = document.querySelector('.horizontal-scroll-section');
+    const isNarrow = window.matchMedia('(max-width: 991px)').matches;
+
+    // Mobile-only: fade out fixed hero logo as the hero scrolls out
+    if (isNarrow) {
+      const logoEl = document.querySelector('.panel-hero-logo');
+      const heroEl = document.querySelector('#hero');
+      if (logoEl && heroEl) {
+        // Fade OUT while hero scrolls out of view (finish ~25% after top leaves viewport)
+        gsap.to(logoEl, {
+          autoAlpha: 0,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: heroEl,
+            start: 'top top',
+            end: 'top -25%',
+            scrub: true
+          }
+        });
+
+        // Fade IN as hero re-enters viewport from below up to top
+        gsap.to(logoEl, {
+          autoAlpha: 1,
+          ease: 'none',
+          immediateRender: false,
+          scrollTrigger: {
+            trigger: heroEl,
+            start: 'top bottom',
+            end: 'top top',
+            scrub: true
+          }
+        });
+      }
+    }
+
+    // Mobile-only: Panel 2 vertical animations (replica do fluxo desktop, sem containerAnimation)
+    if (isNarrow) {
+      const panel2 = document.querySelector('.panel.panel-content-white');
+      if (panel2) {
+        const p2Title = panel2.querySelector('h2');
+        const p2Paragraph = panel2.querySelector('.panel-content-white-paragraph');
+        const p2Lottie = panel2.querySelector('#lottieLogoVertical');
+        const originalTitleHTML = p2Title ? p2Title.innerHTML : '';
+        const originalParagraphText = p2Paragraph ? p2Paragraph.textContent : '';
+        let p2LottieAnim = null;
+
+        // Estado inicial
+        if (p2Title) gsap.set(p2Title, { opacity: 0 });
+        if (p2Paragraph) gsap.set(p2Paragraph, { opacity: 0 });
+
+        function mobileTypewriter(text, targetElem, cursorElem, onComplete) {
+          let i = 0;
+          targetElem.textContent = '';
+          cursorElem.style.opacity = 1;
+          function typeNextChar() {
+            if (i < text.length) {
+              targetElem.textContent += text[i++];
+              setTimeout(typeNextChar, 72);
+            } else {
+              cursorElem.style.opacity = 0.7;
+              if (typeof onComplete === 'function') onComplete();
+            }
+          }
+          typeNextChar();
+        }
+
+        ScrollTrigger.create({
+          trigger: panel2,
+          start: 'top 80%',
+          end: 'bottom top',
+          onEnter: () => {
+            // 1) Título com typewriter
+            if (p2Title) {
+              const plainText = (p2Title.textContent || '').trim();
+              p2Title.innerHTML = '';
+              const typeSpan = document.createElement('span');
+              typeSpan.className = 'typewriter-text';
+              const cursorSpan = document.createElement('span');
+              cursorSpan.className = 'cursor';
+              cursorSpan.textContent = '_';
+              p2Title.appendChild(typeSpan);
+              p2Title.appendChild(cursorSpan);
+              p2Title.classList.add('section-typing_text');
+              gsap.set(p2Title, { opacity: 1 });
+
+              mobileTypewriter(plainText, typeSpan, cursorSpan, () => {
+                // 2) Parágrafo com SplitText após concluir o título
+                if (p2Paragraph) {
+                  const split = createSplitTextOnce(p2Paragraph, { type: 'lines', linesClass: 'split-line', mask: 'lines' });
+                  gsap.set(p2Paragraph, { opacity: 1 });
+                  gsap.set(split.lines, { yPercent: 100, opacity: 1 });
+                  gsap.to(split.lines, { yPercent: 0, duration: 0.8, stagger: 0.12, ease: 'power3.out' });
+                }
+
+                // 3) Lottie por último
+                if (p2Lottie && !p2LottieAnim && typeof lottie !== 'undefined') {
+                  p2Lottie.innerHTML = '';
+                  p2LottieAnim = lottie.loadAnimation({
+                    container: p2Lottie,
+                    renderer: 'svg',
+                    loop: false,
+                    autoplay: true,
+                    path: './assets/logo-vertical-cor-2.json'
+                  });
+                }
+              });
+            }
+          },
+          onLeaveBack: () => {
+            // Reset
+            if (p2Title) {
+              p2Title.innerHTML = originalTitleHTML;
+              p2Title.classList.remove('section-typing_text');
+              gsap.set(p2Title, { opacity: 0 });
+            }
+            if (p2Paragraph) {
+              p2Paragraph.textContent = originalParagraphText;
+              gsap.set(p2Paragraph, { opacity: 0 });
+            }
+            if (p2LottieAnim) { p2LottieAnim.destroy(); p2LottieAnim = null; if (p2Lottie) p2Lottie.innerHTML = ''; }
+          }
+        });
+      }
+    }
+
+    // Mobile-only: Panel 3 and 4 parallax (vertical)
+    if (isNarrow) {
+      // Panel 3: parallax image moves slightly on scroll
+      const panel3 = document.querySelector('.panel.panel-image-parallax-container');
+      const panel3Img = panel3 && panel3.querySelector('.panel-image-parallax-image');
+      if (panel3 && panel3Img) {
+        gsap.fromTo(panel3Img,
+          { yPercent: -20 },
+          {
+            yPercent: 20,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: panel3,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: true
+            }
+          }
+        );
+      }
+
+      // Panel 4: content moves a bit faster upward to suggest covering panel 3
+      const panel4 = document.querySelector('.panel.panel-content-orange');
+      const panel4Inner = panel4 && panel4.querySelector('.panel-content-orange-text-container') || panel4;
+      if (panel4 && panel4Inner) {
+        gsap.fromTo(panel4Inner,
+          { yPercent: 6 },
+          {
+            yPercent: -12,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: panel4,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: true,
+              invalidateOnRefresh: true
+            }
+          }
+        );
+      }
+    }
 
     // Inicialização do ScrollSmoother
-    if (horizontalSection && panels.length) {
+    if (horizontalSection && panels.length && !isNarrow) {
         
         let scrollAmount = window.innerWidth * 1.5; // 150vw
 
