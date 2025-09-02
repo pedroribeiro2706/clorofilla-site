@@ -94,14 +94,17 @@ body {
     display: block;
   }
   /* Minimizando Riscos: separar os grupos em fluxo vertical (mobile) */
-  .image-text-slider-section .its-container { flex-direction: column; align-items: stretch; gap: 0.5rem; }
+  .image-text-slider-section { padding: 0.75rem 0; }
+  .image-text-slider-section .its-container { flex-direction: column; align-items: stretch; gap: 0.25rem; }
   .its-image-frame { flex: none; max-width: 100%; width: 92vw; margin: 0 auto; aspect-ratio: 4/3; }
-  .its-content-slider { position: static; left: auto; bottom: auto; transform: none; width: 92vw; max-width: 92vw; margin: 0.5rem auto 0; padding: 16px 16px; border-radius: 12px; z-index: auto; min-height: 0 !important; height: auto !important; }
+  .its-content-slider { position: static; left: auto; bottom: auto; transform: none; width: 92vw; max-width: 92vw; margin: 0.25rem auto 0; padding: 12px 14px; border-radius: 12px; z-index: auto; min-height: 0 !important; height: auto !important; }
   .its-slider-navigation { position: static; padding-left: 16px; padding-right: 16px; }
   /* Mantém apenas o slide ativo no fluxo; os demais continuam absolutos (não ocupam altura) */
   .its-slide { position: absolute; padding: 16px; }
   .its-slide.active { position: relative; }
   .its-slide-text { font-size: 1.05rem; line-height: 1.4; }
+  /* Reduz espaçamento após o título "Riscos" para aproximar do slider */
+  .riscos-title { margin-bottom: 1rem; }
   /* Sobre: empilhar logo e título (antes lado a lado no desktop) */
   .sobre-header-elements { flex-direction: column; }
   .sobre-left-column, .sobre-right-column { width: 100%; padding: 32px 0 0 0; }
