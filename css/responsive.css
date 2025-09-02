@@ -61,6 +61,8 @@ body {
   .minimizando-wrapper { width: 100%; padding-right: 5%; }
   .sobre-primary-text { font-size: 2rem; } 
   .sobre-secondary-text { font-size: 1.2rem; padding-right: 0; }
+  /* Sobre: remover afastamento vertical apenas no mobile */
+  .sobre-section { padding: 0 !important; }
   /* Hero: garantir enquadramento do background no mobile/tablet */
   .panel-hero { overflow: hidden !important; }
   .panel.panel-hero { min-height: 100vh !important; }
@@ -87,6 +89,13 @@ body {
     height: auto !important;
     display: block;
   }
+  /* Sobre: empilhar logo e título (antes lado a lado no desktop) */
+  .sobre-header-elements { flex-direction: column; }
+  .sobre-left-column, .sobre-right-column { width: 100%; padding: 32px 0 0 0; }
+  .sobre-right-column { border-left: none; border-top: 1px solid #99b381; margin-top: 2rem; }
+  .sobre-logo-container { margin: 0 auto; display: flex; justify-content: center; }
+  .sobre-logo { height: clamp(130px, 22vw, 180px); }
+  .sobre-title { padding: 0 16px; text-align: left; font-size: clamp(3.5rem, 6vw, 3.5rem); letter-spacing: -.02rem; }
 }
 
 .menu-close-trigger { 
