@@ -57,7 +57,9 @@ body {
   .vertical-section-diferenciais, .diferenciais-container { height: auto !important; }
   .diferenciais-section { position: static !important; height: auto !important; transform: none !important; }
   .diferenciais-text { max-width: 90vw !important; font-size: 1.2rem; }
-  .minimizando-title, .riscos-title { font-size: clamp(2.4rem, 6vw, 4.5rem); letter-spacing: -2px; }
+  .minimizando-title, .riscos-title { font-size: clamp(2.8rem, 8vw, 4.4rem); letter-spacing: -2px; }
+  /* Minimizando Riscos: reduzir afastamentos no mobile */
+  .minimizando-riscos-container { padding: 2.5rem 1rem; margin-top: 1rem; }
   .minimizando-wrapper { width: 100%; padding-right: 5%; }
   .sobre-primary-text { font-size: 2rem; } 
   .sobre-secondary-text { font-size: 1.2rem; padding-right: 0; }
