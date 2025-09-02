@@ -61,6 +61,8 @@ body {
   .minimizando-wrapper { width: 100%; padding-right: 5%; }
   .sobre-primary-text { font-size: 2rem; } 
   .sobre-secondary-text { font-size: 1.2rem; padding-right: 0; }
+  /* Sobre: ampliar largura útil do texto e reduzir padding no mobile */
+  .sobre-content { max-width: 100%; padding: 1rem 1rem; margin: 0 auto; align-self: stretch; }
   /* Sobre: remover afastamento vertical apenas no mobile */
   .sobre-section { padding: 0 !important; }
   /* Hero: garantir enquadramento do background no mobile/tablet */
@@ -93,8 +95,8 @@ body {
   .sobre-header-elements { flex-direction: column; }
   .sobre-left-column, .sobre-right-column { width: 100%; padding: 32px 0 0 0; }
   .sobre-right-column { border-left: none; border-top: 1px solid #99b381; margin-top: 2rem; }
-  .sobre-logo-container { margin: 0 auto; display: flex; justify-content: center; }
-  .sobre-logo { height: clamp(130px, 22vw, 180px); }
+  .sobre-logo-container { margin: 0 auto; display: flex; justify-content: left; }
+  .sobre-logo { height: clamp(100px, 22vw, 120px); }
   .sobre-title { padding: 0 16px; text-align: left; font-size: clamp(3.5rem, 6vw, 3.5rem); letter-spacing: -.02rem; }
 }
 
@@ -153,4 +155,9 @@ body {
     background: linear-gradient(to bottom, rgba(0,0,0,0) 35%, rgba(28, 37, 24, 0.80) 60%);
     pointer-events: none;
   }
+}
+
+/* Sobre: ajustes extras para telas muito pequenas */
+@media (max-width: 767px) {
+  .sobre-content { max-width: 92vw; padding: 0.75rem 1rem; }
 }
