@@ -57,7 +57,7 @@ body {
   .vertical-section-diferenciais, .diferenciais-container { height: auto !important; }
   .diferenciais-section { position: static !important; height: auto !important; transform: none !important; }
   .diferenciais-text { max-width: 90vw !important; font-size: 1.2rem; }
-  .minimizando-title, .riscos-title { font-size: clamp(2.8rem, 8vw, 4.4rem); letter-spacing: -2px; }
+  .minimizando-title, .riscos-title { font-size: clamp(3.8rem, 8vw, 4.4rem); letter-spacing: -2px; }
   /* Minimizando Riscos: reduzir afastamentos no mobile */
   .minimizando-riscos-container { padding: 2.5rem 1rem; margin-top: 1rem; }
   .minimizando-wrapper { width: 100%; padding-right: 5%; }
@@ -94,11 +94,12 @@ body {
     display: block;
   }
   /* Minimizando Riscos: separar os grupos em fluxo vertical (mobile) */
-  .image-text-slider-section .its-container { flex-direction: column; align-items: stretch; gap: 1rem; }
+  .image-text-slider-section .its-container { flex-direction: column; align-items: stretch; gap: 0.5rem; }
   .its-image-frame { flex: none; max-width: 100%; width: 92vw; margin: 0 auto; aspect-ratio: 4/3; }
-  .its-content-slider { position: static; left: auto; bottom: auto; transform: none; width: 92vw; max-width: 92vw; margin: 0 auto; padding: 24px 20px; border-radius: 12px; z-index: auto; }
-  .its-slider-navigation { position: static; padding-left: 20px; padding-right: 20px; }
-  .its-slide { position: relative; }
+  .its-content-slider { position: static; left: auto; bottom: auto; transform: none; width: 92vw; max-width: 92vw; margin: 0.5rem auto 0; padding: 16px 16px; border-radius: 12px; z-index: auto; min-height: 0 !important; height: auto !important; }
+  .its-slider-navigation { position: static; padding-left: 16px; padding-right: 16px; }
+  .its-slide { position: relative; padding: 16px; }
+  .its-slide-text { font-size: 1.05rem; line-height: 1.4; }
   /* Sobre: empilhar logo e título (antes lado a lado no desktop) */
   .sobre-header-elements { flex-direction: column; }
   .sobre-left-column, .sobre-right-column { width: 100%; padding: 32px 0 0 0; }
