@@ -755,6 +755,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     // ---- Animação Parallax & Zoom (usando GSAP ScrollTrigger, sem IntersectionObserver) ----
   
     if (itsContainer && itsContentSlider && itsBgImages.length > 0) {
+      if (!isNarrow) {
       // Parallax no container
       gsap.fromTo(
         itsContainer,
@@ -804,6 +805,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
           // markers: true
         }
       });
+      } else {
+        // Mobile: sem parallax/zoom; limpa transforms para respeitar posicionamento natural
+        gsap.set([itsContainer, itsContentSlider, itsBgImages], { clearProps: 'transform' });
+      }
     }
   
     const nextButton = itsSection.querySelector('.its-slider-navigation .its-arrow.next');
