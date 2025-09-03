@@ -24,11 +24,11 @@
   .oqf-grid { grid-template-columns: 1fr; } 
 }
 
-.oqf-card-container { 
+/*.oqf-card-container { 
   width: min(240px, 45vw); 
   height: auto; 
   aspect-ratio: 1 / 1; 
-}
+}*/
 
 :root{
   --step-3: clamp(1.8rem, 1.1rem + 2.2vw, 3rem); 
@@ -121,6 +121,8 @@ body {
   .oqf-right-column { border-left: none; border-top: 1px solid #99b381; margin-top: 2rem; }
   .oqf-logo-container { margin: 0 auto; display: flex; justify-content: center; }
   .oqf-title { padding: 0 16px; text-align: left; font-size: clamp(3.5rem, 6vw, 3.5rem); letter-spacing: -.02rem; }
+  /* Força o tamanho correto mesmo contra regras com #id no CSS base */
+  #o-que-fazemos h2.oqf-title { padding: 0 16px; text-align: left; font-size: clamp(3.5rem, 6vw, 3.5rem); letter-spacing: -.02rem; }
 }
 
 .menu-close-trigger { 
