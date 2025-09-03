@@ -203,3 +203,11 @@ body {
   /* O Que Fazemos: largura para telas muito pequenas */
   #o-que-fazemos .oqf-content { max-width: 92vw; padding: 0.75rem 1rem; }
 }
+
+/* O Que Fazemos (mobile): padding nos elementos internos, não no container */
+@media (max-width: 991px) {
+  #o-que-fazemos .oqf-card-face { padding: 0 !important; height: 100%; }
+  #o-que-fazemos .oqf-card-back { padding: 0 !important; height: 100%; min-height: 100%; width: 100%; box-sizing: border-box; display: flex; flex-direction: column; }
+  #o-que-fazemos .oqf-card-back .oqf-answer { padding: 12px 12px 8px !important; }
+  #o-que-fazemos .oqf-back-title { margin-top: auto; padding: 8px 12px 12px !important; }
+}
