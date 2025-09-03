@@ -68,6 +68,11 @@ body {
   #o-que-fazemos .oqf-secondary-text { font-size: clamp(1.05rem, 0.9rem + 1vw, 1.35rem); line-height: 1.35; text-align: left; padding-right: 0; }
   /* O Que Fazemos: ampliar largura útil como em 'Sobre' */
   #o-que-fazemos .oqf-content { max-width: 100%; padding: 1rem 1rem; margin: 0 auto; align-self: stretch; }
+  /* O Que Fazemos: ajustar legibilidade dos cards no mobile */
+  #o-que-fazemos .oqf-question { font-size: clamp(1.1rem, 0.95rem + 1vw, 1.35rem); line-height: 1.3; }
+  #o-que-fazemos .oqf-card-back { position: absolute; inset: 0; height: 100%; display: flex; }
+  #o-que-fazemos .oqf-card-back .oqf-answer { font-size: clamp(0.95rem, 0.85rem + 0.8vw, 1.15rem); line-height: 1.4; }
+  #o-que-fazemos .oqf-back-title { font-size: clamp(1.25rem, 1rem + 1vw, 1.6rem); }
   /* Sobre: ampliar largura útil do texto e reduzir padding no mobile */
   .sobre-content { max-width: 100%; padding: 1rem 1rem; margin: 0 auto; align-self: stretch; }
   /* Sobre: remover afastamento vertical apenas no mobile */
