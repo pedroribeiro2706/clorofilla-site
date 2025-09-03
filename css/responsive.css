@@ -114,6 +114,15 @@ body {
   .sobre-title { padding: 0 16px; text-align: left; font-size: clamp(3.5rem, 6vw, 3.5rem); letter-spacing: -.02rem; }
 }
 
+/* O Que Fazemos: empilhar logo e título (mobile) */
+@media (max-width: 991px){
+  .oqf-header-elements { flex-direction: column; }
+  .oqf-left-column, .oqf-right-column { width: 100%; padding: 32px 0 0 0; }
+  .oqf-right-column { border-left: none; border-top: 1px solid #99b381; margin-top: 2rem; }
+  .oqf-logo-container { margin: 0 auto; display: flex; justify-content: center; }
+  .oqf-title { padding: 0 16px; text-align: left; font-size: clamp(2.2rem, 6vw, 3rem); letter-spacing: -.02rem; }
+}
+
 .menu-close-trigger { 
   width: 56px; height: 56px; 
 }
