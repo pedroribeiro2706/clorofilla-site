@@ -70,7 +70,9 @@ body {
   #o-que-fazemos .oqf-content { max-width: 100%; padding: 1rem 1rem; margin: 0 auto; align-self: stretch; }
   /* O Que Fazemos: ajustar legibilidade dos cards no mobile */
   #o-que-fazemos .oqf-question { font-size: clamp(1.1rem, 0.95rem + 1vw, 1.35rem); line-height: 1.3; }
-  #o-que-fazemos .oqf-card-back { position: absolute; inset: 0; height: 100%; display: flex; }
+  /* Ajuste: manter a face de trás preenchendo o card sem sobrepor a frente */
+  #o-que-fazemos .oqf-card-back { position: relative; inset: auto; height: 100%; display: flex; }
+  #o-que-fazemos .oqf-card-face { height: 100%; }
   #o-que-fazemos .oqf-card-back .oqf-answer { font-size: clamp(0.95rem, 0.85rem + 0.8vw, 1.15rem); line-height: 1.4; }
   #o-que-fazemos .oqf-back-title { font-size: clamp(1.25rem, 1rem + 1vw, 1.6rem); }
   /* Sobre: ampliar largura útil do texto e reduzir padding no mobile */
