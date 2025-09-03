@@ -1185,6 +1185,47 @@ diferenciaisSlides.forEach((slide, i) => {
   gsap.set(slide, { y: 0 });
 });
 
+// Mobile vs Desktop behavior
+if (isNarrow) {
+  // Mobile fallback: per-slide triggers (no pin)
+  diferenciaisSlides.forEach((slide, i) => {
+    slide.style.visibility = 'visible';
+    const overlay = slide.querySelector('.diferenciais-overlay');
+    const splitData = headingSplitData[i];
+    if (overlay) gsap.set(overlay, { opacity: 0 });
+    ScrollTrigger.create({
+      trigger: slide,
+      start: 'top 80%',
+      end: 'bottom top',
+      onEnter: () => {
+        if (overlay) gsap.to(overlay, { opacity: 0.75, duration: 0.6, ease: 'power2.out' });
+        if (splitData && !splitData.revealed) {
+          splitData.revealed = true;
+          splitData.timeline = gsap.timeline();
+          splitData.timeline.to(splitData.split.chars, {
+            yPercent: 0,
+            opacity: 1,
+            stagger: { each: 0.02, amount: 0.6, from: 'random' },
+            duration: 0.5,
+            ease: 'power2.out'
+          });
+          const textElem = slide.querySelector('.diferenciais-text');
+          if (textElem) {
+            splitData.timeline.fromTo(
+              textElem,
+              { x: -40, opacity: 0 },
+              { x: 0, opacity: 1, duration: 0.5, ease: 'power2.out' },
+              '-=0.35'
+            );
+          }
+        }
+      },
+      onLeave:     () => { if (overlay) gsap.to(overlay, { opacity: 0,    duration: 0.3, ease: 'power2.out' }); },
+      onEnterBack: () => { if (overlay) gsap.to(overlay, { opacity: 0.75, duration: 0.4, ease: 'power2.out' }); },
+      onLeaveBack: () => { if (overlay) gsap.to(overlay, { opacity: 0,    duration: 0.3, ease: 'power2.out' }); }
+    });
+  });
+} else {
 // ============== OVERLAY DO PRIMEIRO SLIDE (fade independente, sem scrub) ==============
 const firstSlide = diferenciaisSlides[0];
 if (firstSlide) {
@@ -1345,6 +1386,7 @@ ScrollTrigger.create({
     });
   }
 });
+}
 
 // ============== HACK: Força animação do texto do primeiro slide ao entrar no topo ==============
 ScrollTrigger.create({
