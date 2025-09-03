@@ -35,7 +35,7 @@
   --step-4: clamp(2.2rem, 1.2rem + 3vw, 3.6rem); 
 }
 
-.oqf-title, .diferenciais-title, .contato-title { 
+.diferenciais-title, .contato-title { 
   font-size: var(--step-4); 
 }
 
@@ -120,7 +120,7 @@ body {
   .oqf-left-column, .oqf-right-column { width: 100%; padding: 32px 0 0 0; }
   .oqf-right-column { border-left: none; border-top: 1px solid #99b381; margin-top: 2rem; }
   .oqf-logo-container { margin: 0 auto; display: flex; justify-content: center; }
-  .oqf-title { padding: 0 16px; text-align: left; font-size: clamp(2.2rem, 6vw, 3rem); letter-spacing: -.02rem; }
+  .oqf-title { padding: 0 16px; text-align: left; font-size: clamp(3.5rem, 6vw, 3.5rem); letter-spacing: -.02rem; }
 }
 
 .menu-close-trigger { 
