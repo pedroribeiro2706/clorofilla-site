@@ -78,6 +78,10 @@ body {
   #o-que-fazemos .oqf-card-back { padding: 16px 16px calc(16px + 2.6rem + 8px) 16px !important; }
   #o-que-fazemos .oqf-card-back .oqf-answer { font-size: clamp(0.95rem, 0.85rem + 0.8vw, 1.15rem); line-height: 1.4; }
   #o-que-fazemos .oqf-back-title { font-size: clamp(1.25rem, 1rem + 1vw, 1.6rem); }
+  /* O Que Fazemos: cards com dimensão fixa no mobile */
+  #o-que-fazemos .oqf-card-container,
+  #o-que-fazemos .oqf-card { width: 300px !important; height: 250px !important; }
+  #o-que-fazemos .oqf-grid { justify-items: center; }
   /* Sobre: ampliar largura Ãºtil do texto e reduzir padding no mobile */
   .sobre-content { max-width: 100%; padding: 1rem 1rem; margin: 0 auto; align-self: stretch; }
   /* Sobre: remover afastamento vertical apenas no mobile */
@@ -216,5 +220,5 @@ body {
 /* O Que Fazemos (mobile): ajustes finais de empilhamento/altura do verso */
 @media (max-width: 991px) {
   #o-que-fazemos .oqf-back-title { position: static !important; }
-  #o-que-fazemos .oqf-card-back { position: absolute !important; inset: 0 !important; }
+  /* Não forçar position absolute no verso para não quebrar o flip */
 }
