@@ -980,7 +980,7 @@
         onEnter: () => {
           setupQuestionMarquees(cardContainers); // Inicia marquee toda vez que a grid entra na viewport
         },
-        onLeave: () => {
+        onLeave: function () {
           resetMarqueeTimelines(); // Reseta marquee quando sai da viewport
         },
         onEnterBack: () => {
@@ -1139,7 +1139,7 @@
             onEnter: () => {
                 setupCardFlips(oqfCardContainers);
             },
-            onLeave: () => {
+            onLeave: function () {
                 resetCardFlips(oqfCardContainers);
             },
             onEnterBack: () => {
@@ -1192,44 +1192,125 @@ if (isNarrow) {
     slide.style.visibility = 'visible';
     const overlay = slide.querySelector('.diferenciais-overlay');
     const splitData = headingSplitData[i];
+
+    // Initial state
     if (overlay) gsap.set(overlay, { opacity: 0 });
 
-    // Downward: overlay/text only when top is near top of viewport
+    const textElem = slide.querySelector('.diferenciais-text');
+
+    function revealText() {
+      if (!splitData) return;
+      if (!splitData.revealed) {
+        splitData.revealed = true;
+        const tl = gsap.timeline();
+        tl.to(splitData.split.chars, {
+          yPercent: 0,
+          opacity: 1,
+          stagger: { each: 0.02, amount: 0.6, from: 'random' },
+          duration: 0.5,
+          ease: 'power2.out'
+        });
+        if (textElem) {
+          tl.fromTo(
+            textElem,
+            { x: -40, opacity: 0 },
+            { x: 0, opacity: 1, duration: 0.5, ease: 'power2.out' },
+            '-=0.35'
+          );
+        }
+        splitData.timeline = tl;
+      }
+    }
+
+    function hideText() {
+      if (!splitData) return;
+      if (splitData.revealed) {
+        splitData.revealed = false;
+        if (splitData.timeline) splitData.timeline.kill();
+        gsap.to(splitData.split.chars, {
+          yPercent: 100,
+          opacity: 0,
+          duration: 0.35,
+          ease: 'power2.in'
+        });
+        if (textElem) {
+          gsap.to(textElem, { x: -40, opacity: 0, duration: 0.35, ease: 'power2.in' });
+        }
+      }
+    }
+
+    // 1) Scroll down: when top approaches top → overlay fade in, reveal text
+    //    when slide leaves upwards → overlay fade out, hide text
     ScrollTrigger.create({
       trigger: slide,
       start: 'top 12%',
       end: 'bottom top',
       onEnter: () => {
         if (overlay) gsap.to(overlay, { opacity: 0.75, duration: 0.5, ease: 'power2.out' });
-        if (splitData && !splitData.revealed) {
-          splitData.revealed = true;
-          const tl = gsap.timeline();
-          tl.to(splitData.split.chars, {
-            yPercent: 0,
-            opacity: 1,
-            stagger: { each: 0.02, amount: 0.6, from: 'random' },
-            duration: 0.5,
-            ease: 'power2.out'
-          });
-          const textElem = slide.querySelector('.diferenciais-text');
-          if (textElem) {
-            tl.fromTo(textElem, { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: 'power2.out' }, '-=0.35');
-          }
-          splitData.timeline = tl;
-        }
+        revealText();
       },
-      onLeave: () => { if (overlay) gsap.to(overlay, { opacity: 0, duration: 0.3, ease: 'power2.out' }); }
+      onLeave: () => {
+        if (overlay) gsap.to(overlay, { opacity: 0, duration: 0.3, ease: 'power2.out' });
+        hideText();
+      }
     });
 
-    // Upward: overlay only when bottom is near bottom of viewport
+    // 2) Scroll up: fade in when slide bottom nears viewport bottom (~80% visible)
     ScrollTrigger.create({
       trigger: slide,
-      start: 'bottom 88%',
+      start: 'bottom 65%',
+      end: 'top bottom',
+      onEnterBack: () => {
+        if (overlay) {
+          const tl = gsap.timeline();
+          tl.to(overlay, { opacity: 0.75, duration: 0.45, ease: 'power2.out' })
+            .add(() => revealText(), '>-0.05');
+        } else {
+          revealText();
+        }
+      },
+      onLeaveBack: () => {
+        if (overlay) gsap.to(overlay, { opacity: 0, duration: 0.3, ease: 'power2.out' });
+        hideText();
+      }
+    });
+
+    // 3) Scroll up: hide exactly when slide leaves the viewport by the bottom
+    ScrollTrigger.create({
+      trigger: slide,
+      start: 'top bottom',
       end: 'top top',
-      onEnter: () => { if (overlay) gsap.to(overlay, { opacity: 0.75, duration: 0.4, ease: 'power2.out' }); },
-      onLeaveBack: () => { if (overlay) gsap.to(overlay, { opacity: 0, duration: 0.3, ease: 'power2.out' }); }
+      onLeaveBack: () => {
+        if (overlay) gsap.to(overlay, { opacity: 0, duration: 0.3, ease: 'power2.out' });
+        hideText();
+      }
     });
   });
+
+  // Safety reset: leaving the Diferenciais section upward resets all overlays/text
+  const diffSectionEl = document.querySelector('#diferenciais');
+  if (diffSectionEl) {
+    ScrollTrigger.create({
+      trigger: diffSectionEl,
+      start: 'top bottom',
+      end: 'bottom top',
+      onLeaveBack: () => {
+        diferenciaisSlides.forEach((slide, i) => {
+          const overlay = slide.querySelector('.diferenciais-overlay');
+          if (overlay) gsap.set(overlay, { opacity: 0 });
+          const textElem = slide.querySelector('.diferenciais-text');
+          if (textElem) gsap.set(textElem, { x: -40, opacity: 0 });
+          const hd = headingSplitData[i];
+          if (hd && hd.split) {
+            gsap.set(hd.split.chars, { yPercent: 100, opacity: 0 });
+            hd.revealed = false;
+            if (hd.timeline) hd.timeline.kill();
+            hd.timeline = null;
+          }
+        });
+      }
+    });
+  }
 } else {
 // ============== OVERLAY DO PRIMEIRO SLIDE (fade independente, sem scrub) ==============
 const firstSlide = diferenciaisSlides[0];
@@ -1257,7 +1338,7 @@ if (firstSlide) {
           gsap.set(firstOverlay, { opacity: 0.75 });
         }
       },
-      onLeave: () => {
+      onLeave: function () {
         gsap.to(firstOverlay, { opacity: 0, duration: 0.4, ease: 'power2.out' });
       },
       onEnterBack: () => {
@@ -1536,4 +1617,9 @@ ScrollTrigger.create({
 
 
 });
+
+
+
+
+
 
