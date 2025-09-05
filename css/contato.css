@@ -177,5 +177,13 @@
     height: 62px;
     min-width: 62px;
     min-height: 62px;
+    /* Evita que o tamanho base do container amplifique o fa-2x */
+    font-size: 1rem;
+  }
+  /* Ajusta especificamente o tamanho do glifo do ícone no mobile
+     para não "vazar" do quadrado */
+  .contato-icone i.fa-2x {
+    font-size: 28px; /* ajuste fino para caber no box de 62px */
+    line-height: 1;
   }
 }
