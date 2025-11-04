@@ -1016,27 +1016,6 @@
         
     }
 
-    const servicosTitle = document.querySelector('.servicos-title');
-    const servicosPrimaryText = document.querySelector('.servicos-primary-text');
-
-    if (servicosTitle && servicosPrimaryText) {
-        animateSectionHeader({
-            sectionSelector: '.servicos-intro',
-            titleSelector: '.servicos-title',
-            primaryTextSelector: '.servicos-primary-text',
-            secondaryTextSelector: '.servicos-secondary-text',
-            logoSelector: '.servicos-logo',
-            linesClass: 'servicos-line',
-            idPrefix: 'servicos',
-            trigger: '.servicos-header-elements',
-            triggerStart: 'top 45%',
-            triggerEnd: '10% 15%',
-            secondaryTrigger: '.servicos-header-elements',
-            secondaryTriggerStart: 'top top',
-            secondaryTriggerEnd: 'bottom top'
-        });
-    }
-
     // ##################################################################################
                         // HEADER DIFERENCIAIS TOPO //
     // ##################################################################################
@@ -1630,6 +1609,31 @@ ScrollTrigger.create({
     }
   }
 });
+
+
+
+    const servicosTitle = document.querySelector('.servicos-title');
+    const servicosPrimaryText = document.querySelector('.servicos-primary-text');
+
+    if (servicosTitle && servicosPrimaryText) {
+        animateSectionHeader({
+            sectionSelector: '.servicos-intro',
+            titleSelector: '.servicos-title',
+            primaryTextSelector: '.servicos-primary-text',
+            secondaryTextSelector: '.servicos-secondary-text',
+            logoSelector: '.servicos-logo',
+            linesClass: 'servicos-line',
+            idPrefix: 'servicos',
+            trigger: '.servicos-header-elements',
+            triggerStart: 'top 95%',
+            triggerEnd: 'top 20%',
+            secondaryTrigger: '.servicos-content',
+            secondaryTriggerStart: 'top 85%',
+            secondaryTriggerEnd: 'top 30%'
+        });
+
+        ScrollTrigger.refresh();
+    }
 
 
 

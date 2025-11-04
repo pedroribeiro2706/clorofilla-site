@@ -71,6 +71,11 @@
   align-self: flex-start;
 }
 
+.servicos-line {
+  display: block;
+  overflow: hidden;
+}
+
 .servicos-primary-text {
   font-family: "helvetica-neue-lt-pro", sans-serif;
   font-weight: 300;
