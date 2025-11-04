@@ -651,6 +651,110 @@
 
 
 
+    const servicosAccordionTriggers = document.querySelectorAll('.servicos-accordion-trigger');
+
+    if (servicosAccordionTriggers.length) {
+      const toggleAccordionPanel = (trigger, expand) => {
+        if (!trigger) return;
+        const item = trigger.closest('.servicos-accordion-item');
+        const panelId = trigger.getAttribute('aria-controls');
+        const panel = panelId ? document.getElementById(panelId) : null;
+
+        trigger.setAttribute('aria-expanded', String(expand));
+        if (item) {
+          item.classList.toggle('is-open', expand);
+        }
+        if (panel) {
+          if (expand) {
+            panel.removeAttribute('hidden');
+          } else {
+            panel.setAttribute('hidden', '');
+          }
+        }
+      };
+
+      servicosAccordionTriggers.forEach((trigger) => {
+        const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
+        toggleAccordionPanel(trigger, isExpanded);
+      });
+
+      servicosAccordionTriggers.forEach((trigger) => {
+        trigger.addEventListener('click', () => {
+          const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
+
+          servicosAccordionTriggers.forEach((otherTrigger) => {
+            if (otherTrigger === trigger) return;
+            toggleAccordionPanel(otherTrigger, false);
+          });
+
+          toggleAccordionPanel(trigger, !isExpanded);
+        });
+
+        trigger.addEventListener('keydown', (event) => {
+          if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
+          event.preventDefault();
+
+          const triggersArray = Array.from(servicosAccordionTriggers);
+          const currentIndex = triggersArray.indexOf(trigger);
+          if (currentIndex === -1) return;
+
+          const direction = event.key === 'ArrowDown' ? 1 : -1;
+          const nextIndex = (currentIndex + direction + triggersArray.length) % triggersArray.length;
+
+          triggersArray[nextIndex].focus();
+        });
+      });
+    }
+
+    const servicosItemTriggers = document.querySelectorAll('.servicos-item-trigger');
+
+    if (servicosItemTriggers.length) {
+      const toggleItemPanel = (trigger, expand) => {
+        if (!trigger) return;
+        const panelId = trigger.getAttribute('aria-controls');
+        const panel = panelId ? document.getElementById(panelId) : null;
+
+        trigger.setAttribute('aria-expanded', String(expand));
+        if (panel) {
+          if (expand) {
+            panel.removeAttribute('hidden');
+          } else {
+            panel.setAttribute('hidden', '');
+          }
+        }
+      };
+
+      servicosItemTriggers.forEach((trigger) => {
+        const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
+        toggleItemPanel(trigger, isExpanded);
+
+        trigger.addEventListener('click', () => {
+          const expanded = trigger.getAttribute('aria-expanded') === 'true';
+          toggleItemPanel(trigger, !expanded);
+        });
+
+        trigger.addEventListener('keydown', (event) => {
+          if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
+          event.preventDefault();
+
+          const list = trigger.closest('.servicos-accordion-list');
+          if (!list) return;
+
+          const triggers = Array.from(list.querySelectorAll('.servicos-item-trigger'));
+          const currentIndex = triggers.indexOf(trigger);
+          if (currentIndex === -1) return;
+
+          const direction = event.key === 'ArrowDown' ? 1 : -1;
+          const nextIndex = (currentIndex + direction + triggers.length) % triggers.length;
+
+          triggers[nextIndex].focus();
+        });
+      });
+    }
+
+
+
+
 // ##################################################################################
                         // ANIMAÃ‡ÃƒO DO HEADER "SOBRE NÃ“S" //
 // ##################################################################################    
@@ -910,6 +1014,27 @@
             secondaryTriggerEnd: 'bottom top'
         });
         
+    }
+
+    const servicosTitle = document.querySelector('.servicos-title');
+    const servicosPrimaryText = document.querySelector('.servicos-primary-text');
+
+    if (servicosTitle && servicosPrimaryText) {
+        animateSectionHeader({
+            sectionSelector: '.servicos-intro',
+            titleSelector: '.servicos-title',
+            primaryTextSelector: '.servicos-primary-text',
+            secondaryTextSelector: '.servicos-secondary-text',
+            logoSelector: '.servicos-logo',
+            linesClass: 'servicos-line',
+            idPrefix: 'servicos',
+            trigger: '.servicos-header-elements',
+            triggerStart: 'top 45%',
+            triggerEnd: '10% 15%',
+            secondaryTrigger: '.servicos-header-elements',
+            secondaryTriggerStart: 'top top',
+            secondaryTriggerEnd: 'bottom top'
+        });
     }
 
     // ##################################################################################

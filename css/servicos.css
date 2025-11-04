@@ -1,0 +1,337 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond&display=swap");
+
+.servicos-accordion-section {
+  background: #f1f3ec;
+  padding: 6rem 0;
+}
+
+.servicos-container {
+  width: min(1180px, 92vw);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.servicos-intro {
+  position: relative;
+  width: 100%;
+  height: auto;
+  margin-bottom: 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.servicos-header-elements {
+  position: relative;
+  width: 100%;
+  display: flex;
+  border-top: 1px solid #99b381;
+  margin-bottom: 60px;
+}
+
+.servicos-left-column,
+.servicos-right-column {
+  width: 50%;
+  position: relative;
+  padding: 60px 0 0 0;
+}
+
+.servicos-right-column {
+  border-left: 1px solid #99b381;
+  display: flex;
+  align-items: flex-start;
+}
+
+.servicos-logo-container {
+  position: relative;
+  margin-left: 10%;
+}
+
+.servicos-title {
+  position: relative;
+  font-family: "helvetica-neue-lt-pro-cond", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+  font-size: clamp(3.6rem, 6vw, 4.8rem);
+  letter-spacing: -.05rem;
+  color: #99b381;
+  line-height: 1;
+  margin: 0;
+  text-transform: uppercase;
+  padding-left: 20px;
+  padding-right: 120px;
+}
+
+.servicos-content {
+  max-width: 80%;
+  padding: 2rem 5rem;
+  align-self: flex-start;
+}
+
+.servicos-primary-text {
+  font-family: "helvetica-neue-lt-pro", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.2;
+  color: #4a5b46;
+  margin-bottom: 2rem;
+}
+
+.servicos-secondary-text {
+  font-family: "helvetica-neue-lt-pro", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  font-size: clamp(1.2rem, 2.4vw, 1.7rem);
+  line-height: 1.35;
+  color: #5b6e57;
+  padding-right: 5rem;
+}
+
+.servicos-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.servicos-accordion-item {
+  background: #ffffff;
+  border: 1px solid rgba(24, 24, 24, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 20px 50px -30px rgba(12, 24, 12, 0.55);
+  overflow: hidden;
+  transition: border 0.25s ease, box-shadow 0.25s ease;
+}
+
+.servicos-accordion-item.is-open {
+  border-color: rgba(153, 179, 129, 0.9);
+  box-shadow: 0 30px 65px -40px rgba(63, 86, 47, 0.75);
+}
+
+.servicos-accordion-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: clamp(1.4rem, 3vw, 1.9rem) clamp(1.4rem, 4vw, 2.6rem);
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.servicos-accordion-title {
+  font-family: 'Zahrah', serif;
+  font-size: clamp(1.7rem, 2.8vw, 2.2rem);
+  color: #4a5b46;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.servicos-accordion-icon {
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
+  min-height: 46px;
+  border: 1px solid rgba(31, 31, 31, 0.2);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: border 0.25s ease, transform 0.25s ease;
+}
+
+.servicos-accordion-icon::before,
+.servicos-accordion-icon::after {
+  content: "";
+  position: absolute;
+  background: #4a5b46;
+  transition: transform 0.25s ease;
+}
+
+.servicos-accordion-icon::before {
+  width: 20px;
+  height: 2px;
+}
+
+.servicos-accordion-icon::after {
+  width: 2px;
+  height: 20px;
+}
+
+.servicos-accordion-item.is-open .servicos-accordion-icon {
+  border-color: rgba(153, 179, 129, 0.9);
+  transform: rotate(180deg);
+}
+
+.servicos-accordion-item.is-open .servicos-accordion-icon::after {
+  transform: scaleY(0);
+}
+
+.servicos-accordion-panel {
+  padding: 0 clamp(1.6rem, 4vw, 2.7rem) clamp(1.8rem, 4vw, 2.8rem);
+  border-top: 1px solid rgba(24, 24, 24, 0.08);
+}
+
+.servicos-accordion-list {
+  margin: 1.2rem 0 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.servicos-item {
+  border-bottom: 1px solid rgba(31, 31, 31, 0.12);
+}
+
+.servicos-item:last-child {
+  border-bottom: none;
+}
+
+.servicos-item-trigger {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 1.1rem 0;
+  font-family: "helvetica-neue-lt-pro", sans-serif;
+  font-size: 1.08rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: #253025;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.servicos-item-trigger:hover,
+.servicos-item-trigger:focus-visible {
+  color: #699052;
+  outline: none;
+}
+
+.servicos-item-trigger::after {
+  content: "";
+  width: 13px;
+  height: 13px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform 0.2s ease;
+}
+
+.servicos-item-trigger[aria-expanded="true"]::after {
+  transform: rotate(45deg);
+}
+
+.servicos-item-panel {
+  padding: 0 0 1.2rem 0;
+}
+
+.servicos-item-panel[hidden] {
+  display: none;
+}
+
+.servicos-item-panel p {
+  margin: 0;
+  font-family: "helvetica-neue-lt-pro", sans-serif;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: #4a4f47;
+}
+
+@media (max-width: 1200px) {
+  .servicos-content {
+    padding: 2rem 3rem;
+    max-width: 86%;
+  }
+}
+
+@media (max-width: 991px) {
+  .servicos-header-elements {
+    flex-direction: column;
+    border-top: 1px solid #99b381;
+    border-left: none;
+  }
+
+  .servicos-left-column,
+  .servicos-right-column {
+    width: 100%;
+    padding: 40px 0 0 0;
+  }
+
+  .servicos-right-column {
+    border-left: none;
+    border-top: 1px solid #99b381;
+    padding-top: 32px;
+    margin-top: 24px;
+  }
+
+  .servicos-logo-container {
+    margin-left: 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .servicos-title {
+    padding: 0 16px;
+    text-align: left;
+  }
+
+  .servicos-content {
+    max-width: 100%;
+    padding: 1.5rem 1.5rem 0;
+  }
+
+  .servicos-secondary-text {
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .servicos-accordion-section {
+    padding: 4rem 0;
+  }
+
+  .servicos-title {
+    font-size: clamp(2.8rem, 8vw, 3.2rem);
+  }
+
+  .servicos-primary-text {
+    font-size: clamp(1.4rem, 6vw, 1.8rem);
+  }
+
+  .servicos-secondary-text {
+    font-size: clamp(1.05rem, 5vw, 1.35rem);
+  }
+
+  .servicos-accordion {
+    gap: 1rem;
+  }
+
+  .servicos-accordion-title {
+    font-size: clamp(1.45rem, 5vw, 1.8rem);
+  }
+
+  .servicos-accordion-trigger {
+    padding: 1.2rem 1.4rem;
+  }
+
+  .servicos-accordion-panel {
+    padding: 0 1.4rem 1.6rem;
+  }
+
+  .servicos-item-trigger {
+    font-size: clamp(1rem, 5vw, 1.1rem);
+    padding: 1rem 0;
+  }
+}
