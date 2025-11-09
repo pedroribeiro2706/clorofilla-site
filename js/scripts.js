@@ -688,6 +688,7 @@
           });
 
           toggleAccordionPanel(trigger, !isExpanded);
+          ScrollTrigger.refresh();
         });
 
         trigger.addEventListener('keydown', (event) => {
@@ -731,6 +732,7 @@
         trigger.addEventListener('click', () => {
           const expanded = trigger.getAttribute('aria-expanded') === 'true';
           toggleItemPanel(trigger, !expanded);
+          ScrollTrigger.refresh();
         });
 
         trigger.addEventListener('keydown', (event) => {
@@ -750,6 +752,7 @@
           triggers[nextIndex].focus();
         });
       });
+      ScrollTrigger.refresh();
     }
 
 
