@@ -1701,6 +1701,60 @@ ScrollTrigger.create({
         stagger: 0 // zero = juntos
       }, 0);
 
+    const contatoForm = document.getElementById('contato-form');
+    const contatoFeedback = document.getElementById('contato-feedback');
+
+    if (contatoForm) {
+      const submitButton = contatoForm.querySelector('button[type="submit"]');
+
+      const setFeedback = (message, type = '') => {
+        if (!contatoFeedback) return;
+        contatoFeedback.textContent = message;
+        contatoFeedback.classList.remove('is-success', 'is-error');
+        if (type) contatoFeedback.classList.add(type);
+      };
+
+      contatoForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        if (contatoForm.reportValidity && !contatoForm.reportValidity()) return;
+
+        const formData = new FormData(contatoForm);
+        formData.append('ajax', '1');
+
+        if (submitButton) {
+          submitButton.disabled = true;
+          submitButton.textContent = 'Enviando...';
+        }
+        setFeedback('Enviando mensagem...');
+
+        try {
+          const response = await fetch(contatoForm.action, {
+            method: 'POST',
+            body: formData,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+          });
+
+          const data = await response.json().catch(() => ({ success: false }));
+
+          if (response.ok && data.success) {
+            contatoForm.reset();
+            setFeedback('Mensagem enviada com sucesso! Entraremos em contato em breve.', 'is-success');
+          } else {
+            const errorMessage = (data && data.message) || 'N�o foi poss�vel enviar sua mensagem. Tente novamente.';
+            setFeedback(errorMessage, 'is-error');
+          }
+        } catch (error) {
+          console.error(error);
+          setFeedback('Erro de conex�o. Verifique sua internet e tente novamente.', 'is-error');
+        } finally {
+          if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.textContent = 'ENVIAR';
+          }
+        }
+      });
+    }
+
 
 
       // ##################################################################################

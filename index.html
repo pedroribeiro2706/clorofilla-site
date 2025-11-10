@@ -734,34 +734,36 @@
                 <span class="mask-title"><span class="word word-esq">Vamos</span></span>
                 <span class="mask-title"><span class="word word-dir">conversar</span></span>
             </h2>
-          <form id="contato-form">
+          <form id="contato-form" class="contato-form" action="form-handler.php" method="POST" novalidate>
+            <input type="text" name="company" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
             <div class="row mb-3">
               <div class="col-md-6 mb-3 mb-md-0">
                 <label for="firstName" class="form-label contato-label">Nome *</label>
-                <input type="text" class="form-control contato-input" id="firstName" required autocomplete="off">
+                <input type="text" class="form-control contato-input" id="firstName" name="first_name" required autocomplete="off">
               </div>
               <div class="col-md-6">
                 <label for="lastName" class="form-label contato-label">Sobrenome *</label>
-                <input type="text" class="form-control contato-input" id="lastName" required autocomplete="off">
+                <input type="text" class="form-control contato-input" id="lastName" name="last_name" required autocomplete="off">
               </div>
             </div>
             <div class="row mb-3">
               <div class="col-md-6 mb-3 mb-md-0">
                 <label for="email" class="form-label contato-label">Email *</label>
-                <input type="email" class="form-control contato-input" id="email" required autocomplete="off">
+                <input type="email" class="form-control contato-input" id="email" name="email" required autocomplete="off">
               </div>
               <div class="col-md-6">
                 <label for="phone" class="form-label contato-label">Telefone</label>
-                <input type="text" class="form-control contato-input" id="phone" autocomplete="off">
+                <input type="text" class="form-control contato-input" id="phone" name="phone" autocomplete="off">
               </div>
             </div>
             <div class="mb-3">
               <label for="message" class="form-label contato-label">Mensagem *</label>
-              <textarea class="form-control contato-input" id="message" rows="3" required></textarea>
+              <textarea class="form-control contato-input" id="message" name="message" rows="3" required></textarea>
             </div>
             <div class="d-flex justify-content-end">
               <button type="submit" class="btn-enviar">ENVIAR</button>
             </div>
+            <p class="contato-feedback" id="contato-feedback" role="status" aria-live="polite"></p>
           </form>
       
           <div class="row mt-5 g-3" id="contato-card">

@@ -98,6 +98,31 @@
   margin-left: 0.5rem;
 }
 
+.contato-feedback {
+  font-family: "helvetica-neue-lt-pro", sans-serif;
+  font-size: 1rem;
+  margin-top: 1rem;
+  min-height: 1.5rem;
+  color: #222;
+}
+
+.contato-feedback.is-success {
+  color: #2f7a3c;
+}
+
+.contato-feedback.is-error {
+  color: #a1392f;
+}
+
+.hp-field {
+  position: absolute !important;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .contato-icone {
   width: 90px;
   height: 90px;
