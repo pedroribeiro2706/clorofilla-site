@@ -1,0 +1,16 @@
+# Arquivos de trabalho que não devem ir para o site publicado
+
+# Arquivo do Photoshop — 45 MB, não é usado pelo site
+assets/*.psd
+assets/*.xmp
+
+# Documentação interna do projeto
+docs/
+
+# Imagens de referência visual usadas durante o desenvolvimento
+ref/
+
+# Página de teste, não faz parte do site
+teste.html
+
+README_DEV.md
