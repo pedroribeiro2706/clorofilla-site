@@ -184,27 +184,34 @@
 }
 
 
-/* Backgrounds para cada slide */
+/* Backgrounds para cada slide
+   Otimização 08/2026: PNG -> WebP (-93% de peso, sem perda visível).
+   A primeira declaração é o fallback para navegadores sem suporte a image-set();
+   a segunda sobrescreve nos navegadores modernos e serve a versão de 800w no celular. */
 .diferenciais-first .diferenciais-bg {
-  /* background-image: url('https://images.unsplash.com/photo-1617478755490-e21232a5eeaf?crop=entropy&cs=srgb&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTYxNzU1NjM5NA&ixlib=rb-1.2.1&q=75&w=1920'); */
-  background-image: url('../assets/Compromisso-Ambiental-03b.png');
+  background-image: url('../assets/Compromisso-Ambiental-03b.webp');
 }
 .diferenciais-second .diferenciais-bg {
-  /* background-image: url('https://images.unsplash.com/photo-1617128734662-66da6c1d3505?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTYxNzc3NTM3MA&ixlib=rb-1.2.1&q=75&w=1920'); */
-  background-image: url('../assets/Equipe-Multidisciplinar-01.png');
+  background-image: url('../assets/Equipe-Multidisciplinar-01.webp');
 }
 .diferenciais-third .diferenciais-bg {
-  /* background-image: url('https://images.unsplash.com/photo-1617438817509-70e91ad264a5?crop=entropy&cs=srgb&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTYxNzU2MDk4Mg&ixlib=rb-1.2.1&q=75&w=1920'); */
-  background-image: url('../assets/Solucoes-Customizadas-01.png');
+  background-image: url('../assets/Solucoes-Customizadas-01.webp');
 }
 .diferenciais-fourth .diferenciais-bg {
-  /* background-image: url('https://images.unsplash.com/photo-1617412327653-c29093585207?crop=entropy&cs=srgb&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTYxNzU2MDgzMQ&ixlib=rb-1.2.1&q=75&w=1920'); */
-  background-image: url('../assets/Inovacao-Sustentavel-01.png');
+  background-image: url('../assets/Inovacao-Sustentavel-01.webp');
 }
 .diferenciais-fifth .diferenciais-bg {
-  /* background-image: url('https://images.unsplash.com/photo-1617141636403-f511e2d5dc17?crop=entropy&cs=srgb&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTYxODAzMjc4Mw&ixlib=rb-1.2.1&q=75w=1920'); */
-  background-image: url('../assets/Resultados-Sustentaveis-01.png');
+  background-image: url('../assets/Resultados-Sustentaveis-01.webp');
   background-position: 50% 45%;
+}
+
+/* No celular, servir as versões de 800px de largura — economiza ~70% adicional */
+@media (max-width: 800px) {
+  .diferenciais-first .diferenciais-bg  { background-image: url('../assets/Compromisso-Ambiental-03b-800w.webp'); }
+  .diferenciais-second .diferenciais-bg { background-image: url('../assets/Equipe-Multidisciplinar-01-800w.webp'); }
+  .diferenciais-third .diferenciais-bg  { background-image: url('../assets/Solucoes-Customizadas-01-800w.webp'); }
+  .diferenciais-fourth .diferenciais-bg { background-image: url('../assets/Inovacao-Sustentavel-01-800w.webp'); }
+  .diferenciais-fifth .diferenciais-bg  { background-image: url('../assets/Resultados-Sustentaveis-01-800w.webp'); }
 }
 
 @media (max-width: 768px) {

@@ -1,5 +1,7 @@
 ﻿document.addEventListener("DOMContentLoaded", (event) => {
-    gsap.registerPlugin(Observer, ScrollTrigger, ScrollSmoother, SplitText, Observer);
+    // 08/2026: Observer estava declarado duas vezes e ScrollSmoother era registrado sem nunca
+    // ser inicializado — o <script> dele foi removido do index.html.
+    gsap.registerPlugin(Observer, ScrollTrigger, SplitText);
 
 
     if (typeof Observer === "undefined") {
