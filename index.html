@@ -15,6 +15,14 @@
     <link rel="preconnect" href="https://use.typekit.net" crossorigin>
     <link rel="preconnect" href="https://p.typekit.net" crossorigin>
 
+    <!-- Adobe TypeKit — fonte principal do site (helvetica-neue-lt-pro, zahrah,
+         neue-haas-grotesk-display, helvetica-neue-lt-pro-cond).
+         08/2026, tarefa 2.4: estava como @import no topo do css/hero.css, o que obrigava o
+         navegador a baixar e ler o hero.css inteiro antes de sequer descobrir que precisava
+         buscar estas fontes. Como <link>, baixa em paralelo com o resto do CSS.
+         Os arquivos continuam vindo do servidor da Adobe, como exige a licença do Adobe Fonts. -->
+    <link rel="stylesheet" href="https://use.typekit.net/sho6jhs.css">
+
     <!-- Carrega a imagem do topo (elemento LCP) em paralelo com o CSS, não depois dele -->
     <link rel="preload" as="image" href="./assets/hero-01d.webp"
           imagesrcset="./assets/hero-01d-800w.webp 800w, ./assets/hero-01d-1280w.webp 1280w, ./assets/hero-01d.webp 1920w"

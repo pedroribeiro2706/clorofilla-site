@@ -3,7 +3,12 @@
    Dois motivos: o servidor responde HTTP 500 em toda visita (medido em 29/08, três
    execuções, dois navegadores), e a única menção à família no projeto está dentro de
    um comentário (hero.css) — uso real zero. */
-@import url("https://use.typekit.net/sho6jhs.css");
+
+/* 08/2026 — tarefa 2.4: o @import do Adobe TypeKit saiu daqui e virou um <link> no <head> do
+   index.html. Motivo: @import dentro de um arquivo CSS enfileira os downloads — o navegador
+   precisa baixar e ler o hero.css inteiro antes de descobrir que existe um TypeKit para buscar.
+   Como <link>, ele começa a baixar junto com o resto, e não depois.
+   As fontes são as mesmas e continuam vindo do servidor da Adobe — nada foi copiado para cá. */
 
 body {
     margin: 0;
