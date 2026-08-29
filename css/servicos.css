@@ -1,5 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond&display=swap");
+/* 08/2026 — tarefa 2.11: removidos os @import de Bebas Neue e Cormorant Garamond.
+   Nenhuma regra do projeto declara essas famílias em font-family. */
 
 .servicos-accordion-section {
   background: #f1f3ec;

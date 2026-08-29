@@ -1,5 +1,8 @@
 /* style.css */
-@import url("https://fonts.cdnfonts.com/css/aeonik-pro");
+/* 08/2026 — tarefa 2.11: removido o @import de "Aeonik Pro" (fonts.cdnfonts.com).
+   Dois motivos: o servidor responde HTTP 500 em toda visita (medido em 29/08, três
+   execuções, dois navegadores), e a única menção à família no projeto está dentro de
+   um comentário (hero.css) — uso real zero. */
 @import url("https://use.typekit.net/sho6jhs.css");
 
 body {
