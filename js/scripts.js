@@ -1085,19 +1085,14 @@
         toggleActions: 'play reverse play reverse',
         // onEnter | onLeave | onEnterBack | onLeaveBack
         // markers: true,
-        id: 'oqfCardsGridEntrance',
-        onEnter: () => {
-          setupQuestionMarquees(cardContainers); // Inicia marquee toda vez que a grid entra na viewport
-        },
-        onLeave: function () {
-          resetMarqueeTimelines(); // Reseta marquee quando sai da viewport
-        },
-        onEnterBack: () => {
-          setupQuestionMarquees(cardContainers); // Inicia de novo ao voltar
-        },
-        onLeaveBack: () => {
-          resetMarqueeTimelines(); // Reseta ao sair para cima
-        }
+        id: 'oqfCardsGridEntrance'
+        // 08/2026 — tarefa 2.13: removidos os callbacks onEnter / onLeave / onEnterBack /
+        // onLeaveBack. Eles chamavam setupQuestionMarquees() e resetMarqueeTimelines(), que estão
+        // comentadas logo abaixo — o efeito marquee foi desativado e as chamadas ficaram para trás.
+        // Cada entrada ou saída desta seção na tela disparava um ReferenceError dentro do ciclo de
+        // atualização do ScrollTrigger. Medido antes e depois em WebKit e Blink: a remoção elimina
+        // a exceção e NÃO altera o comportamento visual da animação — os cards continuam entrando
+        // e revertendo exatamente como antes.
     }
     // ,
     // onComplete: () => {
