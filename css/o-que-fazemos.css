@@ -209,7 +209,7 @@
     width: 100%; /* Garante que o container do ícone use a largura total */
 }
 
-.oqf-icon-container i {
+.oqf-icon-container .icone {
     font-size: 50px; /* Ícone ainda maior */
     color: rgba(255, 255, 255, 0.7);   /* Cor do ícone: BRANCO com 70% de transparência */
 }
@@ -285,7 +285,7 @@
         font-size: 2rem;
     }
 
-    .oqf-icon-container i {
+    .oqf-icon-container .icone {
         font-size: 60px; /* Ajuste responsivo para ícones */ 
         margin-bottom: 15px;
     }
@@ -319,7 +319,7 @@
         font-size: 1.8rem;
     }
 
-    .oqf-icon-container i {
+    .oqf-icon-container .icone {
         font-size: 50px;
     }
 

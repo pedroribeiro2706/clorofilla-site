@@ -208,7 +208,7 @@
   }
   /* Ajusta especificamente o tamanho do glifo do ícone no mobile
      para não "vazar" do quadrado */
-  .contato-icone i.fa-2x {
+  .contato-icone .icone-2x {
     font-size: 28px; /* ajuste fino para caber no box de 62px */
     line-height: 1;
   }
