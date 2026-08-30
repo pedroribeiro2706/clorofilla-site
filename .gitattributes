@@ -1,0 +1,27 @@
+# Fim de linha uniforme (LF) em todo arquivo de texto.
+#
+# Por que este arquivo existe (08/2026): o repositório tinha fins de linha misturados —
+# uns arquivos guardados com CRLF, outros com LF. Como a configuração do git nesta máquina
+# normaliza para LF qualquer arquivo tocado, editar uma linha de um arquivo CRLF produzia um
+# diff de arquivo inteiro, impossível de revisar. Aconteceu duas vezes: no js/scripts.js na
+# Fase 1 e no css/contato.css e css/o-que-fazemos.css na Fase 2.
+#
+# Com esta declaração, o repositório inteiro passa a ser LF e o problema não volta.
+# Fim de linha não afeta em nada como o navegador renderiza HTML, CSS ou JavaScript.
+* text=auto eol=lf
+
+# Binários — nunca converter
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.webp  binary
+*.avif  binary
+*.gif   binary
+*.svg   text eol=lf
+*.psd   binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.eot   binary
+*.mp4   binary
+*.ico   binary
