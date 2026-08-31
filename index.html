@@ -5,14 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clorofilla - Soluções Ambientais</title>
-    <!-- Bootstrap CSS SUBSTITUIDO em 08/2026 (tarefa 2.12, etapa 2).
-         O arquivo do CDN tinha 227 KB e o site usava ~5% dele: 30 classes, em 40 dos 378
-         elementos com classe, concentradas em Contato, rodapé e Sobre. css/bootstrap-usado.css
-         é um recorte do MESMO arquivo (13,8 KB) — cópia literal das regras que encontram algum
-         elemento nesta página, na ordem original, incluindo a base invisível de que o site
-         depende: box-sizing global, Reboot e as variáveis. Nenhuma classe mudou de nome.
-         Precisa continuar ANTES dos CSS do site, que o sobrescrevem. -->
-    <link href="css/bootstrap-usado.css" rel="stylesheet">
+    <!-- TODO o CSS do site, num arquivo só — JUNTADO em 08/2026 (tarefa 2.5).
+         Antes eram 10 folhas de estilo separadas, e cada uma é uma requisição BLOQUEANTE: o
+         navegador não desenha nada enquanto não tiver todas. Em rede de celular, essa fila de
+         idas e voltas pesa mais que os próprios bytes. Agora é 1 requisição, comprimida —
+         80,6 KB em 10 arquivos viraram 50,2 KB em um.
+
+         ⚠️ NÃO EDITE css/site.min.css À MÃO. Ele é gerado.
+         Os arquivos originais continuam em css/, legíveis — são eles que se edita. Depois:
+             cd ferramentas && npm run juntar-css && npm run validar-css
+         A ordem de junção está em ferramentas/ordem-css.mjs e NÃO é alfabética:
+         bootstrap-usado.css primeiro (os CSS do site o sobrescrevem de propósito) e
+         responsive.css por último (os ajustes de celular corrigem os anteriores).
+
+         O bootstrap-usado.css que entra no pacote é o recorte feito na tarefa 2.12: 13,8 KB
+         no lugar dos 227 KB do CDN, cópia literal só das regras que encontram algum elemento
+         nesta página, mais a base invisível (box-sizing, Reboot, variáveis). -->
+    <link rel="stylesheet" href="css/site.min.css">
     <!-- Font Awesome REMOVIDO em 08/2026 (tarefa 2.3).
          A biblioteca inteira era baixada do CDN — folha de estilo bloqueante medida em ~1.400 ms,
          mais os arquivos de fonte — para desenhar 14 ícones. Os 14 agora estão embutidos neste
@@ -41,17 +50,9 @@
          visita — essa fonte é comercial e não existe no Google Fonts. A Neue Haas realmente usada
          pelo site vem do Adobe TypeKit, importada em css/hero.css. -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/icones.css">
-    <link rel="stylesheet" href="css/hero.css">
-    <link rel="stylesheet" href="css/sobre.css">
-    <link rel="stylesheet" href="css/footer.css">
-    <link rel="stylesheet" href="css/o-que-fazemos.css">
-    <link rel="stylesheet" href="css/diferenciais.css">
-    <link rel="stylesheet" href="css/contato.css">
-    <link rel="stylesheet" href="css/servicos.css">
-    <link rel="stylesheet" href="css/responsive.css">
-    <!-- Seções CSS -->
+    <!-- Os 9 <link> dos CSS do site (icones, hero, sobre, footer, o-que-fazemos, diferenciais,
+         contato, servicos, responsive) saíram daqui em 08/2026, tarefa 2.5: agora vêm dentro do
+         css/site.min.css declarado lá em cima, na mesma ordem. -->
 </head>
 
 <body>
