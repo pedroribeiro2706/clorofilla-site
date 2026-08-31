@@ -13,18 +13,12 @@
   display: flex;
   gap: 0.15rem;
   justify-content: flex-start;
-  /* 31/08/2026, tarefa 2.5: esta linha estava escrita como
-     `justify-content: flex-start;.contato-card-text` seguida de
-     `align-items: flex-end;`. O `.contato-card-text` solto no meio do bloco era
-     um erro de digitacao antigo, e fazia o navegador DESCARTAR o align-items
-     seguinte: medido no Chrome, o valor calculado era `normal`, nao `flex-end`.
-     Ou seja, este align-items nunca valeu neste site.
-     A tarefa 2.5 e so juntar e comprimir os CSS, sem mudar aparencia — entao o
-     erro de digitacao foi removido e o align-items ficou comentado, para o
-     titulo continuar sendo desenhado exatamente como e hoje.
-     Para ATIVAR o alinhamento pelo pe do texto, basta descomentar a linha —
-     isso muda a aparencia da secao Contato e precisa ser decidido a parte.
-  align-items: flex-end; */
+  /* 31/08/2026, tarefa 2.5: havia aqui um `align-items: flex-end` que NUNCA valeu.
+     A linha acima estava escrita `justify-content: flex-start;.contato-card-text`,
+     e o `.contato-card-text` solto fazia o navegador descartar o align-items
+     seguinte — medido no Chrome, o valor calculado era `normal`. Removido junto
+     com o erro de digitacao, para o titulo continuar como sempre foi.
+     Nao e esquecimento: e o estado correto. Ver plano.md, tarefa 2.5. */
   overflow: visible;
   font-family: 'zahrah', serif;
   font-weight: 500;
