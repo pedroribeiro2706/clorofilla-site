@@ -4,6 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- 08/2026, tarefa 2.10: o site NAO TINHA description — nem aqui nem na producao.
+         Sem ela o Google escreve sozinho o resumo que aparece nos resultados de busca,
+         recortando um pedaco qualquer da pagina. Este texto foi montado com as palavras
+         do proprio site: o subtitulo do topo e os servicos da secao Servicos.
+         NAO cita cidade porque o site nao informa nenhuma — ver tarefa 2.15 no plano. -->
+    <meta name="description" content="Consultoria em licenciamento ambiental, planos de controle e recuperação de áreas degradadas. Excelência técnica e conformidade legal para o seu projeto.">
+
+    <!-- 08/2026, tarefa 2.15: o site NAO TINHA icone de aba. O /favicon.ico respondia 404 —
+         aba em branco no navegador, e icone generico ao salvar na tela inicial do celular.
+         A marca e a FOLHA do logo, sem o nome (ilegivel a 16 px), recortada do proprio
+         assets/logo-clorofilla-cor.svg. O SVG atende os navegadores atuais; o PNG de 96 px
+         cobre os antigos; o apple-touch-icon e o que a Apple usa na tela inicial. -->
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="./favicon-96.png" sizes="96x96" type="image/png">
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png">
     <title>Clorofilla - Soluções Ambientais</title>
     <!-- TODO o CSS do site, num arquivo só — JUNTADO em 08/2026 (tarefa 2.5).
          Antes eram 10 folhas de estilo separadas, e cada uma é uma requisição BLOQUEANTE: o
