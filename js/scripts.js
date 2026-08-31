@@ -315,13 +315,14 @@
       if (panel2) {
         const p2Title = panel2.querySelector('h2');
         const p2Paragraph = panel2.querySelector('.panel-content-white-paragraph');
-        const p2Lottie = panel2.querySelector('#lottieLogoVertical');
+        const p2Logo = panel2.querySelector('#lottieLogoVertical');
         const originalTitleHTML = p2Title ? p2Title.innerHTML : '';
         const originalParagraphText = p2Paragraph ? p2Paragraph.textContent : '';
-        let p2LottieAnim = null;
+        // (a instancia do Lottie foi removida na tarefa 2.14)
 
         // Estado inicial
         if (p2Title) gsap.set(p2Title, { opacity: 0 });
+        if (p2Logo) gsap.set(p2Logo, { opacity: 0, y: 20 });
         if (p2Paragraph) gsap.set(p2Paragraph, { opacity: 0 });
 
         function mobileTypewriter(text, targetElem, cursorElem, onComplete) {
@@ -368,17 +369,12 @@
                   gsap.to(split.lines, { yPercent: 0, duration: 0.8, stagger: 0.12, ease: 'power3.out' });
                 }
 
-                // 3) Lottie por Ãºltimo
-                if (p2Lottie && !p2LottieAnim && typeof lottie !== 'undefined') {
-                  p2Lottie.innerHTML = '';
-                  p2LottieAnim = lottie.loadAnimation({
-                    container: p2Lottie,
-                    renderer: 'svg',
-                    loop: false,
-                    autoplay: true,
-                    path: './assets/logo-vertical-cor-2.json'
-                  });
-                }
+                  // 3) a entrada do logo, por ultimo — ver a nota da tarefa 2.14 abaixo
+                  if (p2Logo) {
+                    gsap.fromTo(p2Logo,
+                      { opacity: 0, y: 20 },
+                      { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" });
+                  }
               });
             }
           },
@@ -393,7 +389,7 @@
               p2Paragraph.textContent = originalParagraphText;
               gsap.set(p2Paragraph, { opacity: 0 });
             }
-            if (p2LottieAnim) { p2LottieAnim.destroy(); p2LottieAnim = null; if (p2Lottie) p2Lottie.innerHTML = ''; }
+                        if (p2Logo) gsap.set(p2Logo, { opacity: 0, y: 20 });
           }
         });
       }
@@ -577,14 +573,13 @@
         const section = document.querySelector('.panel.panel-content-white');
         const title = section.querySelector('h2');
         const paragraph = section.querySelector('.panel-content-white-paragraph');
-        const lottieContainer = section.querySelector('#lottieLogoVertical');
+        const logoContainer = section.querySelector('#lottieLogoVertical');
 
         // Salva conteÃºdo original para reset
         const originalTitleHTML = title.innerHTML;
         const originalParagraph = paragraph.textContent;
 
-        // VariÃ¡vel global para Lottie instance
-        let lottieAnim = null;
+        // (a instancia do Lottie foi removida na tarefa 2.14)
 
         // FunÃ§Ã£o de efeito typewriter manual
         function typewriterEffect(text, targetElem, cursorElem, onComplete) {
@@ -614,12 +609,8 @@
             paragraph.style.transform = '';
             paragraph.style.opacity = '0'; // Esconde ao resetar
 
-            // Reset do Lottie
-            if (lottieAnim) {
-            lottieAnim.destroy();
-            lottieAnim = null;
-            }
-            lottieContainer.innerHTML = '';
+            // Reset do logo (antes: destruia a instancia do Lottie e limpava o container)
+            if (logoContainer) gsap.set(logoContainer, { opacity: 0, y: 20 });
         }
 
         // Timeline principal com ScrollTrigger
@@ -671,30 +662,27 @@
             duration: 0.75,
             stagger: 0.13,
             onComplete: () => {
-                timeline.play(); // Segue para Lottie
+                timeline.play(); // Segue para a entrada do logo
             }
             });
             timeline.pause(); // Pausa timeline atÃ© SplitText terminar
         });
 
-        // AnimaÃ§Ã£o 3: Lottie, sÃ³ depois do texto
-        timeline.to({}, { duration: 0.0 }); // Delay opcional
-        timeline.add(() => {
-            // Limpa Lottie anterior se houver
-            if (lottieAnim) {
-            lottieAnim.destroy();
-            lottieAnim = null;
-            }
-            lottieContainer.innerHTML = '';
-            // Inicia Lottie
-            lottieAnim = lottie.loadAnimation({
-            container: lottieContainer,
-            renderer: 'svg',
-            loop: false,
-            autoplay: true,
-            path: './assets/logo-vertical-cor-2.json'
-            });
-        });
+        // Animacao 3: a entrada do logo, so depois do texto
+        // 08/2026 — tarefa 2.14: o Lottie saiu daqui.
+        // A biblioteca lottie-web pesava 298,4 KB e a animacao .json outros 26,8 KB —
+        // 325 KB baixados em toda visita para animar um logo. O logo agora e um SVG
+        // comum de 8,8 KB (assets/logo-clorofilla-cor.svg, extraido do proprio .json e
+        // conferido pixel a pixel), e a entrada e uma animacao de GSAP.
+        // Decisao do Pedro em 31/08: entrada simples, com o logo surgindo de baixo.
+        // A animacao antiga (o traco se desenhando) NAO foi reproduzida — foi escolha
+        // consciente dele. Os arquivos .json/.lottie/.webm continuam em assets/ caso
+        // um dia queira de volta; deixaram apenas de ser baixados.
+        if (logoContainer) {
+            timeline.fromTo(logoContainer,
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" });
+        }
 
         // Painel 4: AnimaÃ§Ã£o do tÃ­tulo vindo da esquerda no scroll horizontal
 

@@ -372,7 +372,16 @@ p {
     align-self: center;
     padding-bottom: 1vh;
     flex: 0 0 auto; /* Não crescer nem encolher, manter tamanho automático */
-    position: relative; /* Necessário para o contêiner Lottie */
+    position: relative;
+}
+
+/* 08/2026, tarefa 2.14: o logo passou de animacao Lottie (que injetava um <svg>) para uma
+   imagem comum. `contain` reproduz o mesmo enquadramento que o Lottie fazia por padrao. */
+.panel-02-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
 }
 
 /* --- Painel 3: Imagem Central com Parallax --- */

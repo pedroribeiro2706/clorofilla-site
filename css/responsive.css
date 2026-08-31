@@ -106,6 +106,7 @@ body {
     margin: 1rem auto 0;
     padding-bottom: 0;
   }
+  .panel-02-logo img,
   .panel-02-logo svg,
   .panel-02-logo canvas {
     width: 100% !important;

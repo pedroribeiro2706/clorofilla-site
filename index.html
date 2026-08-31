@@ -137,7 +137,12 @@
                     Somos uma consultoria ambiental especializada em oferecer soluções integradas e eficazes para a viabilização de projetos em conformidade com a legislação ambiental vigente.
                     Atuamos com foco na segurança operacional, viabilidade técnica e responsabilidade socioambiental. 
                 </div>
-                <div id="lottieLogoVertical" class="panel-02-logo"></div>
+                <div id="lottieLogoVertical" class="panel-02-logo">
+                    <!-- 08/2026, tarefa 2.14: era uma div vazia que o Lottie preenchia.
+                         Agora e uma imagem comum; a entrada e feita com GSAP. -->
+                    <img src="./assets/logo-clorofilla-cor.svg" alt="Clorofilla"
+                         width="842" height="596" loading="lazy" decoding="async">
+                </div>
                 <!-- <object type="image/svg+xml" data="./assets/Logo-Clorofilla-Branco-SVG-Resized-01-Animated.svg"> -->
                     <!-- <img src="./assets/Clorofilla-Vertical-Cor-Resized.svg" alt="Clorofilla Logo" class="panel-02-logo"> -->
                 <!-- </object> -->
@@ -894,8 +899,10 @@
          criar ZERO observadores. Medido no Chrome, nas duas larguras: Observer.getAll()
          devolvia lista vazia. Mesmo caso do ScrollSmoother da Fase 1. -->
 
-    <!-- Lottie precisa vir ANTES do scripts.js, que chama lottie.loadAnimation() -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+    <!-- Lottie REMOVIDO em 08/2026 (tarefa 2.14): 298,4 KB de biblioteca mais 26,8 KB de
+         animacao .json, baixados em toda visita para animar UM logo — 70% de todo o peso
+         de animacao do site. O logo agora e assets/logo-clorofilla-cor.svg (8,8 KB) e a
+         entrada e feita com o GSAP que ja estava aqui. -->
 
     <!-- Custom JS -->
     <script src="js/scripts.js"></script>
