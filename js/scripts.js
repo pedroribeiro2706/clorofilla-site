@@ -1,10 +1,99 @@
-﻿document.addEventListener("DOMContentLoaded", (event) => {
+﻿document.addEventListener("DOMContentLoaded", async (event) => {
     // 08/2026 — tarefa 2.5/A: o plugin Observer saiu daqui e do index.html.
     // Ele era baixado do CDN (9,8 KB) em toda visita e nao criava NADA: medido no Chrome,
     // Observer.getAll().length === 0 no celular e no computador. Mesmo caso do ScrollSmoother
     // removido na Fase 1. Junto saiu um bloco de diagnostico esquecido que imprimia
     // "Observer carregado e pronto." no console a cada visita.
     gsap.registerPlugin(ScrollTrigger, SplitText);
+
+    // ======================================================================
+    // ETAPA C (31/08/2026) — ESPERAR A FONTE ANTES DE PICAR OS TEXTOS
+    // ======================================================================
+    //
+    // O PROBLEMA. Para animar um paragrafo linha por linha, o SplitText corta
+    // o texto em linhas perguntando ao navegador ONDE CADA LINHA QUEBRA. E a
+    // quebra depende da fonte: com a fonte provisoria do sistema, as letras
+    // tem larguras diferentes e as linhas caem em outros lugares. A fonte
+    // deste site vem do Adobe TypeKit, servidor externo, e demora.
+    //
+    // Resultado: o site cortava com a regua errada. Quando a fonte certa
+    // chegava, os cortes ja estavam feitos — nos lugares errados. O proprio
+    // GSAP avisava, ate 4x por carregamento, nas duas larguras:
+    //     "SplitText called before fonts loaded"
+    // E a explicacao mais forte para a quebra intermitente que o Pedro viu no
+    // celular em 29/08, e para a pagina que variava de 516 para 376 elementos
+    // entre duas execucoes sem nenhuma alteracao de codigo.
+    //
+    // ⚠️ POR QUE NAO BASTA UM `await document.fonts.ready`.
+    // Ele resolve CEDO DEMAIS. Medido em 31/08, celular em 4G lento:
+    //
+    //      274 ms — fonts.ready resolve com ZERO fontes conhecidas
+    //     1192 ms — resolve de novo, com 14 (ainda incompleto)
+    //     2310 ms — as 45 fontes so agora COMECAM a carregar
+    //     4425 ms — DOMContentLoaded (era aqui que se picava o texto)
+    //     5158 ms — as fontes realmente terminam
+    //
+    // `document.fonts.ready` promete "as fontes PENDENTES terminaram". No
+    // comeco da vida da pagina nao ha nenhuma pendente — o CSS do TypeKit nem
+    // chegou — entao ele resolve na hora, sem nada carregado. Usar so isso
+    // deixaria PIOR: picaria aos 274 ms em vez de aos 4425 ms.
+    //
+    // A SOLUCAO AQUI: esperar o evento `loadingdone` E confirmar, 150 ms
+    // depois, que nao comecou outra rodada de carregamento. Com desistencia
+    // automatica em 4 s, para que uma fonte que nunca chega nao trave o site.
+    //
+    // ⚠️ ISTO NAO RESOLVE GIRAR O TELEFONE. Ao girar, a largura muda e as
+    // linhas deveriam ser cortadas de novo. A solucao oficial do GSAP para os
+    // dois casos e `autoSplit: true` com as animacoes criadas dentro de
+    // `onSplit()` — mas ela exige reorganizar os 8 pontos onde o texto e
+    // picado. Ficou combinado com o Pedro fazer isso JUNTO com a etapa E
+    // (trocar o isNarrow por gsap.matchMedia), que mexe nesses mesmos pontos.
+    // Motivo: girar o telefone ja nao funciona hoje por causa do isNarrow,
+    // lido uma unica vez no carregamento — entao adiantar o autoSplit sozinho
+    // nao entregaria o beneficio, e custaria mexer duas vezes no mesmo codigo.
+
+    function quandoFontesProntas(limiteMs = 4000) {
+        return new Promise((resolve) => {
+            if (!document.fonts) return resolve("sem-api");
+
+            let encerrado = false;
+            const encerrar = (motivo) => {
+                if (encerrado) return;
+                encerrado = true;
+                clearTimeout(relogio);
+                document.fonts.removeEventListener("loadingdone", aoTerminarRodada);
+                resolve(motivo);
+            };
+
+            // `size > 0` e o que separa "terminou de verdade" de "ainda nao
+            // comecou": sem o CSS das fontes, o conjunto esta vazio e o status
+            // ja diz "loaded".
+            const prontas = () => document.fonts.status === "loaded" && document.fonts.size > 0;
+
+            const aoTerminarRodada = () => {
+                if (!prontas()) return;
+                const quantas = document.fonts.size;
+                // Confirma que nao arrancou outra rodada logo em seguida.
+                setTimeout(() => {
+                    if (encerrado) return;
+                    if (document.fonts.status === "loaded" && document.fonts.size === quantas) {
+                        encerrar("fontes-carregadas");
+                    }
+                    // Se mudou, ignora: o proximo loadingdone reavalia.
+                }, 150);
+            };
+
+            const relogio = setTimeout(() => encerrar("desistiu-por-tempo"), limiteMs);
+            document.fonts.addEventListener("loadingdone", aoTerminarRodada);
+            aoTerminarRodada();
+        });
+    }
+
+    window.__clorofillaFontes = { inicio: performance.now() };
+    window.__clorofillaFontes.motivo = await quandoFontesProntas();
+    window.__clorofillaFontes.fim = performance.now();
+    // (as duas linhas acima so servem para a ferramenta de medicao; sao baratas)
+
 
     // --- GLOBAL HELPER QUE ADICIONA O CLEANUP E SALVA A REFERÃŠNCIA PARA FUNÃ‡Ã•ES SPLITTEXT ---
     function createSplitTextOnce(element, options) {
