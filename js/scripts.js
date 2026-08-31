@@ -1,14 +1,10 @@
 ﻿document.addEventListener("DOMContentLoaded", (event) => {
-    // 08/2026: Observer estava declarado duas vezes e ScrollSmoother era registrado sem nunca
-    // ser inicializado — o <script> dele foi removido do index.html.
-    gsap.registerPlugin(Observer, ScrollTrigger, SplitText);
-
-
-    if (typeof Observer === "undefined") {
-        console.error("Observer plugin do GSAP NÃƒO estÃ¡ carregado! (confira o import/script)");
-      } else {
-        console.log("Observer carregado e pronto.");
-      }
+    // 08/2026 — tarefa 2.5/A: o plugin Observer saiu daqui e do index.html.
+    // Ele era baixado do CDN (9,8 KB) em toda visita e nao criava NADA: medido no Chrome,
+    // Observer.getAll().length === 0 no celular e no computador. Mesmo caso do ScrollSmoother
+    // removido na Fase 1. Junto saiu um bloco de diagnostico esquecido que imprimia
+    // "Observer carregado e pronto." no console a cada visita.
+    gsap.registerPlugin(ScrollTrigger, SplitText);
 
     // --- GLOBAL HELPER QUE ADICIONA O CLEANUP E SALVA A REFERÃŠNCIA PARA FUNÃ‡Ã•ES SPLITTEXT ---
     function createSplitTextOnce(element, options) {
@@ -109,20 +105,8 @@
     }
     
 
-    // gsap.to(".section-transition:not(:last-child)", {
-    //   yPercent: -100, 
-    //   ease: "none",
-    //   stagger: 0.5,
-    //   scrollTrigger: {
-    //     trigger: "#container",
-    //     start: "top top",
-    //     end: "+=300%",
-    //     scrub: true,
-    //     pin: true
-    //   }
-    // });
-
-    // gsap.set(".section-transition", {zIndex: (i, target, targets) => targets.length - i});
+    // 08/2026 — tarefa 2.5/A: removidas 14 linhas de um gsap.to(".section-transition")
+    // comentado, que nunca chegou a rodar. Esta no historico do git se fizer falta.
 
 
     // ##################################################################################
@@ -1086,18 +1070,15 @@
         // onEnter | onLeave | onEnterBack | onLeaveBack
         // markers: true,
         id: 'oqfCardsGridEntrance'
-        // 08/2026 — tarefa 2.13: removidos os callbacks onEnter / onLeave / onEnterBack /
-        // onLeaveBack. Eles chamavam setupQuestionMarquees() e resetMarqueeTimelines(), que estão
-        // comentadas logo abaixo — o efeito marquee foi desativado e as chamadas ficaram para trás.
-        // Cada entrada ou saída desta seção na tela disparava um ReferenceError dentro do ciclo de
-        // atualização do ScrollTrigger. Medido antes e depois em WebKit e Blink: a remoção elimina
-        // a exceção e NÃO altera o comportamento visual da animação — os cards continuam entrando
-        // e revertendo exatamente como antes.
+                    // 08/2026 — tarefa 2.13: removidos os callbacks onEnter / onLeave /
+                    // onEnterBack / onLeaveBack. Eles chamavam setupQuestionMarquees() e
+                    // resetMarqueeTimelines(), que nao existiam — o efeito marquee havia sido
+                    // desativado e so as chamadas ficaram. Cada entrada ou saida desta secao
+                    // na tela disparava um ReferenceError dentro do ciclo de atualizacao do
+                    // ScrollTrigger. Medido antes e depois em WebKit e Blink: a remocao
+                    // elimina a excecao e NAO altera o comportamento visual — os cards
+                    // continuam entrando e revertendo exatamente como antes.
     }
-    // ,
-    // onComplete: () => {
-    //     setupQuestionMarquees(cardContainers);
-    // }
     });
 
     cardsTimeline.fromTo(cardContainers, 
@@ -1108,49 +1089,11 @@
 
 
 
-    // ##################################################################################
-                        // FUNÃ‡ÃƒO PARA CONFIGURAR O EFEITO MARQUEE NOS CARDS //
-    // ##################################################################################
-
-    // Array para armazenar as timelines de marquee dos cards
-    // let oqfMarqueeTimelines = [];
-
-    // function setupQuestionMarquees(cardContainers) {
-    //     // Limpa timelines anteriores
-    //     oqfMarqueeTimelines.forEach(tl => tl && tl.kill());
-    //     oqfMarqueeTimelines = [];
-
-    //     // Pequeno delay para garantir cÃ¡lculo de largura correta
-    //     gsap.delayedCall(0.1, () => {
-    //         cardContainers.forEach((cardContainer, index) => {
-    //             const questionEl = cardContainer.querySelector('.oqf-question');
-    //             const cardFrontEl = cardContainer.querySelector('.oqf-card-front');
-    //             if (!questionEl || !cardFrontEl) {
-    //                 oqfMarqueeTimelines[index] = null;
-    //                 return;
-    //             }
-
-    //             const questionWidth = questionEl.scrollWidth;
-    //             const cardFrontWidth = cardFrontEl.offsetWidth;
-    //             const pixelsPerSecond = 100;
-    //             const finalX = -questionWidth - 30;
-    //             const duration = (cardFrontWidth - finalX) / pixelsPerSecond;
-
-    //             // Cria a timeline do marquee
-    //             const marqueeTimeline = gsap.timeline({ repeat: -1, paused: true });
-    //             marqueeTimeline.set(questionEl, { x: cardFrontWidth, autoAlpha: 1 })
-    //             .to(questionEl, { x: finalX, duration: duration, ease: 'none' })
-    //             .set(questionEl, { x: cardFrontWidth }); // Reset para recomeÃ§ar o loop
-
-    //             oqfMarqueeTimelines[index] = marqueeTimeline;
-
-    //             // Stagger inicial
-    //             const delays = [0.1, 0.5, 0.2, 0.6, 0.3, 0.7];
-    //             const delay = delays[index] !== undefined ? delays[index] : 0;
-    //             gsap.delayedCall(delay, () => marqueeTimeline.play());
-    //         });
-    //     });
-    // }
+    // 08/2026 — tarefa 2.5/A: aqui ficava a funcao setupQuestionMarquees(), comentada e
+    // sem uso desde antes deste projeto (39 linhas). O efeito "marquee" — a pergunta do
+    // card deslizando na horizontal — foi desativado por quem construiu o site. As chamadas
+    // que sobraram para ela ja tinham sido removidas na tarefa 2.13. O corpo morto saiu
+    // agora. Para reativar o efeito, o codigo esta no historico do git.
 
 
     // ##################################################################################

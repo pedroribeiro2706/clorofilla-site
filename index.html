@@ -890,7 +890,9 @@
     <!-- ScrollSmoother REMOVIDO em 08/2026: era baixado em toda visita e nunca chegava a ser
          inicializado (nenhum ScrollSmoother.create() existe no scripts.js). Peso morto. -->
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Observer.min.js"></script>
+    <!-- Observer REMOVIDO em 08/2026 (tarefa 2.5/A): 9,8 KB baixados em toda visita para
+         criar ZERO observadores. Medido no Chrome, nas duas larguras: Observer.getAll()
+         devolvia lista vazia. Mesmo caso do ScrollSmoother da Fase 1. -->
 
     <!-- Lottie precisa vir ANTES do scripts.js, que chama lottie.loadAnimation() -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
