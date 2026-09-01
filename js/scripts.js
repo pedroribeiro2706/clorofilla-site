@@ -7,6 +7,92 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     gsap.registerPlugin(ScrollTrigger, SplitText);
 
     // ======================================================================
+    // ETAPA E (01/09/2026) — A REDE DE SEGURANÇA
+    // ======================================================================
+    //
+    // O CSS deste site esconde vários blocos de conteúdo de saída
+    // (`opacity: 0`) e conta com a animação para revelá-los. Consequência
+    // grave: se a animação não rodar, o visitante vê uma página vazia.
+    //
+    // Isso não é hipótese. É o que explica os dois relatos de "a página não
+    // montou; o reload resolveu" (celular em 29/08, laptop em 01/09) e a
+    // quebra dos cartões que nunca foi reproduzida.
+    //
+    // `mostrarTudoSemAnimacao()` põe esse conteúdo no lugar sem animar nada.
+    // Ela é usada em dois casos, e nos dois o resultado é o mesmo: a pessoa
+    // vê o site inteiro, montado.
+    //
+    //   1. quem pede menos movimento no sistema (logo abaixo);
+    //   2. se a montagem das animações estourar um erro (no fim do arquivo).
+    //
+    // O que ela NÃO revela, de propósito: o menu, que deve continuar fechado,
+    // e o campo `.hp-field`, que é a armadilha invisível contra robôs de spam.
+    function mostrarTudoSemAnimacao() {
+        const paraMostrar = [
+            '.panel-content-white-paragraph',
+            '.sobre-title',
+            '.sobre-primary-text',
+            '.sobre-secondary-text',
+            '.oqf-card-container',
+            '.diferenciais-overlay',
+            '.diferenciais-text',
+            '.minimizando-subtitle-wrapper',
+            '.panel-hero-logo',
+        ];
+        for (const seletor of paraMostrar) {
+            const achados = document.querySelectorAll(seletor);
+            if (achados.length) gsap.set(achados, { opacity: 1, x: 0, y: 0, clearProps: 'transform' });
+        }
+
+        // O carrossel empilha os slides um sobre o outro: mostrar todos vira
+        // um borrão. Só o primeiro entra em cena.
+        const primeiroSlide = document.querySelector('.its-slide');
+        if (primeiroSlide) gsap.set(primeiroSlide, { opacity: 1, visibility: 'visible' });
+        const primeiroFundo = document.querySelector('.its-image-frame .its-slide-bg-image');
+        if (primeiroFundo) gsap.set(primeiroFundo, { opacity: 1, visibility: 'visible' });
+
+        // Os títulos que a máquina de escrever digitaria ficam escritos de uma vez.
+        document.querySelectorAll('.section-typing_text .typewriter-text').forEach((span) => {
+            const titulo = span.parentElement;
+            gsap.set(titulo, { opacity: 1 });
+        });
+    }
+
+    // Quem liga "reduzir movimento" no sistema não recebe animação nenhuma:
+    // vê o site inteiro montado. Muita gente liga essa opção por enjoo ou
+    // enxaqueca provocados por movimento — meia animação ainda incomoda.
+    // A decisão é tomada AQUI, num lugar só, e por isso as faixas de tamanho
+    // de tela mais abaixo não precisam repeti-la.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        mostrarTudoSemAnimacao();
+        return;
+    }
+
+    // --- O SEGURO CONTRA MONTAGEM QUE NÃO TERMINA ---
+    //
+    // Se qualquer erro interromper a montagem no meio, a bandeira abaixo nunca
+    // vira `true` — e o conteúdo escondido pelo CSS ficaria invisível para
+    // sempre. O relógio devolve a página ao visitante nesse caso.
+    //
+    // 8 segundos porque a espera pelas fontes sozinha pode consumir 4 (ver a
+    // etapa C). Passou disso, alguma coisa deu errado mesmo.
+    let montagemConcluida = false;
+    setTimeout(() => {
+        if (montagemConcluida) return;
+        console.warn('[clorofilla] a montagem das animacoes nao terminou; mostrando a pagina sem elas.');
+        mostrarTudoSemAnimacao();
+    }, 8000);
+
+    // --- A PRIMEIRA VISITA ---
+    //
+    // Na primeira visita o cache está vazio: as imagens chegam DEPOIS de o
+    // ScrollTrigger já ter calculado onde cada animação começa e termina, e as
+    // contas saem erradas. No reload tudo já está em cache e funciona — que é
+    // exatamente o relato do Pedro em 29/08 e 01/09.
+    // `refresh()` refaz as contas quando a última imagem terminou de carregar.
+    window.addEventListener('load', () => ScrollTrigger.refresh(), { once: true });
+
+    // ======================================================================
     // ETAPA C (31/08/2026) — ESPERAR A FONTE ANTES DE PICAR OS TEXTOS
     // ======================================================================
     //
@@ -45,12 +131,13 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     // ⚠️ ISTO NAO RESOLVE GIRAR O TELEFONE. Ao girar, a largura muda e as
     // linhas deveriam ser cortadas de novo. A solucao oficial do GSAP para os
     // dois casos e `autoSplit: true` com as animacoes criadas dentro de
-    // `onSplit()` — mas ela exige reorganizar os 8 pontos onde o texto e
-    // picado. Ficou combinado com o Pedro fazer isso JUNTO com a etapa E
-    // (trocar o isNarrow por gsap.matchMedia), que mexe nesses mesmos pontos.
-    // Motivo: girar o telefone ja nao funciona hoje por causa do isNarrow,
-    // lido uma unica vez no carregamento — entao adiantar o autoSplit sozinho
-    // nao entregaria o beneficio, e custaria mexer duas vezes no mesmo codigo.
+    // `onSplit()` — e ela entra na etapa 2.6-C2, que vem logo apos a E.
+    //
+    // Nota da etapa E (01/09/2026): a espera pelas fontes que este bloco faz
+    // continua valendo, mas o `autoSplit` resolve o mesmo problema de origem —
+    // ele refaz o corte quando as fontes chegam OU quando a largura muda.
+    // Quando a C2 entrar, avaliar se esta espera ainda paga o proprio custo
+    // (+96 ms em rede boa, +589 ms em 4G lento ate a primeira animacao).
 
     function quandoFontesProntas(limiteMs = 4000) {
         return new Promise((resolve) => {
@@ -334,10 +421,23 @@ document.addEventListener("DOMContentLoaded", async (event) => {
 
     const panels = gsap.utils.toArray('.panel');
     const horizontalSection = document.querySelector('.horizontal-scroll-section');
-    const isNarrow = window.matchMedia('(max-width: 991px)').matches;
+    // --- QUEM DECIDE O QUE ANIMAR EM CADA TAMANHO DE TELA ---
+    //
+    // Até a etapa 2.6-E isto era um `isNarrow` lido UMA VEZ, no carregamento.
+    // Duas consequências: a decisão nunca era revista (mudar o tamanho da
+    // janela ou girar um tablet não reavaliava nada), e não havia como
+    // atender quem pede menos movimento no sistema.
+    //
+    // Com `gsap.matchMedia()` o GSAP cria as animações quando a faixa passa a
+    // valer e as DESFAZ sozinho quando deixa de valer — inclusive quando a
+    // janela do computador é redimensionada de um lado para o outro do limite.
+    // (quem pede menos movimento nem chega aqui: a saída é lá no começo)
+    const CELULAR = '(max-width: 991px)';
+    const COMPUTADOR = '(min-width: 992px)';
+    const mm = gsap.matchMedia();
 
     // Mobile-only: fade out fixed hero logo as the hero scrolls out
-    if (isNarrow) {
+    mm.add(CELULAR, () => {
       const logoEl = document.querySelector('.panel-hero-logo');
       const heroEl = document.querySelector('#hero');
       if (logoEl && heroEl) {
@@ -366,10 +466,10 @@ document.addEventListener("DOMContentLoaded", async (event) => {
           }
         });
       }
-    }
+    });
 
     // Mobile-only: Panel 2 vertical animations (replica do fluxo desktop, sem containerAnimation)
-    if (isNarrow) {
+    mm.add(CELULAR, () => {
       const panel2 = document.querySelector('.panel.panel-content-white');
       if (panel2) {
         const p2Title = panel2.querySelector('h2');
@@ -429,10 +529,10 @@ document.addEventListener("DOMContentLoaded", async (event) => {
           }
         });
       }
-    }
+    });
 
     // Mobile-only: Panel 3 and 4 parallax (vertical)
-    if (isNarrow) {
+    mm.add(CELULAR, () => {
       // Panel 3: parallax image moves slightly on scroll
       const panel3 = document.querySelector('.panel.panel-image-parallax-container');
       const panel3Img = panel3 && panel3.querySelector('.panel-image-parallax-image');
@@ -471,10 +571,11 @@ document.addEventListener("DOMContentLoaded", async (event) => {
           }
         );
       }
-    }
+    });
 
     // Inicialização do ScrollSmoother
-    if (horizontalSection && panels.length && !isNarrow) {
+    mm.add(COMPUTADOR, () => {
+    if (!horizontalSection || !panels.length) return;
         
         let scrollAmount = window.innerWidth * 1.5; // 150vw
 
@@ -725,7 +826,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
                 }
             });
         }
-    }
+    });
 
 
 
@@ -940,7 +1041,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     // ---- Animação Parallax & Zoom (usando GSAP ScrollTrigger, sem IntersectionObserver) ----
   
     if (itsContainer && itsContentSlider && itsBgImages.length > 0) {
-      if (!isNarrow) {
+      mm.add(COMPUTADOR, () => {
       // Parallax no container
       gsap.fromTo(
         itsContainer,
@@ -990,10 +1091,12 @@ document.addEventListener("DOMContentLoaded", async (event) => {
           // markers: true
         }
       });
-      } else {
+      });
+
+      mm.add(CELULAR, () => {
         // Mobile: sem parallax/zoom; limpa transforms para respeitar posicionamento natural
         gsap.set([itsContainer, itsContentSlider, itsBgImages], { clearProps: 'transform' });
-      }
+      });
     }
   
     const nextButton = itsSection.querySelector('.its-slider-navigation .its-arrow.next');
@@ -1325,7 +1428,7 @@ diferenciaisSlides.forEach((slide, i) => {
 });
 
 // Mobile vs Desktop behavior
-if (isNarrow) {
+mm.add(CELULAR, () => {
   // Mobile fallback: per-slide triggers (no pin)
   diferenciaisSlides.forEach((slide, i) => {
     slide.style.visibility = 'visible';
@@ -1450,7 +1553,9 @@ if (isNarrow) {
       }
     });
   }
-} else {
+});
+
+mm.add(COMPUTADOR, () => {
 // ============== OVERLAY DO PRIMEIRO SLIDE (fade independente, sem scrub) ==============
 const firstSlide = diferenciaisSlides[0];
 if (firstSlide) {
@@ -1611,7 +1716,7 @@ ScrollTrigger.create({
     });
   }
 });
-}
+});
 
 // ============== HACK: Força animação do texto do primeiro slide ao entrar no topo ==============
 ScrollTrigger.create({
@@ -1834,6 +1939,10 @@ ScrollTrigger.create({
     
 
 
+
+    // chegou ate aqui: a montagem terminou inteira, o relogio de seguranca
+    // la de cima nao precisa entrar em acao.
+    montagemConcluida = true;
 });
 
 
