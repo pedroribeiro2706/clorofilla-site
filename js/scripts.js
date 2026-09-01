@@ -1,4 +1,4 @@
-﻿document.addEventListener("DOMContentLoaded", async (event) => {
+document.addEventListener("DOMContentLoaded", async (event) => {
     // 08/2026 — tarefa 2.5/A: o plugin Observer saiu daqui e do index.html.
     // Ele era baixado do CDN (9,8 KB) em toda visita e nao criava NADA: medido no Chrome,
     // Observer.getAll().length === 0 no celular e no computador. Mesmo caso do ScrollSmoother
@@ -95,7 +95,7 @@
     // (as duas linhas acima so servem para a ferramenta de medicao; sao baratas)
 
 
-    // --- GLOBAL HELPER QUE ADICIONA O CLEANUP E SALVA A REFERÃŠNCIA PARA FUNÃ‡Ã•ES SPLITTEXT ---
+    // --- GLOBAL HELPER QUE ADICIONA O CLEANUP E SALVA A REFERÊNCIA PARA FUNÇÕES SPLITTEXT ---
     function createSplitTextOnce(element, options) {
         if (element._splitText) element._splitText.revert();
         const split = new SplitText(element, options);
@@ -103,7 +103,7 @@
         return split;
     }
 
-    // --- ANIMAÃ‡ÃƒO PADRÃƒO PARA O HEADER ---
+    // --- ANIMAÇÃO PADRÃO PARA O HEADER ---
     
     function animateSectionHeader({
         sectionSelector,
@@ -126,11 +126,11 @@
         const section = document.querySelector(sectionSelector);
         const title = section && section.querySelector(titleSelector);
         const primaryText = section && section.querySelector(primaryTextSelector);
-        // Veja: nÃ£o depende mais do primary/tÃ­tulo existir!
+        // Veja: não depende mais do primary/título existir!
         const secondaryText = secondaryTextSelector ? section.querySelector(secondaryTextSelector) : null;
         const logo = logoSelector ? section.querySelector(logoSelector) : null;
     
-        // AnimaÃ§Ã£o do tÃ­tulo e texto primÃ¡rio (como antes)
+        // Animação do título e texto primário (como antes)
         if (title && primaryText) {
             const splitPrimaryText = createSplitTextOnce(primaryText, {
                 type: "lines,words",
@@ -167,7 +167,7 @@
             }, 0.2);
         }
     
-        // Agora a animaÃ§Ã£o do secundÃ¡rio SEM depender do bloco acima!
+        // Agora a animação do secundário SEM depender do bloco acima!
         if (secondaryText) {
             const splitSecondaryText = createSplitTextOnce(secondaryText, {
                 type: "lines,words",
@@ -199,7 +199,7 @@
 
 
     // ##################################################################################
-                        // ANIMAÃ‡Ã•ES DA NAVEGAÃ‡ÃƒO DO MENU //
+                        // ANIMAÇÕES DA NAVEGAÇÃO DO MENU //
     // ##################################################################################
 
     const menuTrigger = document.getElementById('menuTrigger');
@@ -217,7 +217,7 @@
             duration: 0.65, 
             ease: "power3.inOut",
             onComplete: () => {
-              // ApÃ³s abrir o overlay, faz fade-in stagger dos itens do menu:
+              // Após abrir o overlay, faz fade-in stagger dos itens do menu:
               const menuItems = document.querySelectorAll('.menu-nav ul li');
               gsap.to(menuItems, {
                 opacity: 1,
@@ -246,12 +246,12 @@
           scaleX: 0,
           opacity: 0,
           duration: 0.5,
-          delay: 0.36, // DÃ¡ tempo dos itens sumirem primeiro
+          delay: 0.36, // Dá tempo dos itens sumirem primeiro
           ease: "power2.in",
           onComplete: () => {
             menuOverlay.classList.remove('menu-open');
             menuOverlay.style.visibility = 'hidden';
-            // Reseta os itens para o prÃ³ximo open
+            // Reseta os itens para o próximo open
             gsap.set(menuItems, { opacity: 0, y: 32 });
           }
         });
@@ -270,7 +270,7 @@
 
 
     // ##################################################################################
-                        // ANIMAÃ‡Ã•ES DO SCROLL HORIZONTAL //
+                        // ANIMAÇÕES DO SCROLL HORIZONTAL //
     // ##################################################################################
 
     const panels = gsap.utils.toArray('.panel');
@@ -346,7 +346,7 @@
           start: 'top 80%',
           end: 'bottom top',
           onEnter: () => {
-            // 1) TÃ­tulo com typewriter
+            // 1) Título com typewriter
             if (p2Title) {
               const plainText = (p2Title.textContent || '').trim();
               p2Title.innerHTML = '';
@@ -361,7 +361,7 @@
               gsap.set(p2Title, { opacity: 1 });
 
               mobileTypewriter(plainText, typeSpan, cursorSpan, () => {
-                // 2) ParÃ¡grafo com SplitText apÃ³s concluir o tÃ­tulo
+                // 2) Parágrafo com SplitText após concluir o título
                 if (p2Paragraph) {
                   const split = createSplitTextOnce(p2Paragraph, { type: 'lines', linesClass: 'split-line', mask: 'lines' });
                   gsap.set(p2Paragraph, { opacity: 1 });
@@ -437,12 +437,12 @@
       }
     }
 
-    // InicializaÃ§Ã£o do ScrollSmoother
+    // Inicialização do ScrollSmoother
     if (horizontalSection && panels.length && !isNarrow) {
         
         let scrollAmount = window.innerWidth * 1.5; // 150vw
 
-        // NavegaÃ§Ã£o do Scroll Horizontal
+        // Navegação do Scroll Horizontal
         const scrollHorizontal = gsap.to(horizontalSection, {
             x: () => -scrollAmount,
             ease: "none",
@@ -486,18 +486,18 @@
 
             const splitHeading = createSplitTextOnce(headingText, { type: "lines,words", mask: "lines", });
 
-            gsap.set(splitHeading.words, { yPercent: 100, opacity: 1 }); // ComeÃ§a "escondido" para baixo
+            gsap.set(splitHeading.words, { yPercent: 100, opacity: 1 }); // Começa "escondido" para baixo
 
             gsap.to(splitHeading.words, {
                 yPercent: 0,
                 duration: 1.2,
                 delay: 1,
                 ease: "power3.out",
-                stagger: 0.02, // Letras vÃ£o subindo uma a uma
+                stagger: 0.02, // Letras vão subindo uma a uma
                 scrollTrigger: {
                     trigger: headingWrapper,
                     start: "top 80%", // Quando 80% do wrapper entra na tela
-                    once: true // SÃ³ anima uma vez
+                    once: true // Só anima uma vez
                 }
             });
         }
@@ -514,7 +514,7 @@
                 duration: 1.2,
                 delay: 1.5,
                 ease: "power3.out",
-                stagger: 0.07, // Mais espaÃ§ado para multiline
+                stagger: 0.07, // Mais espaçado para multiline
                 scrollTrigger: {
                     trigger: subtextWrapper,
                     start: "top 85%",
@@ -528,7 +528,7 @@
         // Verifica se os elementos existem
         if (".panel-hero-logo" && ".panel-hero") {
 
-            // Calcula a distÃ¢ncia de scroll para o fade
+            // Calcula a distância de scroll para o fade
             const distanciaLogoFade = document.querySelector('.panel-hero').offsetWidth * 0.30;
             
             // Fade animation for fixed logo in .panel-hero
@@ -575,13 +575,13 @@
         const paragraph = section.querySelector('.panel-content-white-paragraph');
         const logoContainer = section.querySelector('#lottieLogoVertical');
 
-        // Salva conteÃºdo original para reset
+        // Salva conteúdo original para reset
         const originalTitleHTML = title.innerHTML;
         const originalParagraph = paragraph.textContent;
 
         // (a instancia do Lottie foi removida na tarefa 2.14)
 
-        // FunÃ§Ã£o de efeito typewriter manual
+        // Função de efeito typewriter manual
         function typewriterEffect(text, targetElem, cursorElem, onComplete) {
             let i = 0;
             targetElem.textContent = '';
@@ -591,19 +591,19 @@
                 targetElem.textContent += text[i++];
                 setTimeout(typeNextChar, 72); // velocidade do typewriter (ms)
             } else {
-                cursorElem.style.opacity = 0.7; // MantÃ©m cursor visÃ­vel no final
+                cursorElem.style.opacity = 0.7; // Mantém cursor visível no final
                 if (typeof onComplete === 'function') onComplete();
             }
             }
             typeNextChar();
         }
 
-        // FunÃ§Ã£o de reset do estado inicial
+        // Função de reset do estado inicial
         function resetSection() {
-            // Reset do tÃ­tulo
+            // Reset do título
             title.innerHTML = originalTitleHTML;
             title.classList.remove('section-typing_text');
-            // Reset do parÃ¡grafo
+            // Reset do parágrafo
             paragraph.textContent = originalParagraph;
             paragraph.style.opacity = '';
             paragraph.style.transform = '';
@@ -629,7 +629,7 @@
             }
         });
 
-        // AnimaÃ§Ã£o 1: TÃ­tulo com typewriter
+        // Animação 1: Título com typewriter
         timeline.add(() => {
             const typewriterSpan = document.createElement('span');
             typewriterSpan.className = 'typewriter-text';
@@ -640,21 +640,21 @@
             title.appendChild(typewriterSpan);
             title.appendChild(cursorSpan);
             title.classList.add('section-typing_text');
-            // Inicia efeito typewriter e segue apÃ³s terminar
+            // Inicia efeito typewriter e segue após terminar
             return gsap.delayedCall(0, () => {
-            typewriterEffect('. . . COMEÃ‡A NO PRESENTE', typewriterSpan, cursorSpan, () => {
-                timeline.play(); // Segue para o prÃ³ximo passo da timeline
+            typewriterEffect('. . . COMEÇA NO PRESENTE', typewriterSpan, cursorSpan, () => {
+                timeline.play(); // Segue para o próximo passo da timeline
             });
-            timeline.pause(); // Pausa timeline atÃ© terminar typewriter
+            timeline.pause(); // Pausa timeline até terminar typewriter
             });
         });
 
-        // AnimaÃ§Ã£o 2: ParÃ¡grafo com SplitText (linhas subindo)
+        // Animação 2: Parágrafo com SplitText (linhas subindo)
         timeline.to({}, { duration: 0.3 }); // Pequeno delay
         timeline.add(() => {
             const split = createSplitTextOnce(paragraph, { type: "lines", linesClass: "split-line", mask: "lines" });
 
-            gsap.set(paragraph, { opacity: 1 }); // Garante que sÃ³ aparece quando animar
+            gsap.set(paragraph, { opacity: 1 }); // Garante que só aparece quando animar
             gsap.set(split.lines, { yPercent: 100, opacity: 1 });
             gsap.to(split.lines, {
             yPercent: 0,
@@ -665,7 +665,7 @@
                 timeline.play(); // Segue para a entrada do logo
             }
             });
-            timeline.pause(); // Pausa timeline atÃ© SplitText terminar
+            timeline.pause(); // Pausa timeline até SplitText terminar
         });
 
         // Animacao 3: a entrada do logo, so depois do texto
@@ -684,16 +684,16 @@
                 { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" });
         }
 
-        // Painel 4: AnimaÃ§Ã£o do tÃ­tulo vindo da esquerda no scroll horizontal
+        // Painel 4: Animação do título vindo da esquerda no scroll horizontal
 
-        // 1. Seletor do tÃ­tulo
+        // 1. Seletor do título
         const orangeTitle = document.querySelector('.panel-content-orange-title');
         const orangePanel = document.querySelector('.panel.panel-content-orange');
 
-        // 2. AnimaÃ§Ã£o: tÃ­tulo sai da esquerda e entra na posiÃ§Ã£o original
+        // 2. Animação: título sai da esquerda e entra na posição original
         if (orangeTitle && orangePanel) {
-            // Define o quanto ele vai comeÃ§ar fora da tela (em px ou em %)
-            gsap.set(orangeTitle, { x: '-120%', opacity: 0.8 }); // comeÃ§a bem fora da esquerda
+            // Define o quanto ele vai começar fora da tela (em px ou em %)
+            gsap.set(orangeTitle, { x: '-120%', opacity: 0.8 }); // começa bem fora da esquerda
 
             gsap.to(orangeTitle, {
                 x: '0%',
@@ -703,10 +703,10 @@
                 scrollTrigger: {
                 trigger: orangePanel,
                 containerAnimation: scrollHorizontal, // sua timeline de scroll horizontal
-                start: 'left 72%',  // Quando a seÃ§Ã£o comeÃ§a a entrar na viewport
-                end: 'right 80%',   // Fim da animaÃ§Ã£o (ajuste conforme quiser)
+                start: 'left 72%',  // Quando a seção começa a entrar na viewport
+                end: 'right 80%',   // Fim da animação (ajuste conforme quiser)
                 scrub: 3,             // Faz o movimento ser suave e atrelado ao scroll
-                // markers: true,     // Habilite para debugar a animaÃ§Ã£o
+                // markers: true,     // Habilite para debugar a animação
                 }
             });
         }
@@ -822,7 +822,7 @@
 
 
 // ##################################################################################
-                        // ANIMAÃ‡ÃƒO DO HEADER "SOBRE NÃ“S" //
+                        // ANIMAÇÃO DO HEADER "SOBRE NÓS" //
 // ##################################################################################    
 
     
@@ -849,7 +849,7 @@
 
 
 // ##################################################################################
-// ANIMAÃ‡ÃƒO "MINIMIZANDO RISCOS" COM SCROLLTRIGGER SIMPLES
+// ANIMAÇÃO "MINIMIZANDO RISCOS" COM SCROLLTRIGGER SIMPLES
 // ##################################################################################  
 
     // Elementos
@@ -859,10 +859,10 @@
     const minimizandoContainer = document.querySelector('.minimizando-riscos-container');
 
     if (minimizandoContainer && minimizandoTitle && riscosTitle && subtitleWrapper) {
-    // Estado inicial dos elementos (fora de lugar, invisÃ­vel se quiser fade)
-    gsap.set(minimizandoTitle, { x: 80 });            // ComeÃ§a mais Ã  direita
-    gsap.set(riscosTitle, { x: -100 });                // ComeÃ§a mais Ã  esquerda (opcional, para dar mais movimento)
-    gsap.set(subtitleWrapper, { x: 80, opacity: 0 }); // Fora e invisÃ­vel
+    // Estado inicial dos elementos (fora de lugar, invisível se quiser fade)
+    gsap.set(minimizandoTitle, { x: 80 });            // Começa mais à direita
+    gsap.set(riscosTitle, { x: -100 });                // Começa mais à esquerda (opcional, para dar mais movimento)
+    gsap.set(subtitleWrapper, { x: 80, opacity: 0 }); // Fora e invisível
 
     // "Minimizando" desliza para a esquerda
     gsap.to(minimizandoTitle, {
@@ -892,7 +892,7 @@
         }
     });
 
-    // SubtÃ­tulo + seta deslizam para a esquerda e fazem fade in
+    // Subtítulo + seta deslizam para a esquerda e fazem fade in
     gsap.to(subtitleWrapper, {
         x: -80,
         opacity: 1,
@@ -910,7 +910,7 @@
 
 
 // ##################################################################################
-// SLIDE SEÃ‡ÃƒO SOBRE NÃ“S
+// SLIDE SEÇÃO SOBRE NÓS
 // ##################################################################################
 
 
@@ -922,7 +922,7 @@
     const slides = itsSection.querySelectorAll('.its-slide');
     const itsBgImages = itsSection.querySelectorAll('.its-image-frame .its-slide-bg-image');
   
-    // ---- AnimaÃ§Ã£o Parallax & Zoom (usando GSAP ScrollTrigger, sem IntersectionObserver) ----
+    // ---- Animação Parallax & Zoom (usando GSAP ScrollTrigger, sem IntersectionObserver) ----
   
     if (itsContainer && itsContentSlider && itsBgImages.length > 0) {
       if (!isNarrow) {
@@ -984,7 +984,7 @@
     const nextButton = itsSection.querySelector('.its-slider-navigation .its-arrow.next');
     const nextButtonTitleText = nextButton ? nextButton.querySelector('.its-next-slide-title-text') : null;
   
-    // Parallax & zoom anim (mantÃ©m igual, omiti para clareza, use seu trecho anterior...)
+    // Parallax & zoom anim (mantém igual, omiti para clareza, use seu trecho anterior...)
   
     let currentSlideIndex = 0;
   
@@ -1009,7 +1009,7 @@
             oldSlide.classList.remove('active');
             itsBgImages[oldIndex].classList.remove('active');
       
-            // Ativa o prÃ³ximo slide (box inteiro)
+            // Ativa o próximo slide (box inteiro)
             newSlide.classList.add('active');
             itsBgImages[newIndex].classList.add('active');
       
@@ -1049,13 +1049,13 @@
         updateNextSlideTitle();
       });
     } else {
-      console.warn('Slider nÃ£o pÃ´de ser inicializado: elementos faltando ou contagem de slides/imagens nÃ£o corresponde.');
+      console.warn('Slider não pôde ser inicializado: elementos faltando ou contagem de slides/imagens não corresponde.');
     }
 
 
 
     // ##################################################################################
-                        // ANIMAÃ‡ÃƒO TEXTOS HEADER "O QUE FAZEMOS"//
+                        // ANIMAÇÃO TEXTOS HEADER "O QUE FAZEMOS"//
     // ##################################################################################
 
     const oqfTitle = document.querySelector('.oqf-title');
@@ -1072,7 +1072,7 @@
             secondaryTextSelector: '.oqf-secondary-text',
             linesClass: 'oqf-line',
             idPrefix: 'oqf',
-            trigger: '.oqf-header-elements', // igual Ã  sua timeline original
+            trigger: '.oqf-header-elements', // igual à sua timeline original
             triggerStart: 'top 45%',
             triggerEnd: '10% 15%',
             secondaryTrigger: '.oqf-header-elements', // igual ao original
@@ -1087,13 +1087,13 @@
     // ##################################################################################
     const diffTop = document.querySelector('#diferenciais-topo');
     if (diffTop) {
-        // Fade BG em toda a seÃ§Ã£o "O Que Fazemos"
+        // Fade BG em toda a seção "O Que Fazemos"
         const oqfSection = document.querySelector('#o-que-fazemos');
         if (oqfSection) {
             gsap.set(oqfSection, { backgroundColor: 'rgba(153,179,129,0)' });
             gsap.timeline({
                 scrollTrigger: {
-                    trigger: diffTop, // mantÃ©m o header como gatilho
+                    trigger: diffTop, // mantém o header como gatilho
                     start: 'top 75%',
                     end: 'bottom 50%',
                     scrub: true,
@@ -1131,7 +1131,7 @@
 
 
     // ##################################################################################
-                        // ANIMAÃ‡ÃƒO ENTRADA DOS CARDS O QUE FAZEMOS//
+                        // ANIMAÇÃO ENTRADA DOS CARDS O QUE FAZEMOS//
     // ##################################################################################
 
     // Timeline de entrada dos cards com ScrollTrigger
@@ -1174,7 +1174,7 @@
 
 
     // ##################################################################################
-                        // FUNÃ‡ÃƒO PARA CONFIGURAR O EFEITO FLIP NOS CARDS //
+                        // FUNÇÃO PARA CONFIGURAR O EFEITO FLIP NOS CARDS //
     // ##################################################################################
 
     // Seletores principais
@@ -1184,7 +1184,7 @@
     // Array global para armazenar as timelines de flip
     let oqfFlipTimelines = [];
 
-    // FunÃ§Ã£o para configurar flips (independente de qualquer marquee)
+    // Função para configurar flips (independente de qualquer marquee)
     function setupCardFlips(cardContainers) {
         // Limpa flips anteriores
         if (oqfFlipTimelines.length) {
@@ -1243,7 +1243,7 @@
         });
     }
 
-    // FunÃ§Ã£o para resetar todos os flips quando grid sai da viewport
+    // Função para resetar todos os flips quando grid sai da viewport
     function resetCardFlips(cardContainers) {
         cardContainers.forEach((container, idx) => {
             const card = container.querySelector('.oqf-card');
@@ -1283,7 +1283,7 @@
 
 
 // ##################################################################################
-//                  ANIMAÃ‡ÃƒO SLIDES DIFERENCIAIS + SPLITTEXT nÃ£o scrubbado
+//                  ANIMAÇÃO SLIDES DIFERENCIAIS + SPLITTEXT não scrubbado
 // ##################################################################################
 
 const diferenciaisSlides = gsap.utils.toArray('.diferenciais-section');
@@ -1302,7 +1302,7 @@ const headingSplitData = diferenciaisSlides.map(slide => {
 const parallaxAmount = 20;
 const scrollDuration = (totalSlides - 1) * window.innerHeight;
 
-// Inicializa todos os slides: sÃ³ o primeiro visÃ­vel no inÃ­cio
+// Inicializa todos os slides: só o primeiro visível no início
 diferenciaisSlides.forEach((slide, i) => {
   slide.style.zIndex = i;
   slide.style.visibility = i === 0 ? 'visible' : 'hidden';
@@ -1445,7 +1445,7 @@ if (firstSlide) {
 
     let userScrolled = false;
 
-    // Escuta qualquer rolagem de usuÃ¡rio
+    // Escuta qualquer rolagem de usuário
     window.addEventListener('scroll', () => {
       userScrolled = true;
     }, { once: true });
@@ -1455,7 +1455,7 @@ if (firstSlide) {
       start: 'top 15%',
       end: 'bottom top',
       onEnter: () => {
-        // SÃ³ faz fade-in se foi scroll do usuÃ¡rio
+        // Só faz fade-in se foi scroll do usuário
         if (userScrolled) {
           gsap.to(firstOverlay, { opacity: 0.75, duration: 1.2, ease: 'power2.out' });
         } else {
@@ -1494,7 +1494,7 @@ ScrollTrigger.create({
 
       // ========== SCRUB PART (overlay etc) ==========
       if (progress > i - 1 && progress <= i) {
-        // Slide estÃ¡ entrando
+        // Slide está entrando
         slide.style.visibility = "visible";
         slide.style.zIndex = totalSlides + 2;
         gsap.set(slide, { y: (1 - localProgress) * 100 + "vh" });
@@ -1529,7 +1529,7 @@ ScrollTrigger.create({
 
       // ========== NON-SCRUB PART (SplitText trigger apenas uma vez) ==========
       if (splitData) {
-        // Quando slide estÃ¡ animando: dispara reveal uma Ãºnica vez
+        // Quando slide está animando: dispara reveal uma única vez
         if (!splitData.revealed && progress > i - 1 && progress <= i && localProgress >= 0.75) {
           splitData.revealed = true;
           // Timeline com ease!
@@ -1544,7 +1544,7 @@ ScrollTrigger.create({
             ease: "power2.out"
           });
 
-          // AnimaÃ§Ã£o do <p>
+          // Animação do <p>
           const textElem = slide.querySelector('.diferenciais-text');
           if (textElem) {
             splitData.timeline.fromTo(
@@ -1598,11 +1598,11 @@ ScrollTrigger.create({
 });
 }
 
-// ============== HACK: ForÃ§a animaÃ§Ã£o do texto do primeiro slide ao entrar no topo ==============
+// ============== HACK: Força animação do texto do primeiro slide ao entrar no topo ==============
 ScrollTrigger.create({
   trigger: container,
   start: "top top",
-  end: "+=1", // sÃ³ para executar uma vez
+  end: "+=1", // só para executar uma vez
   onEnter: () => {
     const splitData = headingSplitData[0];
     if (splitData && !splitData.revealed) {
@@ -1660,7 +1660,7 @@ ScrollTrigger.create({
 
 
 // ##################################################################################
-//                  ANIMAÃ‡ÃƒO TÃTULO CONTATO
+//                  ANIMAÇÃO TÍTULO CONTATO
 // ##################################################################################
 
     // Certifique-se de que gsap esteja carregado
@@ -1669,7 +1669,7 @@ ScrollTrigger.create({
     gsap.set('#contato-form', { opacity: 0 });
     gsap.set('.contato-card', { opacity: 0 });
 
-    // Fade in do formulÃ¡rio (sem scrub)
+    // Fade in do formulário (sem scrub)
     gsap.to('#contato-form', {
       opacity: 1,
       duration: 2.5,
@@ -1704,7 +1704,7 @@ ScrollTrigger.create({
     gsap.timeline({
       scrollTrigger: {
         trigger: '.contato-title',
-        start: 'top 75%', // ajuste para iniciar a animaÃ§Ã£o quando desejar
+        start: 'top 75%', // ajuste para iniciar a animação quando desejar
         // once: true,
         scrub: 2,
         //markers: true
@@ -1757,12 +1757,12 @@ ScrollTrigger.create({
             contatoForm.reset();
             setFeedback('Mensagem enviada com sucesso! Entraremos em contato em breve.', 'is-success');
           } else {
-            const errorMessage = (data && data.message) || 'N�o foi poss�vel enviar sua mensagem. Tente novamente.';
+            const errorMessage = (data && data.message) || 'Não foi possível enviar sua mensagem. Tente novamente.';
             setFeedback(errorMessage, 'is-error');
           }
         } catch (error) {
           console.error(error);
-          setFeedback('Erro de conex�o. Verifique sua internet e tente novamente.', 'is-error');
+          setFeedback('Erro de conexão. Verifique sua internet e tente novamente.', 'is-error');
         } finally {
           if (submitButton) {
             submitButton.disabled = false;
@@ -1775,10 +1775,10 @@ ScrollTrigger.create({
 
 
       // ##################################################################################
-      //                  ANIMAÃ‡ÃƒO FUNDO MINIMIZANDO RISCOS
+      //                  ANIMAÇÃO FUNDO MINIMIZANDO RISCOS
       // ##################################################################################
       
-      // Fade in/out background color for the â€œSobreâ€ section
+      // Fade in/out background color for the “Sobre” section
       const riscosContainer = document.querySelector('.minimizando-riscos-container');
       const sobreSection = document.querySelector('.vertical-section-sobre');
       if (riscosContainer && sobreSection) {
