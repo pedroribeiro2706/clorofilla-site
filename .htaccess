@@ -115,16 +115,3 @@
 # ETags padrão do Apache atrapalham cache em hospedagem compartilhada.
 # -----------------------------------------------------------------------------
 FileETag None
-
-# ---------------------------------------------------------------------------
-# Politica de privacidade — endereco sem a extensao .html
-#
-# O link do rodape aponta para /politica-de-privacidade.html, que funciona em
-# qualquer servidor. A regra abaixo faz o endereco CURTO, sem o .html, tambem
-# abrir a mesma pagina — e nao um erro 404 — para quem tiver o link antigo
-# salvo ou digitar assim. Acrescentado em 01/09/2026, tarefa 2.1.
-# ---------------------------------------------------------------------------
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteRule ^politica-de-privacidade/?$ /politica-de-privacidade.html [L]
-</IfModule>
