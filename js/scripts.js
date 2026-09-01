@@ -103,6 +103,65 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         return split;
     }
 
+    /**
+     * --- MÁQUINA DE ESCREVER — uma só implementação para o site inteiro ---
+     *
+     * Até a etapa 2.6-D (01/09/2026) existiam DUAS cópias idênticas disto,
+     * `mobileTypewriter` e `typewriterEffect`, feitas à mão com setTimeout
+     * recursivo. A duplicação custou dois defeitos visíveis, ambos no ar:
+     *
+     *   1. o texto do computador estava escrito DE NOVO dentro do JavaScript,
+     *      e essa cópia tinha a acentuação quebrada — o site mostrava
+     *      "COMEÃ‡A NO PRESENTE" (corrigido na tarefa 2.2);
+     *   2. a cópia do celular lia o texto do título sem descontar o cursor "_"
+     *      que já mora no HTML: digitava esse "_" como se fosse letra e ainda
+     *      acrescentava outro. O título terminava com DOIS underscores.
+     *
+     * Os dois somem pela mesma razão: o texto vem sempre do HTML, e o cursor
+     * é sempre descontado antes da leitura. Não há mais texto duplicado que
+     * possa divergir.
+     *
+     * Devolve a tween, para quem chamar poder pausar, reverter ou encaixar
+     * numa timeline — coisa que o setTimeout não permitia.
+     */
+    const SEGUNDOS_POR_LETRA = 0.072; // o ritmo de sempre, agora num lugar só
+
+    function maquinaDeEscrever(titulo, aoTerminar) {
+        // o texto vem do HTML, sem o cursor que já está dentro do título
+        const copia = titulo.cloneNode(true);
+        copia.querySelectorAll('.cursor').forEach((c) => c.remove());
+        const texto = (copia.textContent || '').trim();
+
+        const spanTexto = document.createElement('span');
+        spanTexto.className = 'typewriter-text';
+        const spanCursor = document.createElement('span');
+        spanCursor.className = 'cursor';
+        spanCursor.textContent = '_';
+
+        titulo.innerHTML = '';
+        titulo.appendChild(spanTexto);
+        titulo.appendChild(spanCursor);
+        titulo.classList.add('section-typing_text');
+        gsap.set(spanCursor, { opacity: 1 });
+
+        // a primeira letra aparece no instante zero, como no código antigo:
+        // por isso o contador vai de 0 até (total - 1), e o slice soma 1.
+        const contador = { letras: 0 };
+        return gsap.to(contador, {
+            letras: Math.max(0, texto.length - 1),
+            duration: Math.max(0, texto.length - 1) * SEGUNDOS_POR_LETRA,
+            ease: 'none',
+            onUpdate() {
+                spanTexto.textContent = texto.slice(0, 1 + Math.floor(contador.letras));
+            },
+            onComplete() {
+                spanTexto.textContent = texto;
+                gsap.set(spanCursor, { opacity: 0.7 }); // o cursor fica aceso no fim
+                if (typeof aoTerminar === 'function') aoTerminar();
+            },
+        });
+    }
+
     // --- ANIMAÇÃO PADRÃO PARA O HEADER ---
     
     function animateSectionHeader({
@@ -325,21 +384,8 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         if (p2Logo) gsap.set(p2Logo, { opacity: 0, y: 20 });
         if (p2Paragraph) gsap.set(p2Paragraph, { opacity: 0 });
 
-        function mobileTypewriter(text, targetElem, cursorElem, onComplete) {
-          let i = 0;
-          targetElem.textContent = '';
-          cursorElem.style.opacity = 1;
-          function typeNextChar() {
-            if (i < text.length) {
-              targetElem.textContent += text[i++];
-              setTimeout(typeNextChar, 72);
-            } else {
-              cursorElem.style.opacity = 0.7;
-              if (typeof onComplete === 'function') onComplete();
-            }
-          }
-          typeNextChar();
-        }
+        // (a máquina de escrever daqui virou a `maquinaDeEscrever` compartilhada,
+        //  lá em cima junto dos outros utilitários — etapa 2.6-D)
 
         ScrollTrigger.create({
           trigger: panel2,
@@ -348,19 +394,9 @@ document.addEventListener("DOMContentLoaded", async (event) => {
           onEnter: () => {
             // 1) Título com typewriter
             if (p2Title) {
-              const plainText = (p2Title.textContent || '').trim();
-              p2Title.innerHTML = '';
-              const typeSpan = document.createElement('span');
-              typeSpan.className = 'typewriter-text';
-              const cursorSpan = document.createElement('span');
-              cursorSpan.className = 'cursor';
-              cursorSpan.textContent = '_';
-              p2Title.appendChild(typeSpan);
-              p2Title.appendChild(cursorSpan);
-              p2Title.classList.add('section-typing_text');
               gsap.set(p2Title, { opacity: 1 });
 
-              mobileTypewriter(plainText, typeSpan, cursorSpan, () => {
+              maquinaDeEscrever(p2Title, () => {
                 // 2) Parágrafo com SplitText após concluir o título
                 if (p2Paragraph) {
                   const split = createSplitTextOnce(p2Paragraph, { type: 'lines', linesClass: 'split-line', mask: 'lines' });
@@ -582,21 +618,8 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         // (a instancia do Lottie foi removida na tarefa 2.14)
 
         // Função de efeito typewriter manual
-        function typewriterEffect(text, targetElem, cursorElem, onComplete) {
-            let i = 0;
-            targetElem.textContent = '';
-            cursorElem.style.opacity = 1;
-            function typeNextChar() {
-            if (i < text.length) {
-                targetElem.textContent += text[i++];
-                setTimeout(typeNextChar, 72); // velocidade do typewriter (ms)
-            } else {
-                cursorElem.style.opacity = 0.7; // Mantém cursor visível no final
-                if (typeof onComplete === 'function') onComplete();
-            }
-            }
-            typeNextChar();
-        }
+        // (a máquina de escrever daqui virou a `maquinaDeEscrever` compartilhada,
+        //  lá em cima junto dos outros utilitários — etapa 2.6-D)
 
         // Função de reset do estado inicial
         function resetSection() {
@@ -630,19 +653,11 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         });
 
         // Animação 1: Título com typewriter
+        // O texto NÃO é escrito aqui: `maquinaDeEscrever` lê do próprio HTML.
+        // Era essa cópia do texto que estava com a acentuação quebrada.
         timeline.add(() => {
-            const typewriterSpan = document.createElement('span');
-            typewriterSpan.className = 'typewriter-text';
-            const cursorSpan = document.createElement('span');
-            cursorSpan.className = 'cursor';
-            cursorSpan.textContent = '_';
-            title.innerHTML = '';
-            title.appendChild(typewriterSpan);
-            title.appendChild(cursorSpan);
-            title.classList.add('section-typing_text');
-            // Inicia efeito typewriter e segue após terminar
             return gsap.delayedCall(0, () => {
-            typewriterEffect('. . . COMEÇA NO PRESENTE', typewriterSpan, cursorSpan, () => {
+            maquinaDeEscrever(title, () => {
                 timeline.play(); // Segue para o próximo passo da timeline
             });
             timeline.pause(); // Pausa timeline até terminar typewriter
