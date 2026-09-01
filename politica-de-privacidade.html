@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Política de Privacidade | Clorofilla Consultoria Ambiental</title>
+    <meta name="description" content="Como a Clorofilla trata os dados de quem entra em contato pelo site: o que é coletado, para que serve e o que o site não faz. Sem cookies e sem rastreamento.">
+
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="./favicon-96.png" sizes="96x96" type="image/png">
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+
+    <!-- Mesmas fontes do site. E so elas: esta pagina nao carrega o
+         css/site.min.css nem o GSAP, porque nao tem uma animacao sequer. -->
+    <link rel="preconnect" href="https://use.typekit.net" crossorigin>
+    <link rel="preconnect" href="https://p.typekit.net" crossorigin>
+    <link rel="stylesheet" href="https://use.typekit.net/sho6jhs.css">
+
+    <style>
+        :root {
+            --creme: #f1eee8;
+            --papel: #ffffff;
+            --tinta: #232323;
+            --tinta-fraca: #5c5c5c;
+            --verde: #99b381;
+            --verde-escuro: #4f6b3c;
+            --linha: #ddd8cf;
+
+            --serifada: zahrah, Georgia, 'Times New Roman', serif;
+            --corpo: helvetica-neue-lt-pro, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: var(--creme);
+            color: var(--tinta);
+            font-family: var(--corpo);
+            font-size: 1.0625rem;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .envoltorio { max-width: 46rem; margin: 0 auto; padding: 0 1.5rem; }
+
+        /* ---------- topo ---------- */
+        .topo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            padding: 1.75rem 0;
+            border-bottom: 1px solid var(--linha);
+        }
+        /* o logo tem o nome embaixo do simbolo: abaixo de ~70px o nome fica ilegivel */
+        .topo img { display: block; height: 4.75rem; width: auto; }
+        .voltar {
+            font-size: .875rem;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            color: var(--tinta);
+            text-decoration: none;
+            border-bottom: 1px solid var(--verde);
+            padding-bottom: 2px;
+            white-space: nowrap;
+        }
+        .voltar:hover, .voltar:focus-visible { color: var(--verde-escuro); border-bottom-color: var(--verde-escuro); }
+
+        /* ---------- cabecalho do documento ---------- */
+        .abertura { padding: 3.5rem 0 2.5rem; }
+        h1 {
+            font-family: var(--serifada);
+            font-weight: 400;
+            font-size: clamp(2.125rem, 6vw, 3.25rem);
+            line-height: 1.12;
+            letter-spacing: -.01em;
+            margin: 0 0 1rem;
+        }
+        .atualizado {
+            font-size: .8125rem;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: var(--tinta-fraca);
+            margin: 0;
+        }
+
+        /* ---------- resumo ---------- */
+        .resumo {
+            background: var(--papel);
+            border-left: 3px solid var(--verde);
+            padding: 1.75rem 1.75rem 1.5rem;
+            margin-bottom: 3.5rem;
+        }
+        .resumo p { margin: 0 0 .75rem; }
+        .resumo p:last-child { margin-bottom: 0; }
+        .resumo strong { font-weight: 600; }
+
+        /* ---------- secoes ---------- */
+        section { margin-bottom: 2.75rem; }
+        h2 {
+            font-family: var(--serifada);
+            font-weight: 400;
+            font-size: 1.5rem;
+            line-height: 1.25;
+            margin: 0 0 .75rem;
+            display: flex;
+            gap: .75rem;
+            align-items: baseline;
+        }
+        h2 .n {
+            font-family: var(--corpo);
+            font-size: .8125rem;
+            font-weight: 600;
+            color: var(--verde-escuro);
+            letter-spacing: .08em;
+            flex: none;
+        }
+        p { margin: 0 0 1rem; }
+        p:last-child { margin-bottom: 0; }
+        a { color: var(--verde-escuro); text-decoration: underline; text-underline-offset: .2em; }
+        a:hover, a:focus-visible { color: var(--tinta); }
+
+        ul { margin: 0 0 1rem; padding-left: 1.25rem; }
+        li { margin-bottom: .375rem; }
+
+        /* ---------- o bloco que importa: o que o site NAO faz ---------- */
+        .nao-faz {
+            background: var(--tinta);
+            color: var(--creme);
+            padding: 2.25rem 2rem;
+            margin: 3.5rem 0;
+        }
+        .nao-faz h2 { color: var(--creme); margin-bottom: 1.5rem; }
+        .nao-faz h2 .n { color: var(--verde); }
+        .nao-faz ul { list-style: none; padding: 0; margin: 0; }
+        .nao-faz li {
+            padding: .875rem 0 .875rem 2rem;
+            border-top: 1px solid rgba(241, 238, 232, .18);
+            position: relative;
+        }
+        .nao-faz li:first-child { border-top: 0; }
+        .nao-faz li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 1.55rem;
+            width: 1rem;
+            height: 2px;
+            background: var(--verde);
+        }
+        .nao-faz .fecho {
+            margin: 1.5rem 0 0;
+            font-size: .9375rem;
+            color: rgba(241, 238, 232, .75);
+        }
+
+        /* ---------- identificacao ---------- */
+        .responsavel {
+            background: var(--papel);
+            padding: 1.75rem;
+            margin-bottom: 2.75rem;
+        }
+        .responsavel dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: .5rem 1.5rem; }
+        .responsavel dt {
+            font-size: .75rem;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--tinta-fraca);
+            padding-top: .2em;
+        }
+        .responsavel dd { margin: 0; }
+
+        /* ---------- rodape ---------- */
+        .rodape {
+            border-top: 1px solid var(--linha);
+            padding: 2rem 0 3rem;
+            margin-top: 3.5rem;
+            font-size: .875rem;
+            color: var(--tinta-fraca);
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* ---------- telas estreitas ---------- */
+        @media (max-width: 540px) {
+            body { font-size: 1rem; }
+            .topo { padding: 1.25rem 0; }
+            .topo img { height: 3.5rem; }
+            .abertura { padding: 2.5rem 0 2rem; }
+            .resumo, .nao-faz, .responsavel { padding-left: 1.25rem; padding-right: 1.25rem; }
+            .responsavel dl { grid-template-columns: 1fr; gap: .25rem; }
+            .responsavel dd { margin-bottom: .75rem; }
+        }
+
+        /* quem pede menos movimento no sistema nao ganha transicao nenhuma */
+        @media (prefers-reduced-motion: reduce) {
+            * { transition: none !important; animation: none !important; }
+        }
+
+        :focus-visible { outline: 2px solid var(--verde-escuro); outline-offset: 3px; }
+    </style>
+</head>
+<body>
+
+    <div class="envoltorio">
+
+        <header class="topo">
+            <a href="./" aria-label="Página inicial da Clorofilla">
+                <img src="./assets/logo-clorofilla-cor.svg" alt="Clorofilla" width="107" height="76">
+            </a>
+            <a class="voltar" href="./">Voltar ao site</a>
+        </header>
+
+        <div class="abertura">
+            <h1>Política de Privacidade</h1>
+            <p class="atualizado">Atualizada em 1º de setembro de 2026</p>
+        </div>
+
+        <div class="resumo">
+            <p><strong>O resumo, em três frases.</strong></p>
+            <p>Este site só recebe dados seus se você preencher o formulário de contato: nome, e-mail, telefone e a mensagem que escrever.</p>
+            <p>Esses dados chegam por e-mail à Clorofilla e servem para uma coisa só — responder você. Nada é guardado em banco de dados, e o site não usa cookies nem rastreia sua navegação.</p>
+        </div>
+
+        <section>
+            <h2><span class="n">01</span> Quem responde pelos seus dados</h2>
+            <p>A Clorofilla Consultoria Ambiental é quem decide como os dados enviados por este site são tratados. Os dados de identificação estão no fim desta página.</p>
+        </section>
+
+        <section>
+            <h2><span class="n">02</span> O que é coletado</h2>
+            <p>Apenas o que você digita no formulário de contato:</p>
+            <ul>
+                <li>nome e sobrenome;</li>
+                <li>endereço de e-mail;</li>
+                <li>telefone;</li>
+                <li>a mensagem que você escrever.</li>
+            </ul>
+            <p>Se você não preencher o formulário, o site não recebe nenhum dado seu. Navegar aqui não deixa rastro em nossos sistemas.</p>
+        </section>
+
+        <section>
+            <h2><span class="n">03</span> Para que esses dados são usados</h2>
+            <p>Para responder ao seu contato e conversar sobre o assunto que você trouxe. Nada além disso. Não enviamos mala direta, newsletter nem propaganda a partir dessas mensagens.</p>
+            <p>A base legal para esse tratamento é o seu próprio pedido de contato — em termos da LGPD, o interesse legítimo de responder a quem nos procura e os procedimentos preliminares a um eventual contrato.</p>
+        </section>
+
+        <div class="nao-faz">
+            <h2><span class="n">04</span> O que este site não faz</h2>
+            <ul>
+                <li>Não usa cookies. Nenhum, nem os chamados “essenciais”.</li>
+                <li>Não tem Google Analytics nem qualquer outra ferramenta de medição de audiência.</li>
+                <li>Não tem pixel de rede social, nem de anúncio, nem de remarketing.</li>
+                <li>Não guarda o que você digitou em banco de dados: a mensagem vira um e-mail e mais nada.</li>
+                <li>Não vende, não aluga e não cede seus dados para ninguém.</li>
+                <li>Não cria perfil de comportamento e não toma decisão automatizada sobre você.</li>
+            </ul>
+            <p class="fecho">Isto não é promessa de intenção: é como o site foi construído. Não há código de rastreamento nas páginas.</p>
+        </div>
+
+        <section>
+            <h2><span class="n">05</span> Quem mais tem acesso</h2>
+            <p>A mensagem sai do seu navegador, passa pela empresa que hospeda este site e chega ao serviço de e-mail usado pela Clorofilla. São etapas técnicas necessárias para a mensagem existir — essas empresas atuam como operadoras e não usam seus dados para finalidade própria.</p>
+            <p>Fora isso, o conteúdo do seu contato é lido apenas por quem trabalha na Clorofilla e precisa respondê-lo.</p>
+        </section>
+
+        <section>
+            <h2><span class="n">06</span> Por quanto tempo ficam guardados</h2>
+            <p>As mensagens permanecem na caixa de e-mail da Clorofilla enquanto durar o atendimento e pelo prazo que a lei exigir para o registro de tratativas comerciais. Depois disso, são descartadas. Você pode pedir a exclusão antes — é o item seguinte.</p>
+        </section>
+
+        <section>
+            <h2><span class="n">07</span> Seus direitos</h2>
+            <p>A Lei Geral de Proteção de Dados (Lei 13.709/2018) garante a você, entre outros, o direito de:</p>
+            <ul>
+                <li>saber se tratamos algum dado seu e quais são;</li>
+                <li>corrigir dado incompleto ou desatualizado;</li>
+                <li>pedir a exclusão dos dados que você nos enviou;</li>
+                <li>revogar a qualquer momento o consentimento dado;</li>
+                <li>reclamar à Autoridade Nacional de Proteção de Dados (ANPD).</li>
+            </ul>
+            <p>Para exercer qualquer um deles, escreva para <a href="mailto:contato@clorofillaambiental.com.br">contato@clorofillaambiental.com.br</a>. Respondemos no prazo da lei.</p>
+        </section>
+
+        <section>
+            <h2><span class="n">08</span> Sobre o blog</h2>
+            <p>O blog da Clorofilla fica em endereço separado deste site, em <a href="https://blog.clorofillaambiental.com.br/">blog.clorofillaambiental.com.br</a>, e roda em outra plataforma. Esta política trata apenas do site que você está lendo agora; o blog tem funcionamento próprio.</p>
+        </section>
+
+        <section>
+            <h2><span class="n">09</span> Mudanças nesta política</h2>
+            <p>Se o site passar a coletar algo diferente, esta página muda antes — e a data no topo mostra quando isso aconteceu.</p>
+        </section>
+
+        <section>
+            <h2><span class="n">10</span> Como falar com a gente</h2>
+            <p>Sobre privacidade ou sobre qualquer outro assunto, o endereço é o mesmo: <a href="mailto:contato@clorofillaambiental.com.br">contato@clorofillaambiental.com.br</a>.</p>
+        </section>
+
+        <div class="responsavel">
+            <dl>
+                <dt>Razão social</dt>
+                <dd>Clorofilla Consultoria Ambiental Ltda. – ME</dd>
+                <dt>CNPJ</dt>
+                <dd>59.830.621/0001-45</dd>
+                <dt>Sede</dt>
+                <dd>Rio de Janeiro – RJ</dd>
+                <dt>Contato</dt>
+                <dd><a href="mailto:contato@clorofillaambiental.com.br">contato@clorofillaambiental.com.br</a></dd>
+            </dl>
+        </div>
+
+        <footer class="rodape">
+            <span>© 2025 Clorofilla Soluções Ambientais. Todos os direitos reservados.</span>
+            <a href="./">Voltar ao site</a>
+        </footer>
+
+    </div>
+
+</body>
+</html>
