@@ -1,9 +1,29 @@
+# php -- BEGIN cPanel-generated handler, do not edit
+# Set the “ea-php83” package as the default “PHP” programming language.
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php83___lsphp .php .php8 .phtml
+</IfModule>
+# php -- END cPanel-generated handler, do not edit
+
 # =============================================================================
 # Clorofilla Soluções Ambientais — configuração do servidor Apache (Hostgator)
 # Criado em 08/2026 durante a otimização de performance.
 #
 # ANTES desta configuração: 18 de 19 arquivos eram servidos sem nenhuma instrução
 # de cache. Cada visita rebaixava o site inteiro do zero.
+# =============================================================================
+#
+# ⚠️ O BLOCO ACIMA É DO PAINEL DA HOSTGATOR — copiado do que está EM PRODUÇÃO
+# em 02/09/2026, byte a byte, e mantido no topo de propósito.
+#
+# Ele é quem diz ao servidor qual versão de PHP usar. Sem ele, o
+# `form-handler.php` pode deixar de ser executado e o formulário de contato
+# para de funcionar. O arquivo em produção tinha 289 bytes e continha SÓ esse
+# bloco; publicar o nosso por cima, sem ele, teria quebrado o formulário.
+#
+# O painel REGENERA esse bloco sozinho (a última vez foi em 02/09/2026, 01:30).
+# Antes de publicar o `.htaccess`, CONFERIR o que está no ar e reproduzir aqui
+# o bloco atual — ele pode mudar de versão de PHP sem aviso.
 # =============================================================================
 
 # -----------------------------------------------------------------------------
