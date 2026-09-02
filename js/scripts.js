@@ -182,12 +182,41 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     // (as duas linhas acima so servem para a ferramenta de medicao; sao baratas)
 
 
-    // --- GLOBAL HELPER QUE ADICIONA O CLEANUP E SALVA A REFERÊNCIA PARA FUNÇÕES SPLITTEXT ---
-    function createSplitTextOnce(element, options) {
-        if (element._splitText) element._splitText.revert();
-        const split = new SplitText(element, options);
-        element._splitText = split;
-        return split;
+    // ======================================================================
+    // ETAPA 2.6-C2 (02/09/2026) — O RECORTE QUE SE REFAZ SOZINHO
+    // ======================================================================
+    //
+    // Até aqui o recorte em linhas acontecia UMA VEZ e pronto: as linhas
+    // ficavam cortadas para a largura daquele instante. Girar o telefone de pé
+    // para deitado mais que dobra a largura, e o texto continuava quebrado nos
+    // mesmos lugares. Medido em 02/09, antes desta mudança: os 9 parágrafos
+    // passaram de 358 px para 812 px de largura e NENHUM refez o recorte — um
+    // parágrafo que caberia folgado seguia espremido nas 13 linhas cortadas
+    // para a tela estreita.
+    //
+    // `autoSplit: true` faz o GSAP refazer o recorte sozinho quando a largura
+    // do elemento muda. A condição é que a animação NASÇA dentro de
+    // `onSplit()` e seja DEVOLVIDA por ela: é assim que o GSAP sabe desfazer a
+    // animação velha, criar a nova sobre as linhas novas e deixá-la no mesmo
+    // ponto em que estava. Sem devolver, cada recorte deixaria para trás uma
+    // animação órfã, presa a linhas que já não existem.
+    //
+    // A espera pelas fontes (etapa C, logo acima) CONTINUA valendo: é ela que
+    // garante que o PRIMEIRO recorte já sai com a régua certa. O `autoSplit`
+    // cuida do que vem depois.
+    function recortarTexto(elemento, opcoes, aoRecortar) {
+        if (!elemento) return null;
+        if (elemento._splitText) elemento._splitText.revert();
+        const recorte = SplitText.create(elemento, {
+            ...opcoes,
+            autoSplit: true,
+            onSplit(self) {
+                elemento._splitText = self;
+                return typeof aoRecortar === 'function' ? aoRecortar(self) : undefined;
+            },
+        });
+        elemento._splitText = recorte;
+        return recorte;
     }
 
     /**
@@ -276,66 +305,71 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         const secondaryText = secondaryTextSelector ? section.querySelector(secondaryTextSelector) : null;
         const logo = logoSelector ? section.querySelector(logoSelector) : null;
     
-        // Animação do título e texto primário (como antes)
+        // Animação do título e texto primário.
+        // A timeline inteira nasce dentro do recorte e é devolvida por ele:
+        // ver a explicação da etapa 2.6-C2, junto de `recortarTexto`.
         if (title && primaryText) {
-            const splitPrimaryText = createSplitTextOnce(primaryText, {
+            recortarTexto(primaryText, {
                 type: "lines,words",
                 linesClass,
                 mask: "lines"
-            });
-            gsap.set(title, { opacity: 1, x: titleFromX });
-            gsap.set(splitPrimaryText.words, { yPercent: 100, opacity: 1 });
-    
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: trigger || section,
-                    start: triggerStart,
-                    end: triggerEnd,
-                    scrub: 2,
-                    id: idPrefix + 'SectionTrigger'
+            }, (recorte) => {
+                gsap.set(title, { opacity: 1, x: titleFromX });
+                gsap.set(recorte.words, { yPercent: 100, opacity: 1 });
+
+                const tl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: trigger || section,
+                        start: triggerStart,
+                        end: triggerEnd,
+                        scrub: 2,
+                        id: idPrefix + 'SectionTrigger'
+                    }
+                });
+                // Se houver logo, anima primeiro
+                if (logo) {
+                    gsap.set(logo, { opacity: 0, yPercent: -50 });
+                    tl.fromTo(logo, { opacity: 0, yPercent: -50 }, { opacity: 1, yPercent: 0, duration: 0.6, ease: 'power3.out' }, '+=0.5');
                 }
+                tl.to(title, {
+                    x: 0,
+                    duration: 1,
+                    ease: 'back.out(0.7)'
+                }, 0)
+                .to(recorte.words, {
+                    yPercent: 0,
+                    duration: 0.5,
+                    stagger,
+                    ease: 'power3.out'
+                }, 0.2);
+                return tl;
             });
-            // Se houver logo, anima primeiro
-            if (logo) {
-                gsap.set(logo, { opacity: 0, yPercent: -50 });
-                tl.fromTo(logo, { opacity: 0, yPercent: -50 }, { opacity: 1, yPercent: 0, duration: 0.6, ease: 'power3.out' }, '+=0.5');
-            }
-            tl.to(title, {
-                x: 0,
-                duration: 1,
-                ease: 'back.out(0.7)'
-            }, 0)
-            .to(splitPrimaryText.words, {
-                yPercent: 0,
-                duration: 0.5,
-                stagger,
-                ease: 'power3.out'
-            }, 0.2);
         }
-    
+
         // Agora a animação do secundário SEM depender do bloco acima!
         if (secondaryText) {
-            const splitSecondaryText = createSplitTextOnce(secondaryText, {
+            recortarTexto(secondaryText, {
                 type: "lines,words",
                 linesClass,
                 mask: "lines"
+            }, (recorte) => {
+                gsap.set(recorte.words, { yPercent: 100, opacity: 1 });
+
+                return gsap.timeline({
+                    scrollTrigger: {
+                        trigger: secondaryTrigger || trigger || section,
+                        start: secondaryTriggerStart,
+                        end: secondaryTriggerEnd,
+                        scrub: 2,
+                        id: idPrefix + 'SecondaryTextTrigger'
+                    }
+                }).to(recorte.words, {
+                    yPercent: 0,
+                    duration: 0.5,
+                    stagger,
+                    ease: 'power3.out'
+                }, 0.4);
             });
-            gsap.set(splitSecondaryText.words, { yPercent: 100, opacity: 1 });
-    
-            gsap.timeline({
-                scrollTrigger: {
-                    trigger: secondaryTrigger || trigger || section,
-                    start: secondaryTriggerStart,
-                    end: secondaryTriggerEnd,
-                    scrub: 2,
-                    id: idPrefix + 'SecondaryTextTrigger'
-                }
-            }).to(splitSecondaryText.words, {
-                yPercent: 0,
-                duration: 0.5,
-                stagger,
-                ease: 'power3.out'
-            }, 0.4);
         }
     }
     
@@ -497,12 +531,13 @@ document.addEventListener("DOMContentLoaded", async (event) => {
               gsap.set(p2Title, { opacity: 1 });
 
               maquinaDeEscrever(p2Title, () => {
-                // 2) Parágrafo com SplitText após concluir o título
+                // 2) Parágrafo recortado em linhas, após concluir o título
                 if (p2Paragraph) {
-                  const split = createSplitTextOnce(p2Paragraph, { type: 'lines', linesClass: 'split-line', mask: 'lines' });
-                  gsap.set(p2Paragraph, { opacity: 1 });
-                  gsap.set(split.lines, { yPercent: 100, opacity: 1 });
-                  gsap.to(split.lines, { yPercent: 0, duration: 0.8, stagger: 0.12, ease: 'power3.out' });
+                  recortarTexto(p2Paragraph, { type: 'lines', linesClass: 'split-line', mask: 'lines' }, (recorte) => {
+                    gsap.set(p2Paragraph, { opacity: 1 });
+                    gsap.set(recorte.lines, { yPercent: 100, opacity: 1 });
+                    return gsap.to(recorte.lines, { yPercent: 0, duration: 0.8, stagger: 0.12, ease: 'power3.out' });
+                  });
                 }
 
                   // 3) a entrada do logo, por ultimo — ver a nota da tarefa 2.14 abaixo
@@ -522,6 +557,14 @@ document.addEventListener("DOMContentLoaded", async (event) => {
               gsap.set(p2Title, { opacity: 0 });
             }
             if (p2Paragraph) {
+              // Desfaz o recorte ANTES de reescrever o texto. Desde a etapa
+              // 2.6-C2 o recorte fica vivo, vigiando a largura do elemento —
+              // trocar o conteúdo por baixo dele deixaria a vigilância presa a
+              // linhas que já não existem.
+              if (p2Paragraph._splitText) {
+                p2Paragraph._splitText.revert();
+                p2Paragraph._splitText = null;
+              }
               p2Paragraph.textContent = originalParagraphText;
               gsap.set(p2Paragraph, { opacity: 0 });
             }
@@ -621,42 +664,42 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         // Split e anima o heading (letras ou palavras)
         if (headingWrapper) {
 
-            const splitHeading = createSplitTextOnce(headingText, { type: "lines,words", mask: "lines", });
+            recortarTexto(headingText, { type: "lines,words", mask: "lines", }, (recorte) => {
+                gsap.set(recorte.words, { yPercent: 100, opacity: 1 }); // Começa "escondido" para baixo
 
-            gsap.set(splitHeading.words, { yPercent: 100, opacity: 1 }); // Começa "escondido" para baixo
-
-            gsap.to(splitHeading.words, {
-                yPercent: 0,
-                duration: 1.2,
-                delay: 1,
-                ease: "power3.out",
-                stagger: 0.02, // Letras vão subindo uma a uma
-                scrollTrigger: {
-                    trigger: headingWrapper,
-                    start: "top 80%", // Quando 80% do wrapper entra na tela
-                    once: true // Só anima uma vez
-                }
+                return gsap.to(recorte.words, {
+                    yPercent: 0,
+                    duration: 1.2,
+                    delay: 1,
+                    ease: "power3.out",
+                    stagger: 0.02, // Letras vão subindo uma a uma
+                    scrollTrigger: {
+                        trigger: headingWrapper,
+                        start: "top 80%", // Quando 80% do wrapper entra na tela
+                        once: true // Só anima uma vez
+                    }
+                });
             });
         }
 
 
         // Split e anima o subtexto (por linha e palavra)
         if (subtextWrapper) {
-            const splitSubtext = createSplitTextOnce(subtextText, { type: "lines,words", mask: "lines" });
+            recortarTexto(subtextText, { type: "lines,words", mask: "lines" }, (recorte) => {
+                gsap.set(recorte.lines, { yPercent: 100, opacity: 1 });
 
-            gsap.set(splitSubtext.lines, { yPercent: 100, opacity: 1 });
-
-            gsap.to(splitSubtext.lines, {
-                yPercent: 0,
-                duration: 1.2,
-                delay: 1.5,
-                ease: "power3.out",
-                stagger: 0.07, // Mais espaçado para multiline
-                scrollTrigger: {
-                    trigger: subtextWrapper,
-                    start: "top 85%",
-                    once: true
-                }
+                return gsap.to(recorte.lines, {
+                    yPercent: 0,
+                    duration: 1.2,
+                    delay: 1.5,
+                    ease: "power3.out",
+                    stagger: 0.07, // Mais espaçado para multiline
+                    scrollTrigger: {
+                        trigger: subtextWrapper,
+                        start: "top 85%",
+                        once: true
+                    }
+                });
             });
         }
 
@@ -765,23 +808,23 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             });
         });
 
-        // Animação 2: Parágrafo com SplitText (linhas subindo)
+        // Animação 2: Parágrafo recortado em linhas (linhas subindo)
         timeline.to({}, { duration: 0.3 }); // Pequeno delay
         timeline.add(() => {
-            const split = createSplitTextOnce(paragraph, { type: "lines", linesClass: "split-line", mask: "lines" });
-
-            gsap.set(paragraph, { opacity: 1 }); // Garante que só aparece quando animar
-            gsap.set(split.lines, { yPercent: 100, opacity: 1 });
-            gsap.to(split.lines, {
-            yPercent: 0,
-            opacity: 1,
-            duration: 0.75,
-            stagger: 0.13,
-            onComplete: () => {
-                timeline.play(); // Segue para a entrada do logo
-            }
+            recortarTexto(paragraph, { type: "lines", linesClass: "split-line", mask: "lines" }, (recorte) => {
+                gsap.set(paragraph, { opacity: 1 }); // Garante que só aparece quando animar
+                gsap.set(recorte.lines, { yPercent: 100, opacity: 1 });
+                return gsap.to(recorte.lines, {
+                    yPercent: 0,
+                    opacity: 1,
+                    duration: 0.75,
+                    stagger: 0.13,
+                    onComplete: () => {
+                        timeline.play(); // Segue para a entrada do logo
+                    }
+                });
             });
-            timeline.pause(); // Pausa timeline até SplitText terminar
+            timeline.pause(); // Pausa a timeline até as linhas terminarem de subir
         });
 
         // Animacao 3: a entrada do logo, so depois do texto
@@ -1408,13 +1451,23 @@ const diferenciaisSlides = gsap.utils.toArray('.diferenciais-section');
 const container = document.querySelector('.vertical-section-diferenciais');
 const totalSlides = diferenciaisSlides.length;
 
-// SplitText: aplica para cada heading DENTRO do slide
+// Recorta o título de cada slide em letras.
+//
+// Aqui a animação NÃO nasce no recorte: quem a dispara é a rolagem, mais
+// abaixo, e o estado de cada slide vive no campo `revealed`. Por isso o objeto
+// de dados é criado ANTES do recorte — quando o recorte se refizer (etapa
+// 2.6-C2), as letras novas precisam nascer no mesmo estado em que as antigas
+// estavam: escondidas se o slide ainda não entrou, no lugar se já entrou.
 const headingSplitData = diferenciaisSlides.map(slide => {
   const heading = slide.querySelector('.diferenciais-heading');
   if (!heading) return null;
-  const split = new SplitText(heading, { type: "lines,chars" });
-  gsap.set(split.chars, { yPercent: 100, opacity: 0, display: 'inline-block' });
-  return { split, heading, slide, revealed: false, timeline: null };
+  const dados = { split: null, heading, slide, revealed: false, timeline: null };
+  dados.split = recortarTexto(heading, { type: "lines,chars" }, (recorte) => {
+    gsap.set(recorte.chars, dados.revealed
+      ? { yPercent: 0, opacity: 1, display: 'inline-block' }
+      : { yPercent: 100, opacity: 0, display: 'inline-block' });
+  });
+  return dados;
 }).filter(Boolean);
 
 const parallaxAmount = 20;
