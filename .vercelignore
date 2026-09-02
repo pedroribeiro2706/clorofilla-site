@@ -10,7 +10,28 @@ docs/
 # Imagens de referência visual usadas durante o desenvolvimento
 ref/
 
-# Página de teste, não faz parte do site
+# Páginas de teste, não fazem parte do site
 teste.html
+teste-responsivo.html
 
 README_DEV.md
+
+# --- Acrescentados em 02/09/2026, tarefa 2.7 ---
+#
+# Estes dois só fazem sentido na Hostgator. Na Vercel não são executados: são
+# entregues como TEXTO, de graça, para quem pedir. Continuam no repositório e
+# continuam indo para produção — o que muda é só o que a preview publica.
+#
+# O processador do formulário é PHP. A Vercel não roda PHP, então lá ele era
+# servido como código-fonte (medido: 3.068 bytes de código à vista) e qualquer
+# envio respondia 405. Com ele fora, o envio na preview passa a dar 404 —
+# igualmente não funciona, mas sem expor o código.
+#
+# ⚠️ CONSEQUÊNCIA A LEMBRAR: o formulário NUNCA funciona na preview. Isso não é
+# defeito do site. Testar o formulário exige a Hostgator, ou o
+# `ferramentas/validar-formulario.mjs`, que finge ser o servidor.
+form-handler.php
+
+# Regras de servidor do Apache. A Vercel não é Apache: aqui isso não é
+# configuração, é um arquivo de texto público.
+.htaccess

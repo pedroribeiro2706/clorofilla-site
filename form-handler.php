@@ -2,12 +2,33 @@
 declare(strict_types=1);
 
 /**
- * Simple contact form handler.
- * Configure the $toEmail and $fromEmail addresses to match your domain.
+ * Processador do formulário de contato.
+ *
+ * ⚠️ ISTO SÓ FUNCIONA NA HOSTGATOR. É PHP: a Vercel não executa PHP, então na
+ * preview qualquer envio falha. Não é defeito do site. Para testar o formulário
+ * sem depender da Hostgator, use `ferramentas/validar-formulario.mjs`, que finge
+ * ser o servidor e mostra o que o visitante veria em cada caso.
+ *
+ * Conferido em 02/09/2026, tarefa 2.7, contra a produção:
+ *   - o arquivo existe e o PHP é executado (o código-fonte não vaza);
+ *   - a armadilha anti-robô descarta em silêncio, como deve;
+ *   - a validação recusa e-mail inválido e campos vazios (HTTP 422);
+ *   - o SPF do domínio autoriza a Hostgator a enviar, e o MX aponta para o
+ *     próprio servidor: a entrega é local, sem sair para a internet.
+ *
+ * ⚠️ O QUE AINDA NÃO FOI PROVADO: que a mensagem CHEGA. A linha do mail(), lá
+ * embaixo, é a única que nenhum teste exercitou — exercitá-la significa mandar
+ * um e-mail de verdade para a caixa da Clorofilla.
  */
 
-$toEmail   = 'contato@clorofillaambiental.com.br'; // TODO: ajuste para o e-mail desejado
-$fromEmail = 'no-reply@clorofillaambiental.com.br'; // Precisa ser um remetente autorizado no HostGator
+// Endereço CONFIRMADO pelo Pedro em 01/09/2026. Não "corrigir".
+$toEmail   = 'contato@clorofillaambiental.com.br';
+
+// Remetente. Precisa ser aceito pelo servidor da HostGator.
+// ⚠️ A VERIFICAR quando houver acesso ao painel: se a conta no-reply@ não
+// existir no cPanel, alguns servidores recusam a mensagem ou a marcam como
+// spam. É o candidato número um caso o envio falhe.
+$fromEmail = 'no-reply@clorofillaambiental.com.br';
 
 $isAjax = (
     isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
