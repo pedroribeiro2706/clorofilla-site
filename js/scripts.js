@@ -450,6 +450,39 @@ document.addEventListener("DOMContentLoaded", async (event) => {
 
 
     // ##################################################################################
+                        // ROLAGEM SUAVE DOS LINKS DE ÂNCORA //
+    // ##################################################################################
+    //
+    // Até 04/09/2026 quem fazia isto era uma regra herdada do Bootstrap:
+    //   @media (prefers-reduced-motion: no-preference) { :root { scroll-behavior: smooth } }
+    //
+    // Ela saiu do CSS porque quebrava o ScrollTrigger. Para remedir a página, ele
+    // leva a rolagem ao topo, mede e devolve, tudo no mesmo quadro. Com a rolagem
+    // suave do CSS ligada esse movimento não acontece na hora, então ele media a
+    // página onde ela estava: as posições de TODOS os gatilhos saíam deslocadas
+    // pelo tanto que a página estivesse rolada. Medido em 04/09 no celular, com a
+    // página em 13.580 px, os 39 gatilhos deslocaram exatamente -13.580 px.
+    // A logo fixa do topo reaparecia e não sumia mais. É a tarefa 2.16.
+    //
+    // Feita aqui, a rolagem suave vale só para o clique do visitante. As
+    // medições do ScrollTrigger continuam com salto instantâneo, como ele espera.
+    const rolarSuave = (evento) => {
+      const destino = evento.currentTarget.getAttribute('href');
+      if (!destino || destino === '#') return;
+      const alvo = document.querySelector(destino);
+      if (!alvo) return;
+      evento.preventDefault();
+      const querMenosMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      alvo.scrollIntoView({ behavior: querMenosMovimento ? 'auto' : 'smooth', block: 'start' });
+      // a barra de endereços continua mostrando o que o link prometia
+      if (history.replaceState) history.replaceState(null, '', destino);
+    };
+    document.querySelectorAll('a[href^="#"]').forEach((link) => {
+      link.addEventListener('click', rolarSuave);
+    });
+
+
+    // ##################################################################################
                         // ANIMAÇÕES DO SCROLL HORIZONTAL //
     // ##################################################################################
 
@@ -475,7 +508,15 @@ document.addEventListener("DOMContentLoaded", async (event) => {
       const logoEl = document.querySelector('.panel-hero-logo');
       const heroEl = document.querySelector('#hero');
       if (logoEl && heroEl) {
-        // Fade OUT while hero scrolls out of view (finish ~25% after top leaves viewport)
+        // UM tween só controla a opacidade da logo, e ele é `scrub`: descer
+        // apaga a logo, subir traz de volta, porque o scrub reverte sozinho.
+        //
+        // Até 04/09/2026 havia um SEGUNDO tween aqui, de "fade in", no mesmo
+        // elemento e na mesma propriedade. Quando o visitante estava abaixo do
+        // topo, os dois ficavam com progresso 1 ao mesmo tempo — um levando a
+        // opacidade a 0, o outro a 1. Valia quem escrevesse por último, e cada
+        // remedição do ScrollTrigger podia inverter essa ordem: a logo então
+        // reaparecia por cima da página inteira. Era metade da tarefa 2.16.
         gsap.to(logoEl, {
           autoAlpha: 0,
           ease: 'none',
@@ -483,19 +524,6 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             trigger: heroEl,
             start: 'top top',
             end: 'top -25%',
-            scrub: true
-          }
-        });
-
-        // Fade IN as hero re-enters viewport from below up to top
-        gsap.to(logoEl, {
-          autoAlpha: 1,
-          ease: 'none',
-          immediateRender: false,
-          scrollTrigger: {
-            trigger: heroEl,
-            start: 'top bottom',
-            end: 'top top',
             scrub: true
           }
         });
