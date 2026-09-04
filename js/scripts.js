@@ -210,6 +210,19 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         const recorte = SplitText.create(elemento, {
             ...opcoes,
             autoSplit: true,
+            // `aria: 'none'` — acrescentado em 04/09/2026, tarefa 2.9.
+            //
+            // O padrao do SplitText e `aria: 'auto'`, que poe um `aria-label` com o
+            // texto inteiro no elemento recortado e `aria-hidden` em cada linha.
+            // A intencao e boa, mas o resultado reprova na auditoria: a especificacao
+            // do ARIA proibe `aria-label` em `<p>` sem `role`, e eram 8 paragrafos
+            // assim. Medido no Lighthouse de 04/09: regra `aria-prohibited-attr`,
+            // peso 7 na nota de acessibilidade.
+            //
+            // Com `'none'` o SplitText nao mexe em atributo nenhum de acessibilidade.
+            // O texto continua sendo lido: as linhas sao elementos comuns dentro do
+            // paragrafo, e o leitor de tela junta o conteudo como sempre fez.
+            aria: 'none',
             onSplit(self) {
                 elemento._splitText = self;
                 return typeof aoRecortar === 'function' ? aoRecortar(self) : undefined;
@@ -387,6 +400,8 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     const menuClose = document.getElementById('menuCloseTrigger');
 
     function openMenu() {
+        // avisa quem usa leitor de tela que o menu esta aberto (tarefa 2.9)
+        menuTrigger.setAttribute('aria-expanded', 'true');
         menuOverlay.classList.add('menu-open');
         menuOverlay.style.visibility = 'visible';
         gsap.fromTo(menuOverlay, 
@@ -412,6 +427,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
       }
 
       function closeMenu() {
+        menuTrigger.setAttribute('aria-expanded', 'false');
         const menuItems = document.querySelectorAll('.menu-nav ul li');
         // Some os itens antes do overlay
         gsap.to(menuItems, {

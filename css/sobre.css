@@ -145,7 +145,9 @@
     font-style: normal;
     font-size: 5rem;
     letter-spacing: -.05rem;
-    color: #99b381;
+    /* #99b381 dava contraste 2,30 sobre branco; a norma pede 3 para titulo
+       grande. Este tom mantem o mesmo verde e chega a 3,44. Tarefa 2.9. */
+    color: #7c9169;
     line-height: 1;
     margin: 0;
     text-transform: uppercase;
@@ -180,7 +182,10 @@
     font-style: normal;
     font-size: 1.8rem;
     line-height: 1.35;
-    color: #8bbf3a;
+    /* #8bbf3a dava contraste 2,18 sobre branco. No celular este texto cai para
+       18,5 px, tamanho em que a norma exige 4,5. Este tom mantem o verde e
+       chega a 4,64, valendo nas duas larguras. Tarefa 2.9. */
+    color: #5d7f27;
     /* opacity: 0; /* Começa invisível para animação */
     padding-right: 5rem;
 }

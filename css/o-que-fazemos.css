@@ -90,7 +90,10 @@
     font-style: normal;
     font-size: 1.8rem;
     line-height: 1.35;
-    color: #8bbf3a;
+    /* #8bbf3a dava contraste 2,18 sobre branco. No celular este texto cai para
+       18,5 px, tamanho em que a norma exige 4,5. Este tom mantem o verde e
+       chega a 4,64, valendo nas duas larguras. Tarefa 2.9. */
+    color: #5d7f27;
     padding-right: 5rem;
 }
 

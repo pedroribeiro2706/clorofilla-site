@@ -405,7 +405,11 @@ p {
 .panel-content-orange {
     width: 50vw; 
     background-color: #FFA726; 
-    color: #ffffff;
+    /* O branco sobre este laranja dava contraste 1,94 e a norma pede 3.
+       DECISAO DO PEDRO em 04/09/2026, vendo as duas opcoes lado a lado: o
+       laranja da marca fica exatamente como e, e quem escurece e o texto.
+       Contraste 5,90, com folga. Tarefa 2.9. */
+    color: #5c2d00;
     padding: 2rem;
     height: 100vh; /* Garantir que ocupe toda a altura da viewport */
     box-sizing: border-box;
