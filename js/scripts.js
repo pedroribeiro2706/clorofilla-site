@@ -29,7 +29,9 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     // e o campo `.hp-field`, que é a armadilha invisível contra robôs de spam.
     function mostrarTudoSemAnimacao() {
         const paraMostrar = [
-            '.panel-content-white-paragraph',
+            '.panel-content-white h2',       // a tela "COMEÇA NO PRESENTE": título,
+            '.panel-content-white-paragraph', // texto
+            '#lottieLogoVertical',           // e logo, os três escondidos até animar
             '.sobre-title',
             '.sobre-primary-text',
             '.sobre-secondary-text',
@@ -253,7 +255,9 @@ document.addEventListener("DOMContentLoaded", async (event) => {
      * Devolve a tween, para quem chamar poder pausar, reverter ou encaixar
      * numa timeline — coisa que o setTimeout não permitia.
      */
-    const SEGUNDOS_POR_LETRA = 0.072; // o ritmo de sempre, agora num lugar só
+    // Era 0,072 até 10/09/2026: o título "COMEÇA NO PRESENTE" levava 1,7 s para
+    // ser digitado. O Pedro pediu mais rápido (Fase 3); agora leva 1,0 s.
+    const SEGUNDOS_POR_LETRA = 0.045;
 
     function maquinaDeEscrever(titulo, aoTerminar) {
         // o texto vem do HTML, sem o cursor que já está dentro do título
@@ -289,6 +293,57 @@ document.addEventListener("DOMContentLoaded", async (event) => {
                 if (typeof aoTerminar === 'function') aoTerminar();
             },
         });
+    }
+
+    /**
+     * --- A TELA "COMEÇA NO PRESENTE": a mesma entrada no celular e no computador ---
+     *
+     * Fase 3, 10/09/2026, pedido do Pedro. A entrada levava 4,4 s no computador.
+     * Agora leva cerca de 2,3 s:
+     *   1. o título continua datilografado, mais rápido (SEGUNDOS_POR_LETRA);
+     *   2. o texto aparece INTEIRO, só com fade. Antes subia linha a linha pelo
+     *      SplitText, o que alongava a entrada e poluía a tela;
+     *   3. o logo entra como antes (fade, subindo de baixo), mas 0,3 s depois de
+     *      o texto começar, sem esperar o texto terminar.
+     *
+     * Até esta data eram duas cópias, uma por largura. Cada uma só diz agora
+     * QUANDO a entrada começa; COMO ela acontece mora aqui, num lugar só.
+     *
+     * `zerar` PARA o que estiver tocando, e antes não parava. O defeito estava
+     * no ar, medido em 10/09: quem voltava antes de o título terminar deixava a
+     * sequência seguindo escondida. No computador, ao retornar, o texto sumia e
+     * não voltava mais; no celular, texto e logo já estavam lá antes do título.
+     */
+    function telaComecaNoPresente(secao) {
+        const titulo = secao.querySelector('h2');
+        const texto = secao.querySelector('.panel-content-white-paragraph');
+        const logo = secao.querySelector('#lottieLogoVertical');
+        const tituloOriginal = titulo.innerHTML;
+        let digitacao = null;
+        let entrada = null;
+
+        function zerar() {
+            if (digitacao) digitacao.kill();
+            if (entrada) entrada.kill();
+            digitacao = entrada = null;
+            titulo.innerHTML = tituloOriginal;
+            titulo.classList.remove('section-typing_text');
+            gsap.set([titulo, texto], { opacity: 0 });
+            if (logo) gsap.set(logo, { opacity: 0, y: 20 });
+        }
+
+        function iniciar() {
+            zerar();
+            gsap.set(titulo, { opacity: 1 });
+            digitacao = maquinaDeEscrever(titulo, () => {
+                entrada = gsap.timeline({ defaults: { duration: 0.8, ease: 'power2.out' } });
+                entrada.to(texto, { opacity: 1 }, 0.15);
+                if (logo) entrada.to(logo, { opacity: 1, y: 0 }, 0.45);
+            });
+        }
+
+        zerar(); // tudo escondido até o gatilho disparar
+        return { iniciar, zerar };
     }
 
     // --- ANIMAÇÃO PADRÃO PARA O HEADER ---
@@ -546,74 +601,18 @@ document.addEventListener("DOMContentLoaded", async (event) => {
       }
     });
 
-    // Mobile-only: Panel 2 vertical animations (replica do fluxo desktop, sem containerAnimation)
+    // Celular: a tela "COMEÇA NO PRESENTE", rolando na vertical. A entrada é a
+    // mesma do computador (ver `telaComecaNoPresente`); aqui só se diz quando.
     mm.add(CELULAR, () => {
       const panel2 = document.querySelector('.panel.panel-content-white');
       if (panel2) {
-        const p2Title = panel2.querySelector('h2');
-        const p2Paragraph = panel2.querySelector('.panel-content-white-paragraph');
-        const p2Logo = panel2.querySelector('#lottieLogoVertical');
-        const originalTitleHTML = p2Title ? p2Title.innerHTML : '';
-        const originalParagraphText = p2Paragraph ? p2Paragraph.textContent : '';
-        // (a instancia do Lottie foi removida na tarefa 2.14)
-
-        // Estado inicial
-        if (p2Title) gsap.set(p2Title, { opacity: 0 });
-        if (p2Logo) gsap.set(p2Logo, { opacity: 0, y: 20 });
-        if (p2Paragraph) gsap.set(p2Paragraph, { opacity: 0 });
-
-        // (a máquina de escrever daqui virou a `maquinaDeEscrever` compartilhada,
-        //  lá em cima junto dos outros utilitários — etapa 2.6-D)
-
+        const tela2 = telaComecaNoPresente(panel2);
         ScrollTrigger.create({
           trigger: panel2,
           start: 'top 80%',
           end: 'bottom top',
-          onEnter: () => {
-            // 1) Título com typewriter
-            if (p2Title) {
-              gsap.set(p2Title, { opacity: 1 });
-
-              maquinaDeEscrever(p2Title, () => {
-                // 2) Parágrafo recortado em linhas, após concluir o título
-                if (p2Paragraph) {
-                  recortarTexto(p2Paragraph, { type: 'lines', linesClass: 'split-line', mask: 'lines' }, (recorte) => {
-                    gsap.set(p2Paragraph, { opacity: 1 });
-                    gsap.set(recorte.lines, { yPercent: 100, opacity: 1 });
-                    return gsap.to(recorte.lines, { yPercent: 0, duration: 0.8, stagger: 0.12, ease: 'power3.out' });
-                  });
-                }
-
-                  // 3) a entrada do logo, por ultimo — ver a nota da tarefa 2.14 abaixo
-                  if (p2Logo) {
-                    gsap.fromTo(p2Logo,
-                      { opacity: 0, y: 20 },
-                      { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" });
-                  }
-              });
-            }
-          },
-          onLeaveBack: () => {
-            // Reset
-            if (p2Title) {
-              p2Title.innerHTML = originalTitleHTML;
-              p2Title.classList.remove('section-typing_text');
-              gsap.set(p2Title, { opacity: 0 });
-            }
-            if (p2Paragraph) {
-              // Desfaz o recorte ANTES de reescrever o texto. Desde a etapa
-              // 2.6-C2 o recorte fica vivo, vigiando a largura do elemento —
-              // trocar o conteúdo por baixo dele deixaria a vigilância presa a
-              // linhas que já não existem.
-              if (p2Paragraph._splitText) {
-                p2Paragraph._splitText.revert();
-                p2Paragraph._splitText = null;
-              }
-              p2Paragraph.textContent = originalParagraphText;
-              gsap.set(p2Paragraph, { opacity: 0 });
-            }
-                        if (p2Logo) gsap.set(p2Logo, { opacity: 0, y: 20 });
-          }
+          onEnter: tela2.iniciar,
+          onLeaveBack: tela2.zerar,
         });
       }
     });
@@ -793,98 +792,30 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         }
 
 
-          // Seletores principais
+        // A tela "COMEÇA NO PRESENTE". A entrada é a mesma do celular (ver
+        // `telaComecaNoPresente`); aqui só se diz quando: assim que a tela começa
+        // a entrar pela direita, e de novo sempre que se volta para trás dela.
+        //
+        // Sobre o logo: 08/2026, tarefa 2.14, o Lottie saiu daqui. A biblioteca
+        // lottie-web pesava 298,4 KB e a animacao .json outros 26,8 KB, 325 KB
+        // baixados em toda visita para animar um logo. O logo agora e um SVG comum
+        // de 8,8 KB (assets/logo-clorofilla-cor.svg, extraido do proprio .json e
+        // conferido pixel a pixel). Decisao do Pedro em 31/08: entrada simples, com
+        // o logo surgindo de baixo. A animacao antiga (o traco se desenhando) NAO foi
+        // reproduzida, por escolha consciente dele. Os arquivos .json/.lottie/.webm
+        // continuam em assets/ caso um dia queira de volta.
         const section = document.querySelector('.panel.panel-content-white');
-        const title = section.querySelector('h2');
-        const paragraph = section.querySelector('.panel-content-white-paragraph');
-        const logoContainer = section.querySelector('#lottieLogoVertical');
-
-        // Salva conteúdo original para reset
-        const originalTitleHTML = title.innerHTML;
-        const originalParagraph = paragraph.textContent;
-
-        // (a instancia do Lottie foi removida na tarefa 2.14)
-
-        // Função de efeito typewriter manual
-        // (a máquina de escrever daqui virou a `maquinaDeEscrever` compartilhada,
-        //  lá em cima junto dos outros utilitários — etapa 2.6-D)
-
-        // Função de reset do estado inicial
-        function resetSection() {
-            // Reset do título
-            title.innerHTML = originalTitleHTML;
-            title.classList.remove('section-typing_text');
-            // Reset do parágrafo
-            paragraph.textContent = originalParagraph;
-            paragraph.style.opacity = '';
-            paragraph.style.transform = '';
-            paragraph.style.opacity = '0'; // Esconde ao resetar
-
-            // Reset do logo (antes: destruia a instancia do Lottie e limpava o container)
-            if (logoContainer) gsap.set(logoContainer, { opacity: 0, y: 20 });
-        }
-
-        // Timeline principal com ScrollTrigger
-        const timeline = gsap.timeline({
-            paused: true,
-            defaults: { ease: 'power3.out' },
-            scrollTrigger: {
-            trigger: section,
-            containerAnimation: scrollHorizontal, // use o seu scrollHorizontal aqui
-            start: "left right",
-            end: "right left",
-            toggleActions: "play none none reset",
-            onEnter: resetSection,
-            onLeaveBack: resetSection,
-            id: "panel2Timeline"
-            }
-        });
-
-        // Animação 1: Título com typewriter
-        // O texto NÃO é escrito aqui: `maquinaDeEscrever` lê do próprio HTML.
-        // Era essa cópia do texto que estava com a acentuação quebrada.
-        timeline.add(() => {
-            return gsap.delayedCall(0, () => {
-            maquinaDeEscrever(title, () => {
-                timeline.play(); // Segue para o próximo passo da timeline
+        if (section) {
+            const tela2 = telaComecaNoPresente(section);
+            ScrollTrigger.create({
+                trigger: section,
+                containerAnimation: scrollHorizontal,
+                start: 'left right',
+                end: 'right left',
+                id: 'tela-comeca-no-presente',
+                onEnter: tela2.iniciar,
+                onLeaveBack: tela2.zerar,
             });
-            timeline.pause(); // Pausa timeline até terminar typewriter
-            });
-        });
-
-        // Animação 2: Parágrafo recortado em linhas (linhas subindo)
-        timeline.to({}, { duration: 0.3 }); // Pequeno delay
-        timeline.add(() => {
-            recortarTexto(paragraph, { type: "lines", linesClass: "split-line", mask: "lines" }, (recorte) => {
-                gsap.set(paragraph, { opacity: 1 }); // Garante que só aparece quando animar
-                gsap.set(recorte.lines, { yPercent: 100, opacity: 1 });
-                return gsap.to(recorte.lines, {
-                    yPercent: 0,
-                    opacity: 1,
-                    duration: 0.75,
-                    stagger: 0.13,
-                    onComplete: () => {
-                        timeline.play(); // Segue para a entrada do logo
-                    }
-                });
-            });
-            timeline.pause(); // Pausa a timeline até as linhas terminarem de subir
-        });
-
-        // Animacao 3: a entrada do logo, so depois do texto
-        // 08/2026 — tarefa 2.14: o Lottie saiu daqui.
-        // A biblioteca lottie-web pesava 298,4 KB e a animacao .json outros 26,8 KB —
-        // 325 KB baixados em toda visita para animar um logo. O logo agora e um SVG
-        // comum de 8,8 KB (assets/logo-clorofilla-cor.svg, extraido do proprio .json e
-        // conferido pixel a pixel), e a entrada e uma animacao de GSAP.
-        // Decisao do Pedro em 31/08: entrada simples, com o logo surgindo de baixo.
-        // A animacao antiga (o traco se desenhando) NAO foi reproduzida — foi escolha
-        // consciente dele. Os arquivos .json/.lottie/.webm continuam em assets/ caso
-        // um dia queira de volta; deixaram apenas de ser baixados.
-        if (logoContainer) {
-            timeline.fromTo(logoContainer,
-                { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" });
         }
 
         // Painel 4: Animação do título vindo da esquerda no scroll horizontal
