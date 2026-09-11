@@ -302,9 +302,12 @@ document.addEventListener("DOMContentLoaded", async (event) => {
      * Agora leva cerca de 2,3 s:
      *   1. o título continua datilografado, mais rápido (SEGUNDOS_POR_LETRA);
      *   2. o texto aparece INTEIRO, só com fade. Antes subia linha a linha pelo
-     *      SplitText, o que alongava a entrada e poluía a tela;
-     *   3. o logo entra como antes (fade, subindo de baixo), mas 0,3 s depois de
-     *      o texto começar, sem esperar o texto terminar.
+     *      SplitText, o que alongava a entrada e poluía a tela. Ele começa com
+     *      o título pela METADE, num fade longo e suave (ajuste do Pedro, na
+     *      primeira revisão: antes esperava o título terminar, e o fade era
+     *      mais curto e mais seco);
+     *   3. o logo entra como antes (fade, subindo de baixo), 0,45 s depois de o
+     *      título terminar, sem esperar o texto terminar.
      *
      * Até esta data eram duas cópias, uma por largura. Cada uma só diz agora
      * QUANDO a entrada começa; COMO ela acontece mora aqui, num lugar só.
@@ -319,13 +322,11 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         const texto = secao.querySelector('.panel-content-white-paragraph');
         const logo = secao.querySelector('#lottieLogoVertical');
         const tituloOriginal = titulo.innerHTML;
-        let digitacao = null;
-        let entrada = null;
+        let entrada = null; // a digitação, o texto e o logo, numa timeline só
 
         function zerar() {
-            if (digitacao) digitacao.kill();
             if (entrada) entrada.kill();
-            digitacao = entrada = null;
+            entrada = null;
             titulo.innerHTML = tituloOriginal;
             titulo.classList.remove('section-typing_text');
             gsap.set([titulo, texto], { opacity: 0 });
@@ -335,11 +336,12 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         function iniciar() {
             zerar();
             gsap.set(titulo, { opacity: 1 });
-            digitacao = maquinaDeEscrever(titulo, () => {
-                entrada = gsap.timeline({ defaults: { duration: 0.8, ease: 'power2.out' } });
-                entrada.to(texto, { opacity: 1 }, 0.15);
-                if (logo) entrada.to(logo, { opacity: 1, y: 0 }, 0.45);
-            });
+            const digitar = maquinaDeEscrever(titulo);
+            const digitando = digitar.duration();
+            entrada = gsap.timeline()
+                .add(digitar, 0)
+                .to(texto, { opacity: 1, duration: 1.2, ease: 'sine.inOut' }, digitando / 2);
+            if (logo) entrada.to(logo, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }, digitando + 0.45);
         }
 
         zerar(); // tudo escondido até o gatilho disparar
