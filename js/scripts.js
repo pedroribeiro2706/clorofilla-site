@@ -306,8 +306,9 @@ document.addEventListener("DOMContentLoaded", async (event) => {
      *      o título pela METADE, num fade longo e suave (ajuste do Pedro, na
      *      primeira revisão: antes esperava o título terminar, e o fade era
      *      mais curto e mais seco);
-     *   3. o logo entra como antes (fade, subindo de baixo), 0,45 s depois de o
-     *      título terminar, sem esperar o texto terminar.
+     *   3. o logo entra como antes (fade, subindo de baixo), PRESO AO TEXTO:
+     *      0,3 s depois de o texto começar, durante a entrada dele. (Na primeira
+     *      revisão ficou preso ao fim do título, e o Pedro achou que demorava.)
      *
      * Até esta data eram duas cópias, uma por largura. Cada uma só diz agora
      * QUANDO a entrada começa; COMO ela acontece mora aqui, num lugar só.
@@ -337,11 +338,11 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             zerar();
             gsap.set(titulo, { opacity: 1 });
             const digitar = maquinaDeEscrever(titulo);
-            const digitando = digitar.duration();
+            const comecaOTexto = digitar.duration() / 2;
             entrada = gsap.timeline()
                 .add(digitar, 0)
-                .to(texto, { opacity: 1, duration: 1.2, ease: 'sine.inOut' }, digitando / 2);
-            if (logo) entrada.to(logo, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }, digitando + 0.45);
+                .to(texto, { opacity: 1, duration: 1.2, ease: 'sine.inOut' }, comecaOTexto);
+            if (logo) entrada.to(logo, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }, comecaOTexto + 0.3);
         }
 
         zerar(); // tudo escondido até o gatilho disparar
