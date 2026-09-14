@@ -32,9 +32,24 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             '.panel-content-white h2',       // a tela "COMEÇA NO PRESENTE": título,
             '.panel-content-white-paragraph', // texto
             '#lottieLogoVertical',           // e logo, os três escondidos até animar
+            // Os quatro cabeçalhos de seção que passam por `animateSectionHeader`.
+            // Desde 14/09/2026 os textos são escondidos por opacidade (antes era
+            // a máscara do SplitText), e os títulos entram deslocados na
+            // horizontal — por isso os três de cada seção precisam estar aqui.
             '.sobre-title',
             '.sobre-primary-text',
             '.sobre-secondary-text',
+            '.oqf-title',
+            '.oqf-primary-text',
+            '.oqf-secondary-text',
+            '.diferenciais-title',
+            '.diferenciais-primary-text',
+            '.diferenciais-secondary-text',
+            '.servicos-title',
+            '.servicos-primary-text',
+            '.servicos-secondary-text',
+            '.sobre-logo',     // o logo dessas seções (o seletor se repete nas três)
+            '.servicos-logo',
             '.oqf-card-container',
             '.diferenciais-overlay',
             '.diferenciais-text',
@@ -349,8 +364,47 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         return { iniciar, zerar };
     }
 
-    // --- ANIMAÇÃO PADRÃO PARA O HEADER ---
-    
+    /**
+     * --- ANIMAÇÃO PADRÃO PARA O HEADER DE SEÇÃO ---
+     *
+     * Serve quatro seções: "SOLUÇÕES AMBIENTAIS COM PROPÓSITO", "O que fazemos
+     * por você", "Por que escolher a Clorofilla" e "SERVIÇOS AMBIENTAIS
+     * INTEGRADOS". Mexer aqui mexe nas quatro.
+     *
+     * Fase 3, 14/09/2026, pedido do Pedro. Até esta data os textos subiam
+     * PALAVRA POR PALAVRA por trás de uma máscara de linha, feita com
+     * SplitText. Eram 179 movimentos separados nas três primeiras seções —
+     * o pior caso, o segundo texto de "O que fazemos por você", tinha 59
+     * palavras, que no celular viravam 14 linhas em cascata.
+     *
+     * Agora o parágrafo entra INTEIRO, só com fade, em `sine.inOut`: o mesmo
+     * que o Pedro aprovou na tela "COMEÇA NO PRESENTE" em 10/09. São dois
+     * movimentos por seção, independentemente do tamanho do texto.
+     *
+     * O QUE NÃO MUDOU, de propósito: o título e o logo. O Pedro disse que
+     * "título e logo entram corretamente", e a regra do projeto é que as
+     * relações já aprovadas continuam valendo. Os dois seguem colados à
+     * rolagem (`scrub: 2`), e o texto segue colado a eles — o fade termina
+     * junto com o título, em vez de depois dele.
+     *
+     * De brinde, some um efeito indesejado: era a máscara que fazia o acento
+     * piscar sozinho na entrada (a parte alta da letra aparecia antes do
+     * resto). Sem máscara, sem piscada.
+     *
+     * ⚠️ Estes textos passam a ser escondidos por `gsap.set({ opacity: 0 })`,
+     * e não mais pela máscara. Quem esconde é quem precisa revelar: os oito
+     * parágrafos estão listados em `mostrarTudoSemAnimacao()`, que é a rede
+     * de segurança para quem pede menos movimento e para o caso de a montagem
+     * estourar um erro. Acrescentar seção nova aqui pede acrescentar lá.
+     */
+
+    // O fade entra em 0,2 e termina em 1,0, que é onde o título também termina.
+    // Não são segundos: a animação é colada à rolagem, então esses números são
+    // a FATIA do trecho de rolagem em que cada coisa acontece.
+    const TEXTO_ENTRA = 0.2;
+    const TEXTO_DURA = 0.8;
+    const TEXTO_SUAVIDADE = 'sine.inOut';
+
     function animateSectionHeader({
         sectionSelector,
         titleSelector,
@@ -361,8 +415,6 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         trigger = null,
         triggerStart = 'top 45%',
         triggerEnd = '10% 15%',
-        stagger = 0.02,
-        linesClass = 'split-line',
         idPrefix = '',
         // NOVO:
         secondaryTrigger = null,
@@ -375,75 +427,58 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         // Veja: não depende mais do primary/título existir!
         const secondaryText = secondaryTextSelector ? section.querySelector(secondaryTextSelector) : null;
         const logo = logoSelector ? section.querySelector(logoSelector) : null;
-    
-        // Animação do título e texto primário.
-        // A timeline inteira nasce dentro do recorte e é devolvida por ele:
-        // ver a explicação da etapa 2.6-C2, junto de `recortarTexto`.
-        if (title && primaryText) {
-            recortarTexto(primaryText, {
-                type: "lines,words",
-                linesClass,
-                mask: "lines"
-            }, (recorte) => {
-                gsap.set(title, { opacity: 1, x: titleFromX });
-                gsap.set(recorte.words, { yPercent: 100, opacity: 1 });
 
-                const tl = gsap.timeline({
-                    scrollTrigger: {
-                        trigger: trigger || section,
-                        start: triggerStart,
-                        end: triggerEnd,
-                        scrub: 2,
-                        id: idPrefix + 'SectionTrigger'
-                    }
-                });
-                // Se houver logo, anima primeiro
-                if (logo) {
-                    gsap.set(logo, { opacity: 0, yPercent: -50 });
-                    tl.fromTo(logo, { opacity: 0, yPercent: -50 }, { opacity: 1, yPercent: 0, duration: 0.6, ease: 'power3.out' }, '+=0.5');
+        // Animação do título e texto primário.
+        if (title && primaryText) {
+            gsap.set(title, { opacity: 1, x: titleFromX });
+            gsap.set(primaryText, { opacity: 0 });
+
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: trigger || section,
+                    start: triggerStart,
+                    end: triggerEnd,
+                    scrub: 2,
+                    id: idPrefix + 'SectionTrigger'
                 }
-                tl.to(title, {
-                    x: 0,
-                    duration: 1,
-                    ease: 'back.out(0.7)'
-                }, 0)
-                .to(recorte.words, {
-                    yPercent: 0,
-                    duration: 0.5,
-                    stagger,
-                    ease: 'power3.out'
-                }, 0.2);
-                return tl;
             });
+            // Se houver logo, anima primeiro
+            if (logo) {
+                gsap.set(logo, { opacity: 0, yPercent: -50 });
+                tl.fromTo(logo, { opacity: 0, yPercent: -50 }, { opacity: 1, yPercent: 0, duration: 0.6, ease: 'power3.out' }, '+=0.5');
+            }
+            tl.to(title, {
+                x: 0,
+                duration: 1,
+                ease: 'back.out(0.7)'
+            }, 0)
+            .to(primaryText, {
+                opacity: 1,
+                duration: TEXTO_DURA,
+                ease: TEXTO_SUAVIDADE
+            }, TEXTO_ENTRA);
         }
 
         // Agora a animação do secundário SEM depender do bloco acima!
         if (secondaryText) {
-            recortarTexto(secondaryText, {
-                type: "lines,words",
-                linesClass,
-                mask: "lines"
-            }, (recorte) => {
-                gsap.set(recorte.words, { yPercent: 100, opacity: 1 });
+            gsap.set(secondaryText, { opacity: 0 });
 
-                return gsap.timeline({
-                    scrollTrigger: {
-                        trigger: secondaryTrigger || trigger || section,
-                        start: secondaryTriggerStart,
-                        end: secondaryTriggerEnd,
-                        scrub: 2,
-                        id: idPrefix + 'SecondaryTextTrigger'
-                    }
-                }).to(recorte.words, {
-                    yPercent: 0,
-                    duration: 0.5,
-                    stagger,
-                    ease: 'power3.out'
-                }, 0.4);
-            });
+            gsap.timeline({
+                scrollTrigger: {
+                    trigger: secondaryTrigger || trigger || section,
+                    start: secondaryTriggerStart,
+                    end: secondaryTriggerEnd,
+                    scrub: 2,
+                    id: idPrefix + 'SecondaryTextTrigger'
+                }
+            }).to(secondaryText, {
+                opacity: 1,
+                duration: TEXTO_DURA,
+                ease: TEXTO_SUAVIDADE
+            }, 0.4);
         }
     }
-    
+
 
     // 08/2026 — tarefa 2.5/A: removidas 14 linhas de um gsap.to(".section-transition")
     // comentado, que nunca chegou a rodar. Esta no historico do git se fizer falta.
@@ -976,7 +1011,6 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             primaryTextSelector: '.sobre-primary-text',
             logoSelector: '.sobre-logo',
             secondaryTextSelector: '.sobre-secondary-text',
-            linesClass: 'sobre-line',
             idPrefix: 'sobre',
             secondaryTrigger: '.sobre-header-elements', // mantido
             secondaryTriggerStart: 'top top',
@@ -1209,7 +1243,6 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             primaryTextSelector: '.oqf-primary-text',
             logoSelector: '.sobre-logo',
             secondaryTextSelector: '.oqf-secondary-text',
-            linesClass: 'oqf-line',
             idPrefix: 'oqf',
             trigger: '.oqf-header-elements', // igual à sua timeline original
             triggerStart: 'top 45%',
@@ -1262,7 +1295,6 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             trigger: diffTop,
             triggerStart: 'top 45%',
             triggerEnd: '10% 15%',
-            linesClass: 'diff-line',
             idPrefix: 'difTop'
         });
     }
@@ -1793,7 +1825,6 @@ ScrollTrigger.create({
             primaryTextSelector: '.servicos-primary-text',
             secondaryTextSelector: '.servicos-secondary-text',
             logoSelector: '.servicos-logo',
-            linesClass: 'servicos-line',
             idPrefix: 'servicos',
             trigger: '.servicos-header-elements',
             triggerStart: 'top 95%',
