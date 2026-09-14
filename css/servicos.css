@@ -43,6 +43,13 @@
   border-left: 1px solid #99b381;
   display: flex;
   align-items: flex-start;
+  /* A MÁSCARA DO TÍTULO — acrescentada em 14/09/2026, Fase 3.
+     O título entra deslizando 700 px pela esquerda. Sem esta linha ele era
+     visto atravessando a metade esquerda da tela, fora da própria coluna.
+     As outras três seções (sobre, o-que-fazemos, diferenciais) sempre
+     tiveram a máscara na coluna do título; esta era a única sem, desde que
+     a seção foi construída. O Pedro reparou em 14/09. */
+  overflow: hidden;
 }
 
 .servicos-logo-container {

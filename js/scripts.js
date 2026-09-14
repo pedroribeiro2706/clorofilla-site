@@ -405,6 +405,37 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     const TEXTO_DURA = 0.8;
     const TEXTO_SUAVIDADE = 'sine.inOut';
 
+    // --- A VELOCIDADE DO TÍTULO — Fase 3, 14/09/2026 ---
+    //
+    // O Pedro: "os títulos estão deslizando com muita rapidez... eles só começam
+    // a aparecer quando as seções já subiram cerca de 50% da altura da tela,
+    // então precisam correr para alcançar o ponto de chegada". Estava certo, e
+    // dá para pôr número nisso. O título viaja SEMPRE 700 px na horizontal, mas
+    // o trecho de rolagem para fazer esse trajeto variava muito entre as seções:
+    //
+    //   seção                  trecho    velocidade (comp./cel.)
+    //   SOLUÇÕES AMBIENTAIS    568 px    1,23 / 1,61
+    //   O que fazemos          292 px    2,40 / 2,48   <- o pior caso
+    //   Por que escolher       351 px    1,99 / 2,04
+    //   Serviços               675 px    1,04 / 1,11
+    //
+    // Velocidade 2,48 é o título andando duas vezes e meia mais rápido que o
+    // dedo de quem rola. Agora as quatro usam o mesmo trecho: começa quando a
+    // seção aponta na base da tela e termina quando ela subiu 80% da altura.
+    // A velocidade cai para cerca de 1,0 — o título anda mais devagar que o
+    // dedo, que é o que dá a sensação de calma.
+    //
+    // Os chamadores não passam mais `triggerStart`/`triggerEnd`: o ponto de
+    // TODA a regulagem de velocidade é aqui, num lugar só. Quem quiser mexer
+    // mexe nestas duas linhas e muda as quatro seções juntas.
+    const TITULO_COMECA = 'top bottom';   // a seção aponta na base da tela
+    const TITULO_TERMINA = 'top 20%';     // e subiu 80% da altura da tela
+
+    // Era `back.out(0.7)`, que passa do ponto de chegada e volta. Num movimento
+    // colado à rolagem esse vai e volta vira um tremidinho no fim. O Pedro pediu
+    // para tirar em 14/09, junto do ajuste de velocidade.
+    const TITULO_SUAVIDADE = 'power2.out';
+
     function animateSectionHeader({
         sectionSelector,
         titleSelector,
@@ -413,8 +444,6 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         logoSelector = null,
         titleFromX = -700,
         trigger = null,
-        triggerStart = 'top 45%',
-        triggerEnd = '10% 15%',
         idPrefix = '',
         // NOVO:
         secondaryTrigger = null,
@@ -436,8 +465,8 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: trigger || section,
-                    start: triggerStart,
-                    end: triggerEnd,
+                    start: TITULO_COMECA,
+                    end: TITULO_TERMINA,
                     scrub: 2,
                     id: idPrefix + 'SectionTrigger'
                 }
@@ -450,7 +479,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             tl.to(title, {
                 x: 0,
                 duration: 1,
-                ease: 'back.out(0.7)'
+                ease: TITULO_SUAVIDADE
             }, 0)
             .to(primaryText, {
                 opacity: 1,
@@ -908,6 +937,10 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         }
       };
 
+      // O estado inicial de cada item vem do `aria-expanded` escrito no HTML.
+      // Desde 14/09/2026 os três nascem em "false": o Pedro pediu o acordeão
+      // com tudo fechado, abrindo só quando a pessoa aperta o "+". Para mudar
+      // isso de novo, mexa no HTML — não aqui.
       servicosAccordionTriggers.forEach((trigger) => {
         const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
         toggleAccordionPanel(trigger, isExpanded);
@@ -1245,8 +1278,6 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             secondaryTextSelector: '.oqf-secondary-text',
             idPrefix: 'oqf',
             trigger: '.oqf-header-elements', // igual à sua timeline original
-            triggerStart: 'top 45%',
-            triggerEnd: '10% 15%',
             secondaryTrigger: '.oqf-header-elements', // igual ao original
             secondaryTriggerStart: 'top top',
             secondaryTriggerEnd: 'bottom top'
@@ -1293,8 +1324,6 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             secondaryTextSelector: '.diferenciais-secondary-text',
             titleFromX: 700,
             trigger: diffTop,
-            triggerStart: 'top 45%',
-            triggerEnd: '10% 15%',
             idPrefix: 'difTop'
         });
     }
@@ -1827,8 +1856,6 @@ ScrollTrigger.create({
             logoSelector: '.servicos-logo',
             idPrefix: 'servicos',
             trigger: '.servicos-header-elements',
-            triggerStart: 'top 95%',
-            triggerEnd: 'top 20%',
             secondaryTrigger: '.servicos-content',
             secondaryTriggerStart: 'top 85%',
             secondaryTriggerEnd: 'top 30%'

@@ -572,7 +572,11 @@
               </div>
               <div class="servicos-accordion" role="presentation">
                   <div class="servicos-accordion-item">
-                      <button class="servicos-accordion-trigger" id="servicos-trigger-licenciamento" type="button" aria-expanded="true" aria-controls="servicos-panel-licenciamento">
+                      <!-- aria-expanded="false" desde 14/09/2026, a pedido do Pedro: o acordeão
+                           abre com TODOS os itens fechados. Era "true" e este primeiro item já
+                           vinha aberto. É esta marca que decide o estado inicial: o JavaScript a
+                           lê no carregamento e fecha ou abre o painel conforme ela. -->
+                      <button class="servicos-accordion-trigger" id="servicos-trigger-licenciamento" type="button" aria-expanded="false" aria-controls="servicos-panel-licenciamento">
                           <span class="servicos-accordion-title">Licenciamento e Estudos Ambientais</span>
                           <span class="servicos-accordion-icon" aria-hidden="true"></span>
                       </button>
