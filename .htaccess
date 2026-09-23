@@ -1,9 +1,4 @@
-# php -- BEGIN cPanel-generated handler, do not edit
-# Set the “ea-php83” package as the default “PHP” programming language.
-<IfModule mime_module>
-  AddHandler application/x-httpd-ea-php83___lsphp .php .php8 .phtml
-</IfModule>
-# php -- END cPanel-generated handler, do not edit
+
 
 # =============================================================================
 # Clorofilla Soluções Ambientais — configuração do servidor Apache (Hostgator)
@@ -135,3 +130,10 @@
 # ETags padrão do Apache atrapalham cache em hospedagem compartilhada.
 # -----------------------------------------------------------------------------
 FileETag None
+
+# php -- BEGIN cPanel-generated handler, do not edit
+# Set the “ea-php83” package as the default “PHP” programming language.
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php83___lsphp .php .php8 .phtml
+</IfModule>
+# php -- END cPanel-generated handler, do not edit
