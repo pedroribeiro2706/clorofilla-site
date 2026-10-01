@@ -384,8 +384,13 @@ document.addEventListener("DOMContentLoaded", async (event) => {
      * O QUE NÃO MUDOU, de propósito: o título e o logo. O Pedro disse que
      * "título e logo entram corretamente", e a regra do projeto é que as
      * relações já aprovadas continuam valendo. Os dois seguem colados à
-     * rolagem (`scrub: 2`), e o texto segue colado a eles — o fade termina
-     * junto com o título, em vez de depois dele.
+     * rolagem (`scrub: 2`).
+     *
+     * ⚠️ Em 14/09 o 1º texto ficou colado ao título (o fade terminava junto
+     * com ele). Em 01/10 isso foi DESFEITO, com o sim do Pedro: medido, o
+     * fade terminava com o texto ainda abaixo da tela (a 94% da altura em
+     * "SOLUÇÕES", no computador), ou seja, o texto chegava pronto. Agora cada
+     * texto entra por si, preso à própria posição na tela. Ver TEXTO_* abaixo.
      *
      * De brinde, some um efeito indesejado: era a máscara que fazia o acento
      * piscar sozinho na entrada (a parte alta da letra aparecia antes do
@@ -397,13 +402,6 @@ document.addEventListener("DOMContentLoaded", async (event) => {
      * de segurança para quem pede menos movimento e para o caso de a montagem
      * estourar um erro. Acrescentar seção nova aqui pede acrescentar lá.
      */
-
-    // O fade entra em 0,2 e termina em 1,0, que é onde o título também termina.
-    // Não são segundos: a animação é colada à rolagem, então esses números são
-    // a FATIA do trecho de rolagem em que cada coisa acontece.
-    const TEXTO_ENTRA = 0.2;
-    const TEXTO_DURA = 0.8;
-    const TEXTO_SUAVIDADE = 'sine.inOut';
 
     // --- A VELOCIDADE DO TÍTULO — Fase 3, 14/09/2026 ---
     //
@@ -436,6 +434,59 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     // para tirar em 14/09, junto do ajuste de velocidade.
     const TITULO_SUAVIDADE = 'power2.out';
 
+    // --- OS DOIS TEXTOS — Fase 3, 01/10/2026 ---
+    //
+    // O Pedro, olhando as quatro seções no ar: "dependendo da seção, a altura
+    // dela é diferente de uma para a outra. Em alguns casos o fade do texto
+    // maior começa em um ponto diferente do fade do texto menor". Estava certo,
+    // e valia para os DOIS textos:
+    //
+    //   - o 1º texto era colado ao título, cujo gatilho é o topo da SEÇÃO. Como
+    //     o texto fica 300 a 600 px abaixo desse topo, o fade terminava com ele
+    //     ainda fora da tela: a 94% da altura em "SOLUÇÕES", a 62% em
+    //     "O que fazemos" (computador). Numa seção o fade era invisível, na
+    //     outra dava para ver.
+    //   - o 2º texto tinha gatilho próprio, 'top top' → 'bottom top' no bloco
+    //     de cabeçalho (logo + título): o trecho dele era a ALTURA daquele
+    //     bloco, que muda de seção para seção.
+    //
+    // Medido no computador em 01/10, onde o topo do 2º texto estava na tela
+    // do começo ao fim do fade (100% = base da tela, 50% = meio):
+    //
+    //   seção                  trecho do fade   começo → fim
+    //   SOLUÇÕES AMBIENTAIS    254 px           79% → 51%
+    //   O que fazemos          147 px           67% → 51%
+    //   Por que escolher       539 px           38% → -21%   <- terminava já FORA da tela
+    //   Serviços               330 px          106% → 69%    <- começava ANTES de entrar
+    //
+    // Agora cada texto se guia pela posição DELE MESMO na tela, com uma regra
+    // só para os 8 parágrafos: começa a aparecer quando entra pela base e está
+    // inteiro ao chegar ao meio. O trecho é sempre metade da altura da tela,
+    // seja qual for a seção. O título e o logo continuam como o Pedro aprovou
+    // em 14/09, presos à seção. Os chamadores não passam mais
+    // `secondaryTrigger`, `secondaryTriggerStart` nem `secondaryTriggerEnd`:
+    // a regulagem mora aqui, num lugar só.
+    // Quem mede: ferramentas/diagnostico/medir-geometria-cabecalhos.mjs.
+    const TEXTO_COMECA = 'top bottom';    // o topo do texto aponta na base da tela
+    const TEXTO_TERMINA = 'top 50%';      // e chegou ao meio dela
+    const TEXTO_SUAVIDADE = 'sine.inOut'; // o mesmo fade da tela "COMEÇA NO PRESENTE"
+
+    // Um parágrafo de cabeçalho entrando. Escondido por opacidade e revelado
+    // ao rolar, preso à própria posição na tela. Quem esconde precisa revelar:
+    // os 8 parágrafos estão em `mostrarTudoSemAnimacao()`.
+    function entradaDoTexto(texto, id) {
+        gsap.set(texto, { opacity: 0 });
+        gsap.timeline({
+            scrollTrigger: {
+                trigger: texto,
+                start: TEXTO_COMECA,
+                end: TEXTO_TERMINA,
+                scrub: 2,
+                id
+            }
+        }).to(texto, { opacity: 1, duration: 1, ease: TEXTO_SUAVIDADE }, 0);
+    }
+
     function animateSectionHeader({
         sectionSelector,
         titleSelector,
@@ -444,11 +495,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         logoSelector = null,
         titleFromX = -700,
         trigger = null,
-        idPrefix = '',
-        // NOVO:
-        secondaryTrigger = null,
-        secondaryTriggerStart = 'top top',
-        secondaryTriggerEnd = 'bottom top'
+        idPrefix = ''
     }) {
         const section = document.querySelector(sectionSelector);
         const title = section && section.querySelector(titleSelector);
@@ -457,10 +504,9 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         const secondaryText = secondaryTextSelector ? section.querySelector(secondaryTextSelector) : null;
         const logo = logoSelector ? section.querySelector(logoSelector) : null;
 
-        // Animação do título e texto primário.
-        if (title && primaryText) {
+        // O título e o logo viajam juntos, presos à seção (ver TITULO_* acima).
+        if (title) {
             gsap.set(title, { opacity: 1, x: titleFromX });
-            gsap.set(primaryText, { opacity: 0 });
 
             const tl = gsap.timeline({
                 scrollTrigger: {
@@ -480,32 +526,13 @@ document.addEventListener("DOMContentLoaded", async (event) => {
                 x: 0,
                 duration: 1,
                 ease: TITULO_SUAVIDADE
-            }, 0)
-            .to(primaryText, {
-                opacity: 1,
-                duration: TEXTO_DURA,
-                ease: TEXTO_SUAVIDADE
-            }, TEXTO_ENTRA);
+            }, 0);
         }
 
-        // Agora a animação do secundário SEM depender do bloco acima!
-        if (secondaryText) {
-            gsap.set(secondaryText, { opacity: 0 });
+        // Os dois textos entram cada um por si (ver TEXTO_* acima).
+        if (primaryText) entradaDoTexto(primaryText, idPrefix + 'PrimaryTextTrigger');
 
-            gsap.timeline({
-                scrollTrigger: {
-                    trigger: secondaryTrigger || trigger || section,
-                    start: secondaryTriggerStart,
-                    end: secondaryTriggerEnd,
-                    scrub: 2,
-                    id: idPrefix + 'SecondaryTextTrigger'
-                }
-            }).to(secondaryText, {
-                opacity: 1,
-                duration: TEXTO_DURA,
-                ease: TEXTO_SUAVIDADE
-            }, 0.4);
-        }
+        if (secondaryText) entradaDoTexto(secondaryText, idPrefix + 'SecondaryTextTrigger');
     }
 
 
@@ -1044,10 +1071,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             primaryTextSelector: '.sobre-primary-text',
             logoSelector: '.sobre-logo',
             secondaryTextSelector: '.sobre-secondary-text',
-            idPrefix: 'sobre',
-            secondaryTrigger: '.sobre-header-elements', // mantido
-            secondaryTriggerStart: 'top top',
-            secondaryTriggerEnd: 'bottom top'
+            idPrefix: 'sobre'
         });
     }
 
@@ -1277,10 +1301,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
             logoSelector: '.sobre-logo',
             secondaryTextSelector: '.oqf-secondary-text',
             idPrefix: 'oqf',
-            trigger: '.oqf-header-elements', // igual à sua timeline original
-            secondaryTrigger: '.oqf-header-elements', // igual ao original
-            secondaryTriggerStart: 'top top',
-            secondaryTriggerEnd: 'bottom top'
+            trigger: '.oqf-header-elements' // igual à sua timeline original
         });
         
     }
@@ -1855,10 +1876,7 @@ ScrollTrigger.create({
             secondaryTextSelector: '.servicos-secondary-text',
             logoSelector: '.servicos-logo',
             idPrefix: 'servicos',
-            trigger: '.servicos-header-elements',
-            secondaryTrigger: '.servicos-content',
-            secondaryTriggerStart: 'top 85%',
-            secondaryTriggerEnd: 'top 30%'
+            trigger: '.servicos-header-elements'
         });
 
         ScrollTrigger.refresh();
