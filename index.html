@@ -151,11 +151,13 @@
                      elemento do LCP. Nasce sem src e transparente: o js/scripts.js só o carrega
                      depois do evento load da página, escolhe 720p no celular e 1080p no
                      computador, e não carrega nada para quem pede menos movimento ou economia
-                     de dados. Os endereços ficam nos data-src-*; mudar o arquivo é mudar aqui. -->
+                     de dados. Os endereços ficam nos data-video-*; mudar o arquivo é mudar aqui.
+                     (Não usar nome com número logo depois do hífen, como data-src-720: o
+                     navegador não o expõe em dataset.src720, e o vídeo fica sem endereço.) -->
                 <video class="panel-hero-background-video" muted playsinline loop autoplay
                        preload="none" aria-hidden="true" tabindex="-1" disablepictureinpicture
-                       data-src-1080="./assets/hero-video-1080p.mp4"
-                       data-src-720="./assets/hero-video-720p.mp4"></video>
+                       data-video-computador="./assets/hero-video-1080p.mp4"
+                       data-video-celular="./assets/hero-video-720p.mp4"></video>
             </div>
 
             <div class="panel-hero-content-wrapper">

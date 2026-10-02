@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         const conexao = navigator.connection;
         if (conexao && conexao.saveData) return;
         const celular = window.matchMedia('(max-width: 991px)').matches;
-        const src = celular ? video.dataset.src720 : video.dataset.src1080;
+        const src = celular ? video.dataset.videoCelular : video.dataset.videoComputador;
         if (!src) return;
         video.muted = true; // o atributo sozinho não basta em todo navegador para o autoplay
         video.addEventListener('playing', () => video.classList.add('is-playing'), { once: true });
