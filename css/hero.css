@@ -227,6 +227,29 @@ p {
     left: -10%;
 }
 
+/* O vídeo da primeira tela (10/2026, C.2) ocupa a mesma geometria da imagem,
+   para o parallax mover os dois juntos (o tween em js/scripts.js tem os dois
+   como alvo). Nasce transparente e ganha opacidade quando começa a tocar: a
+   classe .is-playing é posta pelo JS no evento `playing`. Sem vídeo (menos
+   movimento, economia de dados, erro de rede), a imagem fica como sempre foi. */
+.panel-hero-background-video {
+    width: 130%;
+    height: 130%;
+    object-fit: cover;
+    position: absolute;
+    top: -20%;
+    left: -10%;
+    opacity: 0;
+    transition: opacity 0.9s ease;
+    pointer-events: none;
+}
+.panel-hero-background-video.is-playing {
+    opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+    .panel-hero-background-video { display: none; }
+}
+
 .panel-hero-content-wrapper {
     position: relative;
     z-index: 2; /* Above background, below logo if it were absolute */

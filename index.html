@@ -146,6 +146,16 @@
                     class="panel-hero-background-image"
                     width="1920" height="996"
                     fetchpriority="high" decoding="async">
+                <!-- O vídeo da primeira tela (10/2026, C.2): três cenas de ~5 s emendadas num
+                     loop de 13,6 s, por cima da imagem acima, que continua sendo a capa e o
+                     elemento do LCP. Nasce sem src e transparente: o js/scripts.js só o carrega
+                     depois do evento load da página, escolhe 720p no celular e 1080p no
+                     computador, e não carrega nada para quem pede menos movimento ou economia
+                     de dados. Os endereços ficam nos data-src-*; mudar o arquivo é mudar aqui. -->
+                <video class="panel-hero-background-video" muted playsinline loop autoplay
+                       preload="none" aria-hidden="true" tabindex="-1" disablepictureinpicture
+                       data-src-1080="./assets/hero-video-1080p.mp4"
+                       data-src-720="./assets/hero-video-720p.mp4"></video>
             </div>
 
             <div class="panel-hero-content-wrapper">

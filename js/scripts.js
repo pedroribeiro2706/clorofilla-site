@@ -85,6 +85,32 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         return;
     }
 
+    // --- O VÍDEO DA PRIMEIRA TELA (10/2026, C.2) ---
+    //
+    // Três cenas de ~5 s emendadas num loop de 13,6 s, por cima da imagem do
+    // hero. A imagem continua sendo a capa e o elemento do LCP: o vídeo nasce
+    // sem `src` e só é carregado depois do evento `load` da página, para não
+    // disputar a rede com o que o visitante vê primeiro. Quem pede menos
+    // movimento não chega aqui (a saída está logo acima); quem pede economia
+    // de dados fica só com a imagem. O vídeo aparece com um fade (CSS) quando
+    // começa a tocar. O celular recebe a versão 720p; o computador, a 1080p.
+    const carregarVideoDoHero = () => {
+        const video = document.querySelector('.panel-hero-background-video');
+        if (!video) return;
+        const conexao = navigator.connection;
+        if (conexao && conexao.saveData) return;
+        const celular = window.matchMedia('(max-width: 991px)').matches;
+        const src = celular ? video.dataset.src720 : video.dataset.src1080;
+        if (!src) return;
+        video.muted = true; // o atributo sozinho não basta em todo navegador para o autoplay
+        video.addEventListener('playing', () => video.classList.add('is-playing'), { once: true });
+        video.src = src;
+        const tentativa = video.play();
+        if (tentativa && tentativa.catch) tentativa.catch(() => {}); // sem autoplay, fica a imagem
+    };
+    if (document.readyState === 'complete') carregarVideoDoHero();
+    else window.addEventListener('load', carregarVideoDoHero, { once: true });
+
     // --- O SEGURO CONTRA MONTAGEM QUE NÃO TERMINA ---
     //
     // Se qualquer erro interromper a montagem no meio, a bandeira abaixo nunca
@@ -773,10 +799,11 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         });
 
 
-        // Efeito Parallax para a imagem de fundo
-        const parallaxImage = document.querySelector('.panel-hero-background-image');
+        // Efeito Parallax para a imagem de fundo (e, desde 10/2026, para o vídeo
+        // por cima dela: os dois têm a mesma geometria e andam juntos)
+        const parallaxImage = document.querySelectorAll('.panel-hero-background-image, .panel-hero-background-video');
 
-        if (parallaxImage) {
+        if (parallaxImage.length) {
             gsap.to(parallaxImage, {
                 x: '20%', // Movimento horizontal da imagem
                 ease: "none",

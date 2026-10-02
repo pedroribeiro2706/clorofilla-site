@@ -91,6 +91,10 @@ body {
   .panel.panel-hero { min-height: 100vh !important; }
   /* Hero image: ampliar ~80% e alinhar ao topo, deixando fundo visível abaixo */
   .panel-hero-background-image { top: 0 !important; left: -40% !important; width: 180% !important; height: auto !important; object-fit: unset !important; }
+  /* Hero video (10/2026, C.2): no celular ele preenche a tela inteira e mostra o meio do
+     quadro (as três cenas foram compostas com as pessoas no terço central). A regra da
+     imagem logo acima não vale para ele: o vídeo tem a própria classe. */
+  .panel-hero-background-video { top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; object-fit: cover !important; object-position: 50% 50%; transform: none; }
   /* Panel 4: garantir que o conteúdo permaneça contido visualmente */
   .panel.panel-content-orange { overflow: hidden; }
   /* Panel 3: dar área para o parallax no mobile */
