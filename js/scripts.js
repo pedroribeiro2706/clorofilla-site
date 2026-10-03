@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         return;
     }
 
-    // --- O VÍDEO DA PRIMEIRA TELA (10/2026, C.2) ---
+    // --- OS VÍDEOS DE FUNDO (10/2026, C.2 e C.3) ---
     //
     // Três cenas de ~5 s emendadas num loop de 13,6 s, por cima da imagem do
     // hero. A imagem continua sendo a capa e o elemento do LCP: o vídeo nasce
@@ -94,22 +94,25 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     // movimento não chega aqui (a saída está logo acima); quem pede economia
     // de dados fica só com a imagem. O vídeo aparece com um fade (CSS) quando
     // começa a tocar. O celular recebe a versão 720p; o computador, a 1080p.
-    const carregarVideoDoHero = () => {
-        const video = document.querySelector('.panel-hero-background-video');
-        if (!video) return;
+    // Desde 03/10 (C.3) serve a TODO vídeo de fundo: o do hero e o do painel ao lado do texto
+    // laranja. Vídeo novo = um <video> sem src com data-video-computador e data-video-celular;
+    // nada a mudar aqui.
+    const carregarVideosDeFundo = () => {
         const conexao = navigator.connection;
         if (conexao && conexao.saveData) return;
         const celular = window.matchMedia('(max-width: 991px)').matches;
-        const src = celular ? video.dataset.videoCelular : video.dataset.videoComputador;
-        if (!src) return;
-        video.muted = true; // o atributo sozinho não basta em todo navegador para o autoplay
-        video.addEventListener('playing', () => video.classList.add('is-playing'), { once: true });
-        video.src = src;
-        const tentativa = video.play();
-        if (tentativa && tentativa.catch) tentativa.catch(() => {}); // sem autoplay, fica a imagem
+        document.querySelectorAll('video[data-video-computador]').forEach((video) => {
+            const src = celular ? video.dataset.videoCelular : video.dataset.videoComputador;
+            if (!src) return;
+            video.muted = true; // o atributo sozinho não basta em todo navegador para o autoplay
+            video.addEventListener('playing', () => video.classList.add('is-playing'), { once: true });
+            video.src = src;
+            const tentativa = video.play();
+            if (tentativa && tentativa.catch) tentativa.catch(() => {}); // sem autoplay, fica a imagem
+        });
     };
-    if (document.readyState === 'complete') carregarVideoDoHero();
-    else window.addEventListener('load', carregarVideoDoHero, { once: true });
+    if (document.readyState === 'complete') carregarVideosDeFundo();
+    else window.addEventListener('load', carregarVideosDeFundo, { once: true });
 
     // --- O SEGURO CONTRA MONTAGEM QUE NÃO TERMINA ---
     //
@@ -741,8 +744,9 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     mm.add(CELULAR, () => {
       // Panel 3: parallax image moves slightly on scroll
       const panel3 = document.querySelector('.panel.panel-image-parallax-container');
-      const panel3Img = panel3 && panel3.querySelector('.panel-image-parallax-image');
-      if (panel3 && panel3Img) {
+      // imagem E vídeo (C.3, 10/2026): a mesma caixa, o mesmo movimento
+      const panel3Img = panel3 && panel3.querySelectorAll('.panel-image-parallax-image, .panel-image-parallax-video');
+      if (panel3 && panel3Img && panel3Img.length) {
         gsap.fromTo(panel3Img,
           { yPercent: -20 },
           {
@@ -891,12 +895,18 @@ document.addEventListener("DOMContentLoaded", async (event) => {
 
 
         const imageContainer = document.querySelector('.panel-image-parallax-container');
-        const image = document.querySelector('.panel-image-parallax-image');
+        const image = document.querySelectorAll('.panel-image-parallax-image, .panel-image-parallax-video');
 
-        // Parallax para a imagem do Panel 3
-        if (imageContainer && image) {
+        // Parallax para a imagem (e o vídeo, desde C.3) do Panel 3.
+        // ⚠️ Medido em 03/10/2026: `imageScrollAmount` é 0 no computador, porque
+        // responsive.css:42 (`img, video { max-width: 100% }`) vale lá também e a
+        // imagem nunca teve os 150% de largura que o CSS pede. O tween existe e não
+        // move nada. Deixado assim de propósito (a cliente pediu menos animação);
+        // para devolver o deslize, dar à imagem e ao vídeo uma regra que vença o
+        // max-width.
+        if (imageContainer && image.length) {
             const imageContainerWidth = imageContainer.offsetWidth;
-            const imageWidth = image.offsetWidth;
+            const imageWidth = image[0].offsetWidth;
             const imageScrollAmount = imageWidth - imageContainerWidth;
 
             gsap.to(image, {

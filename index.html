@@ -202,14 +202,26 @@
 
         <!-- Painel 3: Imagem Central com Parallax -->
         <section class="panel panel-image-parallax-container">
-            <img src="./assets/placeholder-central-img.webp"
-                srcset="./assets/placeholder-central-img-640w.webp 640w,
-                        ./assets/placeholder-central-img.webp 1024w"
-                sizes="150vw"
-                alt="Imagem central com efeito parallax"
+            <!-- 10/2026, C.3: a imagem é o PRIMEIRO QUADRO do vídeo abaixo (cena 4, "plantio
+                 visto do alto"), em duas larguras; até 03/10 era o prédio verde com painel
+                 solar (placeholder-central-img.webp). O vídeo entra por cima dela sem salto. -->
+            <img src="./assets/plantio-capa-1024.webp"
+                srcset="./assets/plantio-capa-640.webp 640w,
+                        ./assets/plantio-capa-1024.webp 1024w"
+                sizes="(max-width: 991px) 100vw, 50vw"
+                alt="Equipe plantando mudas numa encosta em recuperação, vista do alto"
                 class="panel-image-parallax-image"
                 width="1024" height="1024"
                 loading="lazy" decoding="async">
+            <!-- O vídeo do painel (C.3): uma cena de 5 s em loop, quadrada, por cima da imagem.
+                 Mesmo mecanismo do vídeo do hero: nasce sem src e transparente; o js/scripts.js
+                 carrega depois do load (720 no celular, 1080 no computador) e nada para quem
+                 pede menos movimento ou economia de dados. Nome de atributo sem número depois
+                 do hífen (ver o vídeo do hero). -->
+            <video class="panel-image-parallax-video" muted playsinline loop autoplay
+                   preload="none" aria-hidden="true" tabindex="-1" disablepictureinpicture
+                   data-video-computador="./assets/plantio-video-1080p-v1.mp4"
+                   data-video-celular="./assets/plantio-video-720p-v1.mp4"></video>
         </section>
 
         <!-- Painel 4: Conteúdo Laranja -->

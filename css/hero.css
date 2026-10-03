@@ -424,6 +424,29 @@ p {
     will-change: transform;
 }
 
+/* O vídeo do painel 3 (10/2026, C.3) ocupa a mesma caixa da imagem, para o que move uma mover
+   o outro. Nasce transparente e ganha opacidade quando começa a tocar (.is-playing, posta pelo
+   JS); sem vídeo, a imagem fica como sempre foi. Nota: `width: 150%` da imagem acima nunca valeu
+   no computador (responsive.css:42 limita img e video a 100%), por isso aqui é 100% de saída. */
+.panel-image-parallax-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    will-change: transform;
+    opacity: 0;
+    transition: opacity 0.9s ease;
+    pointer-events: none;
+}
+.panel-image-parallax-video.is-playing {
+    opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+    .panel-image-parallax-video { display: none; }
+}
+
 /* --- Painel 4: Conteúdo Laranja --- */
 .panel-content-orange {
     width: 50vw; 
