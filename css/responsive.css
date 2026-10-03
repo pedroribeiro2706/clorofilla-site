@@ -89,8 +89,10 @@ body {
   /* Hero: garantir enquadramento do background no mobile/tablet */
   .panel-hero { overflow: hidden !important; }
   .panel.panel-hero { min-height: 100vh !important; }
-  /* Hero image: ampliar ~80% e alinhar ao topo, deixando fundo visível abaixo */
-  .panel-hero-background-image { top: 0 !important; left: -40% !important; width: 180% !important; height: auto !important; object-fit: unset !important; }
+  /* Hero image (10/2026): a capa é o primeiro quadro do vídeo e precisa mostrar EXATAMENTE a
+     mesma fatia que ele (tela inteira, centro do quadro), senão o vídeo entra com um salto.
+     Até 03/10 a imagem era a paisagem antiga, ampliada 1,8x e alinhada ao topo. */
+  .panel-hero-background-image { top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; object-fit: cover !important; object-position: 50% 50% !important; transform: none !important; }
   /* Hero video (10/2026, C.2): no celular ele preenche a tela inteira e mostra o meio do
      quadro (as três cenas foram compostas com as pessoas no terço central). A regra da
      imagem logo acima não vale para ele: o vídeo tem a própria classe. */
@@ -205,16 +207,10 @@ body {
   /* Hero: subtexto mais largo e alinhado ao título (mobile) */
   .hero-subtext-wrapper { justify-content: flex-start; right: auto; margin-bottom: 0.72rem; }
   .panel-hero-secondary-text { max-width: 92vw; text-align: left; font-size: 1.35rem; line-height: 1.15; }
-  /* Reposiciona a imagem para favorecer leitura (mostrar mais a parte inferior) */
-  .panel-hero-background-image {
-    object-position: 35% 75% !important;
-    left: 50% !important;
-    top: 0 !important;
-    width: 100% !important;
-    height: auto !important;
-    transform-origin: top center;
-    transform: translateX(-23%) scale(3.2);
-  }
+  /* Até 03/10/2026 havia aqui um reposicionamento da imagem antiga do hero (ampliada 3,2x e
+     deslocada para mostrar a parte de baixo). Saiu: a capa agora é o primeiro quadro do vídeo e
+     segue a regra do bloco de 991 px, igual à do vídeo. A legibilidade do texto fica por conta
+     do gradiente logo abaixo. */
 }
 /* Panel 4: título responsivo e espaçamento do texto (mobile) */
 @media (max-width: 767px) {

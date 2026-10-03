@@ -56,10 +56,13 @@
          Os arquivos continuam vindo do servidor da Adobe, como exige a licença do Adobe Fonts. -->
     <link rel="stylesheet" href="https://use.typekit.net/sho6jhs.css">
 
-    <!-- Carrega a imagem do topo (elemento LCP) em paralelo com o CSS, não depois dele -->
-    <link rel="preload" as="image" href="./assets/hero-01d.webp"
-          imagesrcset="./assets/hero-01d-800w.webp 800w, ./assets/hero-01d-1280w.webp 1280w, ./assets/hero-01d.webp 1920w"
-          imagesizes="130vw" fetchpriority="high">
+    <!-- Carrega a imagem do topo (elemento LCP) em paralelo com o CSS, não depois dele.
+         Desde 10/2026 a imagem é o PRIMEIRO QUADRO do vídeo do hero (pedido do Pedro em 03/10:
+         a paisagem antiga aparecia antes do vídeo e estranhava). No celular ela ocupa 100vw;
+         no computador, 130vw (a geometria do parallax). -->
+    <link rel="preload" as="image" href="./assets/hero-capa-1920.webp"
+          imagesrcset="./assets/hero-capa-800.webp 800w, ./assets/hero-capa-1280.webp 1280w, ./assets/hero-capa-1920.webp 1920w"
+          imagesizes="(max-width: 991px) 100vw, 130vw" fetchpriority="high">
 
     <!-- Google Fonts
          REMOVIDO em 08/2026: o link de "Neue Haas Grotesk Display" retornava HTTP 400 em toda
@@ -136,19 +139,24 @@
             <!-- A logo foi movida para fora deste painel -->
             <div class="panel-hero-background-image-wrap">
                 <!-- Imagem do LCP: carrega com prioridade máxima e nunca com lazy.
-                     WebP substituiu o PNG de 3 MB (otimização 08/2026). -->
-                <img src="./assets/hero-01d.webp"
-                    srcset="./assets/hero-01d-800w.webp 800w,
-                            ./assets/hero-01d-1280w.webp 1280w,
-                            ./assets/hero-01d.webp 1920w"
-                    sizes="130vw"
-                    alt="Paisagem natural com arquitetura sustentável"
+                     WebP substituiu o PNG de 3 MB (otimização 08/2026). Desde 10/2026 é o
+                     primeiro quadro do vídeo abaixo (a cena 3, os biólogos na borda da mata):
+                     o vídeo entra por cima dela sem salto visível. Gerada por
+                     docs/hero-video/final/ (ver o README de lá); mudar o começo do vídeo é
+                     regerar estas três larguras. -->
+                <img src="./assets/hero-capa-1920.webp"
+                    srcset="./assets/hero-capa-800.webp 800w,
+                            ./assets/hero-capa-1280.webp 1280w,
+                            ./assets/hero-capa-1920.webp 1920w"
+                    sizes="(max-width: 991px) 100vw, 130vw"
+                    alt="Dois biólogos medindo o tronco de uma árvore na borda da mata, em inventário florestal"
                     class="panel-hero-background-image"
-                    width="1920" height="996"
+                    width="1920" height="1080"
                     fetchpriority="high" decoding="async">
                 <!-- O vídeo da primeira tela (10/2026, C.2): três cenas de ~5 s emendadas num
-                     loop de 13,6 s, por cima da imagem acima, que continua sendo a capa e o
-                     elemento do LCP. Nasce sem src e transparente: o js/scripts.js só o carrega
+                     loop de 13,6 s (ordem 3, 1, 2 desde 03/10, a pedido do Pedro), por cima da
+                     imagem acima, que continua sendo a capa e o elemento do LCP. O "-v2" no nome
+                     existe porque o cache no ar é de 1 ano: arquivo novo pede nome novo. Nasce sem src e transparente: o js/scripts.js só o carrega
                      depois do evento load da página, escolhe 720p no celular e 1080p no
                      computador, e não carrega nada para quem pede menos movimento ou economia
                      de dados. Os endereços ficam nos data-video-*; mudar o arquivo é mudar aqui.
@@ -156,8 +164,8 @@
                      navegador não o expõe em dataset.src720, e o vídeo fica sem endereço.) -->
                 <video class="panel-hero-background-video" muted playsinline loop autoplay
                        preload="none" aria-hidden="true" tabindex="-1" disablepictureinpicture
-                       data-video-computador="./assets/hero-video-1080p.mp4"
-                       data-video-celular="./assets/hero-video-720p.mp4"></video>
+                       data-video-computador="./assets/hero-video-1080p-v2.mp4"
+                       data-video-celular="./assets/hero-video-720p-v2.mp4"></video>
             </div>
 
             <div class="panel-hero-content-wrapper">
