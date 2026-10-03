@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     // Desde 03/10 (C.3) serve a TODO vídeo de fundo: o do hero e o do painel ao lado do texto
     // laranja. Vídeo novo = um <video> sem src com data-video-computador e data-video-celular;
     // nada a mudar aqui.
-    // Desde 04/10, UM DE CADA VEZ, na ordem do HTML: o seguinte só parte quando o navegador
+    // Desde 03/10, UM DE CADA VEZ, na ordem do HTML: o seguinte só parte quando o navegador
     // PAUSA por conta própria o download do anterior (evento `suspend`, que o Chrome dispara
     // assim que tem ~2,6 s em cache à frente do relógio, e de novo no fim do arquivo) ou quando
     // o anterior já está inteiro em cache. Com os dois saindo juntos no `load`, o do hero
