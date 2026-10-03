@@ -97,19 +97,58 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     // Desde 03/10 (C.3) serve a TODO vídeo de fundo: o do hero e o do painel ao lado do texto
     // laranja. Vídeo novo = um <video> sem src com data-video-computador e data-video-celular;
     // nada a mudar aqui.
+    // Desde 04/10, UM DE CADA VEZ, na ordem do HTML: o seguinte só parte quando o navegador
+    // PAUSA por conta própria o download do anterior (evento `suspend`, que o Chrome dispara
+    // assim que tem ~2,6 s em cache à frente do relógio, e de novo no fim do arquivo) ou quando
+    // o anterior já está inteiro em cache. Com os dois saindo juntos no `load`, o do hero
+    // (4,4 MB) dividia a banda com o do painel (1,5 MB) e engasgava na abertura quando a rede
+    // apertava. Medido com ferramentas/diagnostico/medir-disputa-videos.mjs: a 3 Mbps o hero
+    // andava 0,85 s em 2 s (2,6 s parado nos 6 primeiros) e sozinho andava 1,8 a 2,0 s sem
+    // parar; a 4 Mbps, 1,2 s contra 2,1 s. Foi o que o conferir-hero-video acusou na produção
+    // em 3 de 4 rodadas. Dois gatilhos testados antes e descartados, com números: soltar no
+    // `playing` do anterior não bastou (0,9 s em 2 s a 3 Mbps; 1,4 s a 4), porque ele começa a
+    // tocar com pouco em cache; soltar só quando o anterior está inteiro deixava o segundo vídeo
+    // para 12 a 14 s depois do `load` em QUALQUER velocidade (o Chrome dosa o download pelo
+    // ritmo do vídeo) e, a 20 Mbps, nem isso: o cache é atualizado depois do último `progress`.
+    // A leitura é por sondagem (a cada 250 ms), não pelos eventos `suspend`/`progress`: com rede
+    // rápida o arquivo chega inteiro antes de o cache ser atualizado, o evento passa com o cache
+    // ainda vazio e o seguinte só partiria pelo prazo (medido no site local: 20 s).
+    // Se o anterior não baixar (arquivo fora do ar, erro de decodificação), o seguinte parte no
+    // `error`; e, aconteça o que acontecer, parte em 20 s: nenhum fica refém do outro.
     const carregarVideosDeFundo = () => {
         const conexao = navigator.connection;
         if (conexao && conexao.saveData) return;
         const celular = window.matchMedia('(max-width: 991px)').matches;
-        document.querySelectorAll('video[data-video-computador]').forEach((video) => {
+        const fila = Array.from(document.querySelectorAll('video[data-video-computador]'));
+        const proximo = () => {
+            const video = fila.shift();
+            if (!video) return;
             const src = celular ? video.dataset.videoCelular : video.dataset.videoComputador;
-            if (!src) return;
+            if (!src) { proximo(); return; }
+            let seguiu = false;
+            let prazo = null;
+            let sonda = null;
+            const seguir = () => {
+                if (seguiu) return;
+                seguiu = true;
+                clearTimeout(prazo);
+                clearInterval(sonda);
+                proximo();
+            };
+            const fimDoCache = () => (video.buffered.length ? video.buffered.end(video.buffered.length - 1) : 0);
+            const inteiro = () => video.duration > 0 && fimDoCache() >= video.duration - 0.5;
+            // NETWORK_IDLE (1): o navegador parou de buscar por conta própria; com 2 s de reserva, a banda está livre
+            const pausadoComReserva = () => video.networkState === 1 && fimDoCache() - video.currentTime >= 2;
+            prazo = setTimeout(seguir, 20000);
+            sonda = setInterval(() => { if (inteiro() || pausadoComReserva()) seguir(); }, 250);
             video.muted = true; // o atributo sozinho não basta em todo navegador para o autoplay
             video.addEventListener('playing', () => video.classList.add('is-playing'), { once: true });
+            video.addEventListener('error', seguir, { once: true });
             video.src = src;
             const tentativa = video.play();
             if (tentativa && tentativa.catch) tentativa.catch(() => {}); // sem autoplay, fica a imagem
-        });
+        };
+        proximo();
     };
     if (document.readyState === 'complete') carregarVideosDeFundo();
     else window.addEventListener('load', carregarVideosDeFundo, { once: true });
