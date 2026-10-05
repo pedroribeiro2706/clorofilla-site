@@ -102,6 +102,12 @@
   font-size: 1.0rem;
   color: #222;
   margin-left: 0.5rem;
+  /* 10/2026: o e-mail estourava a borda do cartao no celular (defeito antigo, ja
+     estava no ar). Com min-width: 0 a caixa pode encolher dentro do flex e o
+     endereco quebra depois do @ (um <wbr> no HTML); em telas ainda mais estreitas,
+     overflow-wrap quebra onde for preciso em vez de vazar. */
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 /* 10/2026: o telefone e o e-mail viraram links (WhatsApp e mailto). O link herda
