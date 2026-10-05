@@ -104,6 +104,36 @@
   margin-left: 0.5rem;
 }
 
+/* 10/2026: o telefone e o e-mail viraram links (WhatsApp e mailto). O link herda
+   a cor e o peso do cartao; sem isto o Bootstrap o pintaria de azul e sublinharia.
+   A regra a:hover do Bootstrap pesa mais que uma classe, por isso a cor e repetida
+   no hover. O sublinhado so aparece ao passar o mouse ou ao focar pelo teclado. */
+.contato-card-link {
+  color: inherit;
+  text-decoration: none;
+}
+.contato-card-link:hover,
+.contato-card-link:focus-visible {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+/* Texto so para leitor de tela: o cartao do WhatsApp mostra o icone e o numero;
+   quem ouve a pagina precisa da palavra. O recorte do Bootstrap nao trouxe a
+   .visually-hidden; esta e a mesma receita. */
+.so-leitor-de-tela {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
 .contato-feedback {
   font-family: "helvetica-neue-lt-pro", sans-serif;
   font-size: 1rem;
