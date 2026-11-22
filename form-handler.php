@@ -71,13 +71,114 @@ function respond(bool $success, string $message, int $statusCode = 200, bool $is
     exit;
 }
 
+// ---------------------------------------------------------------------------
+// TRAVAS CONTRA ROBÔS (22/11/2026)
+//
+// De 16/09 a 21/11 chegaram 31 mensagens falsas, todas com o mesmo texto, e o
+// campo escondido `company` não pegou nenhuma. Duas travas novas:
+//
+//  1. A FICHA. A página pede ao servidor uma ficha assinada (GET ?ficha=1)
+//     quando o visitante começa a mexer no formulário, e a devolve no envio.
+//     Robô que manda direto para este arquivo, sem abrir a página, chega sem
+//     ficha, ou com uma inventada, e é recusado.
+//  2. A ESPERA. A ficha leva o instante em que foi emitida. Envio feito menos
+//     de FICHA_ESPERA_MINIMA segundos depois é recusado: nenhuma pessoa
+//     preenche o formulário tão rápido. A página espera sozinha se precisar,
+//     então o visitante nunca vê essa recusa.
+//
+// A assinatura usa um segredo que NÃO está no repositório (que é público):
+// ele é criado no primeiro uso, num arquivo FORA da pasta pública do site.
+// As recusas são anotadas em outro arquivo, também fora da pasta pública, para
+// sabermos se as travas estão pegando os robôs.
+// ---------------------------------------------------------------------------
+const FICHA_ESPERA_MINIMA = 3;      // segundos
+const FICHA_VALIDADE      = 86400;  // 24 horas
+
+function pastaPrivada(): string
+{
+    // Um nível acima da pasta do site: na Hostgator, /home1/teresa46.
+    return dirname(__DIR__);
+}
+
+function segredoDoFormulario(): string
+{
+    static $segredo = null;
+    if ($segredo !== null) return $segredo;
+
+    $arquivo = pastaPrivada() . '/clorofilla-formulario-segredo.txt';
+    $lido = @file_get_contents($arquivo);
+    if (is_string($lido) && strlen(trim($lido)) >= 32) return $segredo = trim($lido);
+
+    // Primeiro uso: cria. O modo 'x' falha se outro pedido criou no mesmo
+    // instante; nesse caso, vale o que ele gravou.
+    $novo = bin2hex(random_bytes(32));
+    $h = @fopen($arquivo, 'x');
+    if ($h !== false) {
+        fwrite($h, $novo);
+        fclose($h);
+        @chmod($arquivo, 0600);
+        return $segredo = $novo;
+    }
+    $lido = @file_get_contents($arquivo);
+    if (is_string($lido) && strlen(trim($lido)) >= 32) return $segredo = trim($lido);
+
+    // Sem permissão de escrita fora do site: segredo tirado do próprio servidor.
+    return $segredo = hash('sha256', __FILE__ . php_uname() . 'clorofilla-formulario');
+}
+
+function registrarBarrado(string $motivo): void
+{
+    $arquivo = pastaPrivada() . '/clorofilla-formulario-barrados.log';
+    $tamanho = @filesize($arquivo);
+    if ($tamanho !== false && $tamanho > 1048576) return; // teto de 1 MB
+    $navegador = substr((string) preg_replace('/\s+/', ' ', $_SERVER['HTTP_USER_AGENT'] ?? '-'), 0, 150);
+    @file_put_contents(
+        $arquivo,
+        date('Y-m-d H:i:s') . "\t" . $motivo . "\t" . $navegador . "\n",
+        FILE_APPEND | LOCK_EX
+    );
+}
+
+// A página pede a ficha.
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['ficha'])) {
+    $agora = (string) time();
+    header('Content-Type: application/json; charset=UTF-8');
+    header('Cache-Control: no-store');
+    echo json_encode(['ficha' => $agora . '.' . hash_hmac('sha256', $agora, segredoDoFormulario())]);
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     respond(false, 'Método não permitido.', 405, $isAjax);
 }
 
 // Honeypot
 if (!empty($_POST['company'] ?? '')) {
+    registrarBarrado('campo escondido preenchido');
     respond(true, 'Mensagem recebida.', 200, $isAjax);
+}
+
+// Trava 1: a ficha precisa existir e ter sido assinada por este servidor.
+$ficha  = (string) ($_POST['ficha'] ?? '');
+$partes = explode('.', $ficha, 2);
+$fichaValida = count($partes) === 2
+    && ctype_digit($partes[0])
+    && hash_equals(hash_hmac('sha256', $partes[0], segredoDoFormulario()), $partes[1]);
+
+if (!$fichaValida) {
+    registrarBarrado($ficha === '' ? 'sem ficha' : 'ficha falsa');
+    respond(false, 'Não foi possível confirmar o envio. Recarregue a página e tente de novo.', 400, $isAjax);
+}
+
+// Trava 2: rápido demais para uma pessoa, ou ficha velha demais.
+$idade = time() - (int) $partes[0];
+if ($idade < FICHA_ESPERA_MINIMA) {
+    registrarBarrado("rapido demais ({$idade} s)");
+    respond(false, 'Envio rápido demais. Aguarde alguns segundos e tente de novo.', 429, $isAjax);
+}
+if ($idade > FICHA_VALIDADE) {
+    registrarBarrado('ficha vencida');
+    respond(false, 'A página ficou aberta por muito tempo. Recarregue a página e envie de novo.', 400, $isAjax);
 }
 
 $firstName = trim($_POST['first_name'] ?? '');

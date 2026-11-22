@@ -2034,6 +2034,37 @@ ScrollTrigger.create({
         if (type) contatoFeedback.classList.add(type);
       };
 
+      // Travas contra robôs (22/11/2026; o porquê está no form-handler.php).
+      // A ficha é pedida quando o visitante começa a mexer no formulário, e
+      // não ao abrir a página, para não custar nada a quem só navega. O
+      // servidor recusa envio feito menos de 3 s depois da ficha; aqui se
+      // espera 3,5 s, para a pessoa nunca ver essa recusa.
+      const ESPERA_MINIMA_MS = 3500;
+      const RENOVAR_FICHA_MS = 60 * 60 * 1000; // a ficha vale 24 h no servidor
+      let ficha = '';
+      let fichaRecebidaEm = 0;
+      let pedidoDeFicha = null;
+
+      const pedirFicha = () => {
+        if (pedidoDeFicha) return pedidoDeFicha;
+        pedidoDeFicha = fetch(contatoForm.action + '?ficha=1', {
+          headers: { 'X-Requested-With': 'XMLHttpRequest' },
+          cache: 'no-store'
+        })
+          .then((r) => (r.ok ? r.json() : null))
+          .then((d) => {
+            if (d && d.ficha) {
+              ficha = d.ficha;
+              fichaRecebidaEm = Date.now();
+            }
+          })
+          .catch(() => {})
+          .finally(() => { pedidoDeFicha = null; });
+        return pedidoDeFicha;
+      };
+
+      contatoForm.addEventListener('focusin', () => { if (!ficha) pedirFicha(); }, { once: true });
+
       contatoForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         if (contatoForm.reportValidity && !contatoForm.reportValidity()) return;
@@ -2048,6 +2079,11 @@ ScrollTrigger.create({
         setFeedback('Enviando mensagem...');
 
         try {
+          if (!ficha || Date.now() - fichaRecebidaEm > RENOVAR_FICHA_MS) await pedirFicha();
+          const falta = ESPERA_MINIMA_MS - (Date.now() - fichaRecebidaEm);
+          if (ficha && falta > 0) await new Promise((ok) => setTimeout(ok, falta));
+          formData.set('ficha', ficha);
+
           const response = await fetch(contatoForm.action, {
             method: 'POST',
             body: formData,
