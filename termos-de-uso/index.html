@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Termos de Uso | Clorofilla Consultoria Ambiental</title>
+    <meta name="description" content="As regras para usar o site da Clorofilla Consultoria Ambiental e os canais de contato dela: formulário, e-mail, WhatsApp e redes sociais.">
+
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="../favicon-96.png" sizes="96x96" type="image/png">
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+
+    <!-- Mesmas fontes do site. E so elas: esta pagina nao carrega o
+         css/site.min.css nem o GSAP, porque nao tem uma animacao sequer. -->
+    <link rel="preconnect" href="https://use.typekit.net" crossorigin>
+    <link rel="preconnect" href="https://p.typekit.net" crossorigin>
+    <link rel="stylesheet" href="https://use.typekit.net/sho6jhs.css">
+
+    <style>
+        :root {
+            --creme: #f1eee8;
+            --papel: #ffffff;
+            --tinta: #232323;
+            --tinta-fraca: #5c5c5c;
+            --verde: #99b381;
+            --verde-escuro: #4f6b3c;
+            --linha: #ddd8cf;
+
+            --serifada: zahrah, Georgia, 'Times New Roman', serif;
+            --corpo: helvetica-neue-lt-pro, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: var(--creme);
+            color: var(--tinta);
+            font-family: var(--corpo);
+            font-size: 1.0625rem;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .envoltorio { max-width: 46rem; margin: 0 auto; padding: 0 1.5rem; }
+
+        /* ---------- topo ---------- */
+        .topo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            padding: 1.75rem 0;
+            border-bottom: 1px solid var(--linha);
+        }
+        /* o logo tem o nome embaixo do simbolo: abaixo de ~70px o nome fica ilegivel */
+        .topo img { display: block; height: 4.75rem; width: auto; }
+        .voltar {
+            font-size: .875rem;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            color: var(--tinta);
+            text-decoration: none;
+            border-bottom: 1px solid var(--verde);
+            padding-bottom: 2px;
+            white-space: nowrap;
+        }
+        .voltar:hover, .voltar:focus-visible { color: var(--verde-escuro); border-bottom-color: var(--verde-escuro); }
+
+        /* ---------- cabecalho do documento ---------- */
+        .abertura { padding: 3.5rem 0 2.5rem; }
+        h1 {
+            font-family: var(--serifada);
+            font-weight: 400;
+            font-size: clamp(2.125rem, 6vw, 3.25rem);
+            line-height: 1.12;
+            letter-spacing: -.01em;
+            margin: 0 0 1rem;
+        }
+        .atualizado {
+            font-size: .8125rem;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: var(--tinta-fraca);
+            margin: 0;
+        }
+
+        /* ---------- resumo ---------- */
+        .resumo {
+            background: var(--papel);
+            border-left: 3px solid var(--verde);
+            padding: 1.75rem 1.75rem 1.5rem;
+            margin-bottom: 3.5rem;
+        }
+        .resumo p { margin: 0 0 .75rem; }
+        .resumo p:last-child { margin-bottom: 0; }
+        .resumo strong { font-weight: 600; }
+
+        /* ---------- secoes ---------- */
+        section { margin-bottom: 2.75rem; }
+        h2 {
+            font-family: var(--serifada);
+            font-weight: 400;
+            font-size: 1.5rem;
+            line-height: 1.25;
+            margin: 0 0 .75rem;
+            display: flex;
+            gap: .75rem;
+            align-items: baseline;
+        }
+        h2 .n {
+            font-family: var(--corpo);
+            font-size: .8125rem;
+            font-weight: 600;
+            color: var(--verde-escuro);
+            letter-spacing: .08em;
+            flex: none;
+        }
+        p { margin: 0 0 1rem; }
+        p:last-child { margin-bottom: 0; }
+        a { color: var(--verde-escuro); text-decoration: underline; text-underline-offset: .2em; }
+        a:hover, a:focus-visible { color: var(--tinta); }
+
+        ul { margin: 0 0 1rem; padding-left: 1.25rem; }
+        li { margin-bottom: .375rem; }
+
+        /* ---------- o bloco que importa: o que o site NAO faz ---------- */
+        .nao-faz {
+            background: var(--tinta);
+            color: var(--creme);
+            padding: 2.25rem 2rem;
+            margin: 3.5rem 0;
+        }
+        .nao-faz h2 { color: var(--creme); margin-bottom: 1.5rem; }
+        .nao-faz h2 .n { color: var(--verde); }
+        .nao-faz ul { list-style: none; padding: 0; margin: 0; }
+        .nao-faz li {
+            padding: .875rem 0 .875rem 2rem;
+            border-top: 1px solid rgba(241, 238, 232, .18);
+            position: relative;
+        }
+        .nao-faz li:first-child { border-top: 0; }
+        .nao-faz li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 1.55rem;
+            width: 1rem;
+            height: 2px;
+            background: var(--verde);
+        }
+        .nao-faz .fecho {
+            margin: 1.5rem 0 0;
+            font-size: .9375rem;
+            color: rgba(241, 238, 232, .75);
+        }
+
+        /* ---------- identificacao ---------- */
+        .responsavel {
+            background: var(--papel);
+            padding: 1.75rem;
+            margin-bottom: 2.75rem;
+        }
+        .responsavel dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: .5rem 1.5rem; }
+        .responsavel dt {
+            font-size: .75rem;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--tinta-fraca);
+            padding-top: .2em;
+        }
+        .responsavel dd { margin: 0; }
+
+        /* ---------- rodape ---------- */
+        .rodape {
+            border-top: 1px solid var(--linha);
+            padding: 2rem 0 3rem;
+            margin-top: 3.5rem;
+            font-size: .875rem;
+            color: var(--tinta-fraca);
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .legais { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+
+        /* ---------- passo a passo ---------- */
+        .passos { counter-reset: passo; list-style: none; padding: 0; margin: 0 0 1rem; }
+        .passos li {
+            counter-increment: passo;
+            position: relative;
+            padding: 1rem 0 1rem 3.25rem;
+            border-top: 1px solid var(--linha);
+            margin: 0;
+        }
+        .passos li:first-child { border-top: 0; }
+        .passos li::before {
+            content: counter(passo);
+            position: absolute;
+            left: 0;
+            top: .95rem;
+            width: 2.1rem;
+            height: 2.1rem;
+            border-radius: 50%;
+            background: var(--verde-escuro);
+            color: var(--papel);
+            font-weight: 600;
+            font-size: .9375rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modelo {
+            background: var(--papel);
+            border: 1px dashed var(--linha);
+            padding: 1rem 1.25rem;
+            font-size: .9375rem;
+            margin: 0 0 1rem;
+        }
+
+        /* ---------- telas estreitas ---------- */
+        @media (max-width: 540px) {
+            body { font-size: 1rem; }
+            .topo { padding: 1.25rem 0; }
+            .topo img { height: 3.5rem; }
+            .abertura { padding: 2.5rem 0 2rem; }
+            .resumo, .nao-faz, .responsavel { padding-left: 1.25rem; padding-right: 1.25rem; }
+            .responsavel dl { grid-template-columns: 1fr; gap: .25rem; }
+            .responsavel dd { margin-bottom: .75rem; }
+        }
+
+        /* quem pede menos movimento no sistema nao ganha transicao nenhuma */
+        @media (prefers-reduced-motion: reduce) {
+            * { transition: none !important; animation: none !important; }
+        }
+
+        :focus-visible { outline: 2px solid var(--verde-escuro); outline-offset: 3px; }
+    </style>
+</head>
+<body>
+
+    <div class="envoltorio">
+
+        <header class="topo">
+            <a href="../" aria-label="Página inicial da Clorofilla">
+                <img src="../assets/logo-clorofilla-cor.svg" alt="Clorofilla" width="107" height="76">
+            </a>
+            <a class="voltar" href="../">Voltar ao site</a>
+        </header>
+
+        <div class="abertura">
+            <h1>Termos de Uso</h1>
+            <p class="atualizado">Atualizados em 23 de novembro de 2026</p>
+        </div>
+
+        <div class="resumo">
+            <p><strong>O resumo.</strong></p>
+            <p>Este site apresenta a Clorofilla e os serviços dela. O que está aqui é informação geral, não parecer técnico nem proposta comercial. Para um caso concreto, fale com a gente.</p>
+            <p>Usar o site, o formulário ou os nossos canais de mensagem significa concordar com estas regras.</p>
+        </div>
+
+        <section>
+            <h2><span class="n">01</span> A quem estes termos se aplicam</h2>
+            <p>A quem visita este site e a quem entra em contato com a Clorofilla pelo formulário, pelo e-mail, pelo WhatsApp ou pelas redes sociais da empresa. Os dados de identificação da Clorofilla estão no fim desta página.</p>
+        </section>
+
+        <section>
+            <h2><span class="n">02</span> O conteúdo do site</h2>
+            <p>Os textos, imagens e vídeos descrevem os serviços da Clorofilla de forma geral. Cada projeto ambiental depende do local, da atividade e das exigências do órgão licenciador, então nada do que está aqui substitui a análise de um profissional para o seu caso.</p>
+            <p>Procuramos manter tudo correto e atualizado, mas leis, normas e prazos mudam. Antes de tomar uma decisão com base no que leu aqui, confirme com a gente.</p>
+        </section>
+
+        <section>
+            <h2><span class="n">03</span> Orçamentos e contratos</h2>
+            <p>Uma conversa pelo site, pelo e-mail ou pelo WhatsApp não cria contrato nem obrigação para nenhum dos lados. Serviços só são contratados por proposta ou contrato próprio, por escrito, com escopo, prazo e valor definidos.</p>
+        </section>
+
+        <section>
+            <h2><span class="n">04</span> Como usar os nossos canais</h2>
+            <p>O formulário, o e-mail, o WhatsApp e as mensagens nas redes sociais existem para assuntos ligados aos serviços da Clorofilla. Pedimos que você:</p>
+            <ul>
+                <li>informe dados verdadeiros, para que a resposta chegue a você;</li>
+                <li>não envie propaganda, correntes ou mensagens automáticas;</li>
+                <li>não envie conteúdo ofensivo, ilegal ou dados de outras pessoas sem autorização delas.</li>
+            </ul>
+            <p>Mensagens que fujam disso podem ficar sem resposta, e números ou perfis que insistirem podem ser bloqueados.</p>
+            <p>O formulário tem proteções automáticas contra robôs. Se um envio seu for recusado por engano, escreva direto para <a href="mailto:contato@clorofillaambiental.com.br">contato@clorofillaambiental.com.br</a>.</p>
+        </section>
+
+        <section>
+            <h2><span class="n">05</span> Marca e direitos autorais</h2>
+            <p>O nome e o logotipo da Clorofilla, os textos, as imagens, os vídeos e o desenho deste site pertencem à Clorofilla ou são usados com autorização. Você pode compartilhar o endereço das páginas à vontade. Para copiar, reproduzir ou usar esse material em outro lugar, peça autorização antes.</p>
+        </section>
+
+        <section>
+            <h2><span class="n">06</span> Links para fora</h2>
+            <p>O site leva a páginas que não são nossas, como o blog (que roda em outra plataforma), o WhatsApp, o Instagram, o Facebook e o LinkedIn. Cada uma tem regras e políticas próprias, e a Clorofilla não responde pelo funcionamento delas.</p>
+        </section>
+
+        <section>
+            <h2><span class="n">07</span> Disponibilidade</h2>
+            <p>Fazemos o possível para o site ficar no ar o tempo todo, mas ele pode sair do ar por manutenção ou por falhas de terceiros, como a hospedagem ou a internet. Se precisar falar com a gente e o site não abrir, use o e-mail ou o WhatsApp.</p>
+        </section>
+
+        <section>
+            <h2><span class="n">08</span> Seus dados</h2>
+            <p>O que acontece com os dados que você nos envia está explicado na <a href="../politica-de-privacidade/">Política de Privacidade</a>. Para pedir que a Clorofilla apague seus dados, veja a página <a href="../exclusao-de-dados/">Exclusão de dados</a>.</p>
+        </section>
+
+        <section>
+            <h2><span class="n">09</span> Mudanças nestes termos</h2>
+            <p>Estes termos podem mudar quando o site ou os serviços mudarem. A data no topo mostra a versão em vigor.</p>
+        </section>
+
+        <section>
+            <h2><span class="n">10</span> Lei e foro</h2>
+            <p>Estes termos seguem as leis brasileiras. Qualquer questão sobre eles será tratada no foro da comarca do Rio de Janeiro (RJ), salvo quando a lei garantir a você o direito de usar o foro do seu domicílio.</p>
+        </section>
+
+        <section>
+            <h2><span class="n">11</span> Como falar com a gente</h2>
+            <p>Dúvidas sobre estes termos: <a href="mailto:contato@clorofillaambiental.com.br">contato@clorofillaambiental.com.br</a>.</p>
+        </section>
+
+        <div class="responsavel">
+            <dl>
+                <dt>Razão social</dt>
+                <dd>Clorofilla Consultoria Ambiental Ltda. ME</dd>
+                <dt>CNPJ</dt>
+                <dd>59.830.621/0001-45</dd>
+                <dt>Sede</dt>
+                <dd>Rio de Janeiro (RJ)</dd>
+                <dt>Contato</dt>
+                <dd><a href="mailto:contato@clorofillaambiental.com.br">contato@clorofillaambiental.com.br</a></dd>
+            </dl>
+        </div>
+
+        <footer class="rodape">
+            <span>© 2026 Clorofilla Soluções Ambientais. Todos os direitos reservados.</span>
+            <nav class="legais" aria-label="Documentos legais">
+                <a href="../politica-de-privacidade/">Política de privacidade</a>
+                <a href="../exclusao-de-dados/">Exclusão de dados</a>
+                <a href="../">Voltar ao site</a>
+            </nav>
+        </footer>
+
+    </div>
+
+</body>
+</html>

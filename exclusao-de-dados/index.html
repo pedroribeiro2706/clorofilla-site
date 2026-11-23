@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exclusão de Dados | Clorofilla Consultoria Ambiental</title>
+    <meta name="description" content="Como pedir que a Clorofilla Consultoria Ambiental apague os dados que recebeu de você pelo site, e-mail, WhatsApp ou redes sociais.">
+
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="../favicon-96.png" sizes="96x96" type="image/png">
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+
+    <!-- Mesmas fontes do site. E so elas: esta pagina nao carrega o
+         css/site.min.css nem o GSAP, porque nao tem uma animacao sequer. -->
+    <link rel="preconnect" href="https://use.typekit.net" crossorigin>
+    <link rel="preconnect" href="https://p.typekit.net" crossorigin>
+    <link rel="stylesheet" href="https://use.typekit.net/sho6jhs.css">
+
+    <style>
+        :root {
+            --creme: #f1eee8;
+            --papel: #ffffff;
+            --tinta: #232323;
+            --tinta-fraca: #5c5c5c;
+            --verde: #99b381;
+            --verde-escuro: #4f6b3c;
+            --linha: #ddd8cf;
+
+            --serifada: zahrah, Georgia, 'Times New Roman', serif;
+            --corpo: helvetica-neue-lt-pro, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: var(--creme);
+            color: var(--tinta);
+            font-family: var(--corpo);
+            font-size: 1.0625rem;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .envoltorio { max-width: 46rem; margin: 0 auto; padding: 0 1.5rem; }
+
+        /* ---------- topo ---------- */
+        .topo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            padding: 1.75rem 0;
+            border-bottom: 1px solid var(--linha);
+        }
+        /* o logo tem o nome embaixo do simbolo: abaixo de ~70px o nome fica ilegivel */
+        .topo img { display: block; height: 4.75rem; width: auto; }
+        .voltar {
+            font-size: .875rem;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            color: var(--tinta);
+            text-decoration: none;
+            border-bottom: 1px solid var(--verde);
+            padding-bottom: 2px;
+            white-space: nowrap;
+        }
+        .voltar:hover, .voltar:focus-visible { color: var(--verde-escuro); border-bottom-color: var(--verde-escuro); }
+
+        /* ---------- cabecalho do documento ---------- */
+        .abertura { padding: 3.5rem 0 2.5rem; }
+        h1 {
+            font-family: var(--serifada);
+            font-weight: 400;
+            font-size: clamp(2.125rem, 6vw, 3.25rem);
+            line-height: 1.12;
+            letter-spacing: -.01em;
+            margin: 0 0 1rem;
+        }
+        .atualizado {
+            font-size: .8125rem;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: var(--tinta-fraca);
+            margin: 0;
+        }
+
+        /* ---------- resumo ---------- */
+        .resumo {
+            background: var(--papel);
+            border-left: 3px solid var(--verde);
+            padding: 1.75rem 1.75rem 1.5rem;
+            margin-bottom: 3.5rem;
+        }
+        .resumo p { margin: 0 0 .75rem; }
+        .resumo p:last-child { margin-bottom: 0; }
+        .resumo strong { font-weight: 600; }
+
+        /* ---------- secoes ---------- */
+        section { margin-bottom: 2.75rem; }
+        h2 {
+            font-family: var(--serifada);
+            font-weight: 400;
+            font-size: 1.5rem;
+            line-height: 1.25;
+            margin: 0 0 .75rem;
+            display: flex;
+            gap: .75rem;
+            align-items: baseline;
+        }
+        h2 .n {
+            font-family: var(--corpo);
+            font-size: .8125rem;
+            font-weight: 600;
+            color: var(--verde-escuro);
+            letter-spacing: .08em;
+            flex: none;
+        }
+        p { margin: 0 0 1rem; }
+        p:last-child { margin-bottom: 0; }
+        a { color: var(--verde-escuro); text-decoration: underline; text-underline-offset: .2em; }
+        a:hover, a:focus-visible { color: var(--tinta); }
+
+        ul { margin: 0 0 1rem; padding-left: 1.25rem; }
+        li { margin-bottom: .375rem; }
+
+        /* ---------- o bloco que importa: o que o site NAO faz ---------- */
+        .nao-faz {
+            background: var(--tinta);
+            color: var(--creme);
+            padding: 2.25rem 2rem;
+            margin: 3.5rem 0;
+        }
+        .nao-faz h2 { color: var(--creme); margin-bottom: 1.5rem; }
+        .nao-faz h2 .n { color: var(--verde); }
+        .nao-faz ul { list-style: none; padding: 0; margin: 0; }
+        .nao-faz li {
+            padding: .875rem 0 .875rem 2rem;
+            border-top: 1px solid rgba(241, 238, 232, .18);
+            position: relative;
+        }
+        .nao-faz li:first-child { border-top: 0; }
+        .nao-faz li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 1.55rem;
+            width: 1rem;
+            height: 2px;
+            background: var(--verde);
+        }
+        .nao-faz .fecho {
+            margin: 1.5rem 0 0;
+            font-size: .9375rem;
+            color: rgba(241, 238, 232, .75);
+        }
+
+        /* ---------- identificacao ---------- */
+        .responsavel {
+            background: var(--papel);
+            padding: 1.75rem;
+            margin-bottom: 2.75rem;
+        }
+        .responsavel dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: .5rem 1.5rem; }
+        .responsavel dt {
+            font-size: .75rem;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--tinta-fraca);
+            padding-top: .2em;
+        }
+        .responsavel dd { margin: 0; }
+
+        /* ---------- rodape ---------- */
+        .rodape {
+            border-top: 1px solid var(--linha);
+            padding: 2rem 0 3rem;
+            margin-top: 3.5rem;
+            font-size: .875rem;
+            color: var(--tinta-fraca);
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .legais { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+
+        /* ---------- passo a passo ---------- */
+        .passos { counter-reset: passo; list-style: none; padding: 0; margin: 0 0 1rem; }
+        .passos li {
+            counter-increment: passo;
+            position: relative;
+            padding: 1rem 0 1rem 3.25rem;
+            border-top: 1px solid var(--linha);
+            margin: 0;
+        }
+        .passos li:first-child { border-top: 0; }
+        .passos li::before {
+            content: counter(passo);
+            position: absolute;
+            left: 0;
+            top: .95rem;
+            width: 2.1rem;
+            height: 2.1rem;
+            border-radius: 50%;
+            background: var(--verde-escuro);
+            color: var(--papel);
+            font-weight: 600;
+            font-size: .9375rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modelo {
+            background: var(--papel);
+            border: 1px dashed var(--linha);
+            padding: 1rem 1.25rem;
+            font-size: .9375rem;
+            margin: 0 0 1rem;
+        }
+
+        /* ---------- telas estreitas ---------- */
+        @media (max-width: 540px) {
+            body { font-size: 1rem; }
+            .topo { padding: 1.25rem 0; }
+            .topo img { height: 3.5rem; }
+            .abertura { padding: 2.5rem 0 2rem; }
+            .resumo, .nao-faz, .responsavel { padding-left: 1.25rem; padding-right: 1.25rem; }
+            .responsavel dl { grid-template-columns: 1fr; gap: .25rem; }
+            .responsavel dd { margin-bottom: .75rem; }
+        }
+
+        /* quem pede menos movimento no sistema nao ganha transicao nenhuma */
+        @media (prefers-reduced-motion: reduce) {
+            * { transition: none !important; animation: none !important; }
+        }
+
+        :focus-visible { outline: 2px solid var(--verde-escuro); outline-offset: 3px; }
+    </style>
+</head>
+<body>
+
+    <div class="envoltorio">
+
+        <header class="topo">
+            <a href="../" aria-label="Página inicial da Clorofilla">
+                <img src="../assets/logo-clorofilla-cor.svg" alt="Clorofilla" width="107" height="76">
+            </a>
+            <a class="voltar" href="../">Voltar ao site</a>
+        </header>
+
+        <div class="abertura">
+            <h1>Exclusão de Dados</h1>
+            <p class="atualizado">Atualizada em 23 de novembro de 2026</p>
+        </div>
+
+        <div class="resumo">
+            <p><strong>Para apagar seus dados, basta um e-mail.</strong></p>
+            <p>Escreva para <a href="mailto:contato@clorofillaambiental.com.br">contato@clorofillaambiental.com.br</a> com o assunto <strong>Exclusão de dados</strong>. A Clorofilla apaga o que recebeu de você e confirma por e-mail. Não tem custo e você não precisa explicar o motivo.</p>
+        </div>
+
+        <section>
+            <h2><span class="n">01</span> Quais dados podemos ter</h2>
+            <p>Só o que você mesmo nos mandou, por um destes caminhos:</p>
+            <ul>
+                <li><strong>formulário do site:</strong> nome, e-mail, telefone e a mensagem;</li>
+                <li><strong>e-mail:</strong> seu endereço e o que você escreveu;</li>
+                <li><strong>WhatsApp:</strong> seu nome, seu número e as mensagens e arquivos da conversa;</li>
+                <li><strong>Instagram, Facebook e LinkedIn:</strong> seu nome de perfil e as mensagens que você mandou para a Clorofilla;</li>
+                <li><strong>aplicativos ligados à Meta, quando houver:</strong> as informações que você autorizou a compartilhar ao usá-los, como nome e e-mail.</li>
+            </ul>
+            <p>O site não usa cookies e não rastreia a navegação, então não há histórico de visitas para apagar.</p>
+        </section>
+
+        <section>
+            <h2><span class="n">02</span> Como pedir</h2>
+            <ol class="passos">
+                <li>Mande um e-mail para <a href="mailto:contato@clorofillaambiental.com.br">contato@clorofillaambiental.com.br</a> com o assunto <strong>Exclusão de dados</strong>.</li>
+                <li>No texto, diga como falou com a gente (formulário, e-mail, WhatsApp ou qual rede social) e o dado que nos ajuda a achar o registro: o e-mail, o número de telefone ou o nome de perfil que você usou.</li>
+                <li>Se preferir, mande o mesmo pedido por mensagem no WhatsApp da Clorofilla ou nas redes sociais. Vale igual.</li>
+            </ol>
+            <p>Um modelo, se ajudar:</p>
+            <p class="modelo">Assunto: Exclusão de dados<br>Olá, peço que a Clorofilla apague os dados que recebeu de mim. Entrei em contato por [formulário / WhatsApp / Instagram / Facebook / LinkedIn / e-mail], usando [seu e-mail, número ou perfil].</p>
+        </section>
+
+        <section>
+            <h2><span class="n">03</span> O que acontece depois</h2>
+            <ul>
+                <li>Confirmamos que recebemos o pedido.</li>
+                <li>Apagamos as mensagens e os dados de contato que você nos enviou, em todos os canais em que estiverem.</li>
+                <li>Avisamos por e-mail (ou pelo mesmo canal do pedido) quando estiver feito, em até 15 dias.</li>
+            </ul>
+            <p>Se precisarmos confirmar que o pedido veio mesmo de você, perguntamos antes de apagar. É para ninguém conseguir apagar os dados de outra pessoa.</p>
+        </section>
+
+        <section>
+            <h2><span class="n">04</span> O que pode precisar ficar guardado</h2>
+            <p>Se você já foi cliente, a lei pode obrigar a Clorofilla a guardar alguns documentos por um tempo, como contratos e notas fiscais. Nesse caso, guardamos só o necessário, pelo prazo exigido, e avisamos você na resposta sobre o que ficou e por quê.</p>
+        </section>
+
+        <section>
+            <h2><span class="n">05</span> O que fica com a Meta e as outras plataformas</h2>
+            <p>As conversas no WhatsApp, no Instagram, no Facebook e no LinkedIn também ficam guardadas nessas plataformas, que seguem as próprias regras. A Clorofilla apaga a cópia dela. Para apagar a sua, use as opções do próprio aplicativo (por exemplo, apagar a conversa no WhatsApp).</p>
+            <p>Se você entrou em algum aplicativo da Clorofilla usando sua conta do Facebook, pode também tirar a permissão dele no Facebook, em <strong>Configurações e privacidade › Configurações › Aplicativos e sites</strong>, escolhendo o aplicativo e tocando em <strong>Remover</strong>.</p>
+        </section>
+
+        <section>
+            <h2><span class="n">06</span> Seus outros direitos</h2>
+            <p>Além da exclusão, a Lei Geral de Proteção de Dados (Lei 13.709/2018) garante a você saber quais dados temos, corrigir o que estiver errado e reclamar à Autoridade Nacional de Proteção de Dados (ANPD). Os detalhes estão na <a href="../politica-de-privacidade/">Política de Privacidade</a>.</p>
+        </section>
+
+        <div class="responsavel">
+            <dl>
+                <dt>Razão social</dt>
+                <dd>Clorofilla Consultoria Ambiental Ltda. ME</dd>
+                <dt>CNPJ</dt>
+                <dd>59.830.621/0001-45</dd>
+                <dt>Sede</dt>
+                <dd>Rio de Janeiro (RJ)</dd>
+                <dt>Contato</dt>
+                <dd><a href="mailto:contato@clorofillaambiental.com.br">contato@clorofillaambiental.com.br</a></dd>
+            </dl>
+        </div>
+
+        <footer class="rodape">
+            <span>© 2026 Clorofilla Soluções Ambientais. Todos os direitos reservados.</span>
+            <nav class="legais" aria-label="Documentos legais">
+                <a href="../termos-de-uso/">Termos de uso</a>
+                <a href="../politica-de-privacidade/">Política de privacidade</a>
+                <a href="../">Voltar ao site</a>
+            </nav>
+        </footer>
+
+    </div>
+
+</body>
+</html>
