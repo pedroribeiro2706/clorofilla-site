@@ -2063,7 +2063,59 @@ ScrollTrigger.create({
         return pedidoDeFicha;
       };
 
-      contatoForm.addEventListener('focusin', () => { if (!ficha) pedirFicha(); }, { once: true });
+      // "Não sou um robô" da Cloudflare (Turnstile), na conta da Kriya Build.
+      // Também só carrega quando o visitante mexe no formulário, e só no
+      // domínio da Clorofilla: a chave da Cloudflare não vale em outro
+      // endereço (preview da Vercel, computador local), onde o widget só
+      // mostraria erro. Fica invisível, a não ser que a Cloudflare desconfie.
+      const caixaVerificacao = contatoForm.querySelector('.contato-verificacao');
+      const CHAVE_TURNSTILE = (caixaVerificacao && caixaVerificacao.dataset.chaveTurnstile) || '';
+      const DOMINIO_CERTO = /(^|\.)clorofillaambiental\.com\.br$/.test(location.hostname);
+      let idDoWidget = null;
+      let carregandoTurnstile = null;
+
+      const carregarTurnstile = () => {
+        if (!CHAVE_TURNSTILE || !DOMINIO_CERTO) return Promise.resolve();
+        if (carregandoTurnstile) return carregandoTurnstile;
+        carregandoTurnstile = new Promise((ok) => {
+          window.__clorofillaTurnstilePronto = () => {
+            try {
+              idDoWidget = window.turnstile.render(caixaVerificacao, {
+                sitekey: CHAVE_TURNSTILE,
+                appearance: 'interaction-only',
+                language: 'pt-br',
+                action: 'contato'
+              });
+            } catch (erro) { console.error(erro); }
+            ok();
+          };
+          const s = document.createElement('script');
+          s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=__clorofillaTurnstilePronto';
+          s.async = true;
+          s.onerror = () => ok(); // bloqueado ou fora do ar: o servidor decide
+          document.head.appendChild(s);
+        });
+        return carregandoTurnstile;
+      };
+
+      // Espera a Cloudflare dar o "ok" (normalmente 1 a 2 s, sem o visitante
+      // fazer nada). Se ela pedir um clique, dá tempo para a pessoa clicar.
+      const respostaTurnstile = async (limiteMs) => {
+        await carregarTurnstile();
+        const fim = Date.now() + limiteMs;
+        while (idDoWidget !== null && window.turnstile) {
+          const r = window.turnstile.getResponse(idDoWidget);
+          if (r) return r;
+          if (Date.now() > fim) break;
+          await new Promise((ok) => setTimeout(ok, 250));
+        }
+        return '';
+      };
+
+      contatoForm.addEventListener('focusin', () => {
+        if (!ficha) pedirFicha();
+        carregarTurnstile();
+      }, { once: true });
 
       contatoForm.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -2083,6 +2135,8 @@ ScrollTrigger.create({
           const falta = ESPERA_MINIMA_MS - (Date.now() - fichaRecebidaEm);
           if (ficha && falta > 0) await new Promise((ok) => setTimeout(ok, falta));
           formData.set('ficha', ficha);
+          const tokenTurnstile = await respostaTurnstile(20000);
+          if (tokenTurnstile) formData.set('cf-turnstile-response', tokenTurnstile);
 
           const response = await fetch(contatoForm.action, {
             method: 'POST',
@@ -2103,6 +2157,10 @@ ScrollTrigger.create({
           console.error(error);
           setFeedback('Erro de conexão. Verifique sua internet e tente novamente.', 'is-error');
         } finally {
+          // O "ok" da Cloudflare só vale para um envio: pede um novo.
+          if (idDoWidget !== null && window.turnstile) {
+            try { window.turnstile.reset(idDoWidget); } catch (erro) { /* nada a fazer */ }
+          }
           if (submitButton) {
             submitButton.disabled = false;
             submitButton.textContent = 'ENVIAR';

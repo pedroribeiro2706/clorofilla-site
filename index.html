@@ -876,6 +876,9 @@
               <label for="message" class="form-label contato-label">Mensagem *</label>
               <textarea class="form-control contato-input" id="message" name="message" rows="3" required></textarea>
             </div>
+            <!-- "Não sou um robô" da Cloudflare (Turnstile). Fica invisível quase sempre;
+                 só aparece quando a Cloudflare desconfia. Montado pelo scripts.js. -->
+            <div class="contato-verificacao" data-chave-turnstile="0x4AAAAAAGN4WyovS9M3MpZ7"></div>
             <div class="d-flex justify-content-end">
               <button type="submit" class="btn-enviar">ENVIAR</button>
             </div>

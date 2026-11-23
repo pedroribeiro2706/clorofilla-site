@@ -139,6 +139,52 @@ function registrarBarrado(string $motivo): void
     );
 }
 
+// Trava 3, o "não sou um robô" da Cloudflare (Turnstile), conta da Kriya Build.
+// A chave secreta mora num arquivo FORA da pasta pública, enviado pela
+// ferramenta `enviar-segredo-turnstile.mjs` a partir do .env do projeto. Sem
+// esse arquivo, a trava fica desligada (e as outras duas continuam valendo).
+function segredoTurnstile(): string
+{
+    $lido = @file_get_contents(pastaPrivada() . '/clorofilla-turnstile-segredo.txt');
+    return is_string($lido) ? trim($lido) : '';
+}
+
+/** true = a Cloudflare aprovou; false = recusou; null = não deu para perguntar. */
+function conferirTurnstile(string $resposta, string $segredo): ?bool
+{
+    $url   = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+    $dados = http_build_query([
+        'secret'   => $segredo,
+        'response' => $resposta,
+        'remoteip' => $_SERVER['REMOTE_ADDR'] ?? '',
+    ]);
+    $corpo = false;
+    if (function_exists('curl_init')) {
+        $c = curl_init($url);
+        curl_setopt_array($c, [
+            CURLOPT_POST           => true,
+            CURLOPT_POSTFIELDS     => $dados,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_CONNECTTIMEOUT => 5,
+            CURLOPT_TIMEOUT        => 8,
+        ]);
+        $corpo = curl_exec($c);
+        curl_close($c);
+    } else {
+        $contexto = stream_context_create(['http' => [
+            'method'  => 'POST',
+            'header'  => "Content-Type: application/x-www-form-urlencoded\r\n",
+            'content' => $dados,
+            'timeout' => 8,
+        ]]);
+        $corpo = @file_get_contents($url, false, $contexto);
+    }
+    if (!is_string($corpo) || $corpo === '') return null;
+    $j = json_decode($corpo, true);
+    if (!is_array($j) || !array_key_exists('success', $j)) return null;
+    return $j['success'] === true;
+}
+
 // A página pede a ficha.
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['ficha'])) {
     $agora = (string) time();
@@ -179,6 +225,29 @@ if ($idade < FICHA_ESPERA_MINIMA) {
 if ($idade > FICHA_VALIDADE) {
     registrarBarrado('ficha vencida');
     respond(false, 'A página ficou aberta por muito tempo. Recarregue a página e envie de novo.', 400, $isAjax);
+}
+
+// Trava 3: a Cloudflare precisa ter aprovado. Se ela não responder (fora do
+// ar, rede), a mensagem passa: as duas travas acima já valeram, e perder o
+// contato de um cliente de verdade é pior que deixar passar um robô.
+$segredoTs = segredoTurnstile();
+if ($segredoTs !== '') {
+    $avisoTurnstile = 'Não foi possível confirmar que a mensagem veio de uma pessoa. '
+        . 'Se apareceu uma caixa de verificação acima do botão, marque-a e envie de novo; '
+        . 'se não, recarregue a página e tente outra vez.';
+    $respostaTs = (string) ($_POST['cf-turnstile-response'] ?? '');
+    if ($respostaTs === '') {
+        registrarBarrado('sem o ok da Cloudflare');
+        respond(false, $avisoTurnstile, 400, $isAjax);
+    }
+    $aprovado = conferirTurnstile($respostaTs, $segredoTs);
+    if ($aprovado === false) {
+        registrarBarrado('Cloudflare recusou');
+        respond(false, $avisoTurnstile, 400, $isAjax);
+    }
+    if ($aprovado === null) {
+        registrarBarrado('Cloudflare nao respondeu: mensagem DEIXADA PASSAR');
+    }
 }
 
 $firstName = trim($_POST['first_name'] ?? '');

@@ -156,6 +156,17 @@
   color: #a1392f;
 }
 
+/* "Não sou um robô" da Cloudflare: invisível quase sempre; quando aparece,
+   fica alinhado à direita, acima do botão ENVIAR. */
+.contato-verificacao {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.contato-verificacao:has(iframe) {
+  margin-bottom: 1rem;
+}
+
 .hp-field {
   position: absolute !important;
   left: -9999px;
