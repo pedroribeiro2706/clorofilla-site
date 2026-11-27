@@ -187,9 +187,9 @@ body {
   /* Enlarge footer logo ~180% on mobile/tablet */
   .footer-logo { width: min(270px, 80vw); max-width: 80vw; }
 
-  /* Center the privacy link in the viewport */
+  /* Center the legal links in the viewport */
   .footer-bottom-row { text-align: center; }
-  .footer-privacy-link { align-self: center; margin-left: 0; }
+  .footer-legais { align-self: center; justify-content: center; margin-left: 0; }
 }
 
 /* Fine-tune smallest screens */

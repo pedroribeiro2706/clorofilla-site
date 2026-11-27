@@ -112,11 +112,18 @@
     font-size: 1rem;
     font-weight: 400;
   }
+  /* 27/11/2026: os três documentos legais (política, termos, exclusão de dados) lado a lado,
+     encostados à direita no computador. Antes era só o link da política, com margin-left: auto. */
+  .footer-legais {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.5rem;
+    margin-left: auto;
+  }
   .footer-privacy-link {
     color: #f1eee8;
     font-size: 1rem;
     font-weight: 400;
-    margin-left: auto;
     text-decoration: none; /* Sem sublinhado */
     transition: color 0.2s;
   }
