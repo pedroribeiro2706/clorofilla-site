@@ -262,3 +262,23 @@ body {
   /* Não forçar position absolute no verso para não quebrar o flip */
 }
 
+
+/* 27/11/2026, Frente D: os textos novos da Teresa são mais longos que os antigos.
+   Medido com ferramentas/diagnostico/medir-textos-novos.mjs, no ar x versão de teste:
+   - computador: o texto da tela "À OPERAÇÃO" passou de 346 para 653 px de altura e saía
+     pela base da tela (900 px). A 1,5rem ele volta à altura de antes;
+   - "CONSULTORIA" (painel laranja) cortava o A a 1366 px; no celular quebrava em "CONSULTOR / IA";
+   - "DESENVOLVIMENTO" (Quem somos) e "PLANEJAMENTO" (primeira tela) passavam da borda no celular.
+   Nos títulos, a letra só diminui quando a palavra mais longa não cabe: o divisor é a largura
+   dessa palavra medida em "letras do tamanho da fonte" (7 para CONSULTORIA, 8 para as outras). */
+@media (min-width: 992px) {
+  .panel-content-white-text { font-size: 1.5rem; }
+  .panel-content-orange-text-container h2 { font-size: min(6rem, calc((50vw - 40px) / 7.1)); }
+}
+@media (max-width: 991px) {
+  .sobre-title { font-size: min(3.5rem, calc((100vw - 32px) / 8)); }
+}
+@media (max-width: 767px) {
+  .panel-hero-title { font-size: min(clamp(3.2rem, 1.2rem + 3vw, 3.6rem), calc((100vw - 32px) / 8.3)); }
+  .panel-content-orange-text-container h2.panel-content-orange-title { font-size: min(clamp(3.5rem, 7vw, 4.5rem), calc((100vw - 48px) / 7.2)); }
+}
